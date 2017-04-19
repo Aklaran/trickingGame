@@ -18,7 +18,7 @@ class Trick():
         self.tricker = Tricker()
 
     def getGrade(self, inputFrame):
-        sweetSpot = int(self.duration * .90)
+        sweetSpot = int(self.duration * .80)
         distFromSS = abs(sweetSpot-inputFrame)
 
         print("sweetSpot:", sweetSpot)
@@ -43,6 +43,10 @@ class Trick():
         elif distFromSS > eMargin:
             return 'E'
 
+    def getExitTransition(self):
+        return self.exitTransition
+    def getEntryTransition(self):
+        return self.entryTransition
 
 
 
@@ -51,9 +55,13 @@ class Gainer(Trick):
         super().__init__()
         self.duration = self.tricker.actor.getNumFrames('gainer')
         self.difficulty = 1
+        self.entryTransition = 'swing'
+        self.exitTransition = 'reversal'
 
 class Gswitch(Trick):
     def __init__(self):
         super().__init__()
         self.duration = self.tricker.actor.getNumFrames('gswitch')
         self.difficulty = 1
+        self.entryTransition = 'swing'
+        self.exitTransition = 'swing'
