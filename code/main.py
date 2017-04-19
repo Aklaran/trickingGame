@@ -101,17 +101,10 @@ class TrickingGame(ShowBase):
             framesLeft = numFrames - currFrame
 
             grade = self.prevTrick.getGrade(currFrame)
-            if grade == 'D':
-                print('Grade: D. pretty shit.')
-            elif grade == 'C':
-                print('Grade: C. MEDIOCRE')
-            elif grade == 'B':
-                print('Grade: B. Aight')
-            elif grade == 'A':
-                print("Grade: A. PERFFECT")
-            elif grade == 'E':
-                print("Grade: E. Trick failed")
-                return
+            self.drawGrade(grade)
+            # TODO: organize the grading system
+            if grade == 'E': return
+
 
             # 0.06 is the time it takes for 2 frames - smooth blending
             delayTime = framesLeft / 30 - 0.06
@@ -131,6 +124,19 @@ class TrickingGame(ShowBase):
 
         moveInterval.start()
         return Task.done
+
+    def drawGrade(self, grade):
+        if grade == 'D':
+            print('Grade: D. pretty shit.')
+        elif grade == 'C':
+            print('Grade: C. MEDIOCRE')
+        elif grade == 'B':
+            print('Grade: B. Aight')
+        elif grade == 'A':
+            print("Grade: A. PERFFECT")
+        elif grade == 'E':
+            print("Grade: E. Trick failed")
+
 
 
 
