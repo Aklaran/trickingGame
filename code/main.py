@@ -53,7 +53,7 @@ class TrickingGame(ShowBase):
 
         # Add SetCameraTask to task manager
         self.camera.reparentTo(self.tricker.actor)
-        #self.taskMgr.add(self.followPlayerTask, "cameraFollowPlayerTask")
+        self.taskMgr.add(self.followPlayerTask, "cameraFollowPlayerTask")
 
         # Lights
         alight = AmbientLight('alight')
@@ -83,6 +83,7 @@ class TrickingGame(ShowBase):
         self.tricker.actor.setControlEffect('gainer', 1-self.i)
         self.tricker.actor.play('gainer_bad')
         self.tricker.actor.play('gainer')
+        self.tricker.actor.disableBlend()
 
         if self.i == 1:
             self.i = 0
