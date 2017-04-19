@@ -1,9 +1,12 @@
 # this defines all the tricks
 
-from tricker import Tricker
+
 
 class Trick():
-    def __init__(self):
+    def __init__(self, tricker):
+
+        self.tricker = tricker
+
         # all tricks must rewrite these attributes
         # difficulty levels:
         # 1 - gainer, 540, btwist, tdr
@@ -13,9 +16,6 @@ class Trick():
         self.entryTransition = "WHY IS THIS NOT REWRITTEN"
         self.exitTransition = "WHY IS THIS NOT REWRITTEN"
         self.duration = "WHY IS THIS NOT REWRITTEN"
-
-
-        self.tricker = Tricker()
 
     def getGrade(self, inputFrame):
         sweetSpot = int(self.duration * .80)
@@ -51,17 +51,17 @@ class Trick():
 
 
 class Gainer(Trick):
-    def __init__(self):
-        super().__init__()
-        self.duration = self.tricker.actor.getNumFrames('gainer')
+    def __init__(self, tricker):
+        super().__init__(tricker)
+        self.duration = self.tricker.getNumFrames('gainer')
         self.difficulty = 1
         self.entryTransition = 'swing'
         self.exitTransition = 'reversal'
 
 class Gswitch(Trick):
-    def __init__(self):
-        super().__init__()
-        self.duration = self.tricker.actor.getNumFrames('gswitch')
+    def __init__(self, tricker):
+        super().__init__(tricker)
+        self.duration = self.tricker.getNumFrames('gswitch')
         self.difficulty = 1
         self.entryTransition = 'swing'
         self.exitTransition = 'swing'

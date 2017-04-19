@@ -23,16 +23,16 @@ class TrickingGame(ShowBase):
         self.tricker = Tricker()
         self.tricker.actor.reparent_to(self.render)
 
-        #Load tricks
-        gainer = Gainer()
-        gswitch = Gswitch()
+
 
         # define controls
         self.accept('d', self.debug)
         self.i = 0
 
-        self.accept('shift-y', self.tryTrick, ['gainer', gainer])
-        self.accept('shift-u', self.tryTrick, ['gswitch', gswitch])
+        self.accept('shift-y', self.tricker.tryTrick,
+                    ['gainer', self.tricker.gainer, self.taskMgr])
+        self.accept('shift-u', self.tricker.tryTrick,
+                    ['gswitch', self.tricker.gswitch, self.taskMgr])
         # self.accept('shift-i', self.tryTrick, [self.tricker.cork])
         # self.accept('shift-o', self.tryTrick, [self.tricker.dubcork])
         #
@@ -73,11 +73,10 @@ class TrickingGame(ShowBase):
         self.render.setLight(plnp)
 
 
-        # TODO: find a better place to put this variable lol
-        self.prevTrick = None
-
     def followPlayerTask(self, task):
-        print(self.camera.getPos(self.tricker.actor))
+
+
+
 
         self.camera.lookAt(self.trickerDummyNode)
         return Task.cont
@@ -95,54 +94,6 @@ class TrickingGame(ShowBase):
             self.i = 0
         else:
             self.i = self.i+ 0.5
-
-
-    def tryTrick(self, animation, trick):
-        currAnim = self.tricker.actor.getCurrentAnim()
-        if currAnim:
-            if self.prevTrick.getExitTransition() != trick.getEntryTransition():
-                print("invalid transition")
-                return
-            currFrame = self.tricker.actor.getCurrentFrame(currAnim)
-            numFrames = self.tricker.actor.getNumFrames(currAnim)
-            framesLeft = numFrames - currFrame
-
-            grade = self.prevTrick.getGrade(currFrame)
-            self.drawGrade(grade)
-            # TODO: organize the grading system
-            if grade == 'E': return
-
-
-            # 0.06 is the time it takes for 2 frames - smooth blending
-            delayTime = framesLeft / 30 - 0.06
-            self.taskMgr.doMethodLater(delayTime, self.doTrickTask, 'doTrick',
-                             extraArgs=[animation], appendTask=True)
-        else:
-            self.taskMgr.add(self.doTrickTask, 'doTrick',
-                             extraArgs=[animation], appendTask=True)
-        self.prevTrick = trick
-
-    def doTrickTask(self, animation, task):
-        airTime = self.tricker.actor.getNumFrames(animation) / 30
-        moveInterval = self.tricker.actor.posInterval(airTime,
-                                                Point3(0, .1, 0),
-                                                other=self.tricker.actor)
-        self.tricker.actor.play(animation)
-
-        moveInterval.start()
-        return Task.done
-
-    def drawGrade(self, grade):
-        if grade == 'D':
-            print('Grade: D. pretty shit.')
-        elif grade == 'C':
-            print('Grade: C. MEDIOCRE')
-        elif grade == 'B':
-            print('Grade: B. Aight')
-        elif grade == 'A':
-            print("Grade: A. PERFFECT")
-        elif grade == 'E':
-            print("Grade: E. Trick failed")
 
 
 
