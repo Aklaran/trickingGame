@@ -23,11 +23,15 @@ class TrickingGame(ShowBase):
         self.tricker = Tricker()
         self.tricker.actor.reparent_to(self.render)
 
+        #Load tricks
+        gainer = Gainer()
+        gswitch = Gswitch()
+
         # define controls
         self.accept('d', self.debug)
 
-        self.accept('shift-y', self.tryTrick, ['gainer'])
-        self.accept('shift-u', self.tryTrick, ['gswitch'])
+        self.accept('shift-y', self.tryTrick, ['gainer', gainer])
+        self.accept('shift-u', self.tryTrick, ['gswitch', gswitch])
         # self.accept('shift-i', self.tryTrick, [self.tricker.cork])
         # self.accept('shift-o', self.tryTrick, [self.tricker.dubcork])
         #
@@ -70,17 +74,27 @@ class TrickingGame(ShowBase):
     def debug(self, prevInterval):
         print(prevInterval)
 
-    def tryTrick(self, animation):
+    def tryTrick(self, animation, trick):
         currAnim = self.tricker.actor.getCurrentAnim()
         if currAnim:
             currFrame = self.tricker.actor.getCurrentFrame(currAnim)
-            totalFrames = self.tricker.actor.getNumFrames(currAnim)
-            framesLeft = totalFrames-currFrame
-            print(framesLeft)
-            # FIXME: replace 5 with a number from trick class (modified by char class)
-            if framesLeft > 10:
-                print("you died")
+            print("TryTrick currFrame:", currFrame)
+            numFrames = self.tricker.actor.getNumFrames(currAnim)
+            framesLeft = numFrames - currFrame
+
+            grade = trick.getGrade(currFrame)
+            if grade == 'D':
+                print('Grade: D. pretty shit.')
+            elif grade == 'C':
+                print('Grade: C. MEDIOCRE')
+            elif grade == 'B':
+                print('Grade: B. Aight')
+            elif grade == 'A':
+                print("Grade: A. PERFFECT")
+            elif grade == 'E':
+                print("Grade: E. Trick failed")
                 return
+
             # 0.06 is the time it takes for 2 frames - smooth blending
             delayTime = framesLeft / 30 - 0.06
             self.taskMgr.doMethodLater(delayTime, self.doTrickTask, 'doTrick',
@@ -90,7 +104,6 @@ class TrickingGame(ShowBase):
                              extraArgs=[animation], appendTask=True)
 
     def doTrickTask(self, animation, task):
-        print(animation)
         airTime = self.tricker.actor.getNumFrames(animation) / 30
         moveInterval = self.tricker.actor.posInterval(airTime,
                                                 Point3(0, .1, 0),
