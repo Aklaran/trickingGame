@@ -10,3 +10,6 @@ class Tricker(object):
         self.actor = Actor("tp/models/tricker-model",
                            {"gainer": "tp/anims/tricker-gainer",
                             "gswitch": "tp/anims/tricker-gswitch"})
+
+        self.trickList = {"gainer": 0,
+                          "gswitch": 0}
