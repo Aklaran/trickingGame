@@ -29,6 +29,7 @@ class TrickingGame(ShowBase):
 
         # define controls
         self.accept('d', self.debug)
+        self.i = 0
 
         self.accept('shift-y', self.tryTrick, ['gainer', gainer])
         self.accept('shift-u', self.tryTrick, ['gswitch', gswitch])
@@ -52,7 +53,7 @@ class TrickingGame(ShowBase):
 
         # Add SetCameraTask to task manager
         self.camera.reparentTo(self.tricker.actor)
-        self.taskMgr.add(self.followPlayerTask, "cameraFollowPlayerTask")
+        #self.taskMgr.add(self.followPlayerTask, "cameraFollowPlayerTask")
 
         # Lights
         alight = AmbientLight('alight')
@@ -75,8 +76,19 @@ class TrickingGame(ShowBase):
         self.camera.lookAt(self.tricker.actor)
         return Task.cont
 
-    def debug(self, prevInterval):
-        print(prevInterval)
+    def debug(self):
+        print(self.i)
+        self.tricker.actor.enableBlend()
+        self.tricker.actor.setControlEffect('gainer_bad', self.i)
+        self.tricker.actor.setControlEffect('gainer', 1-self.i)
+        self.tricker.actor.play('gainer_bad')
+        self.tricker.actor.play('gainer')
+
+        if self.i == 1:
+            self.i = 0
+        else:
+            self.i = self.i+ 0.5
+
 
     def tryTrick(self, animation, trick):
         currAnim = self.tricker.actor.getCurrentAnim()
