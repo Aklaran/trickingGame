@@ -9,6 +9,7 @@ class Tricker(object):
     def __init__(self):
         self.actor = Actor("tp/models/tricker-model",
                            {"gainer": "tp/anims/tricker-gainer",
+                            "gainer_bad": "tp/anims/tricker-gainer-bad",
                             "gswitch": "tp/anims/tricker-gswitch"})
 
         self.trickList = {"gainer": 0,
