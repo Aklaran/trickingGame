@@ -66,6 +66,10 @@ class TrickingGame(ShowBase):
         plnp.setPos(20, 0, 20)
         self.render.setLight(plnp)
 
+
+        # TODO: find a better place to put this variable lol
+        self.prevTrick = None
+
     def followPlayerTask(self, task):
         self.camera.setPos(0, -20, 10)
         self.camera.lookAt(self.tricker.actor)
@@ -77,12 +81,14 @@ class TrickingGame(ShowBase):
     def tryTrick(self, animation, trick):
         currAnim = self.tricker.actor.getCurrentAnim()
         if currAnim:
+            if self.prevTrick.getExitTransition() != trick.getEntryTransition():
+                print("invalid transition")
+                return
             currFrame = self.tricker.actor.getCurrentFrame(currAnim)
-            print("TryTrick currFrame:", currFrame)
             numFrames = self.tricker.actor.getNumFrames(currAnim)
             framesLeft = numFrames - currFrame
 
-            grade = trick.getGrade(currFrame)
+            grade = self.prevTrick.getGrade(currFrame)
             if grade == 'D':
                 print('Grade: D. pretty shit.')
             elif grade == 'C':
@@ -102,6 +108,7 @@ class TrickingGame(ShowBase):
         else:
             self.taskMgr.add(self.doTrickTask, 'doTrick',
                              extraArgs=[animation], appendTask=True)
+        self.prevTrick = trick
 
     def doTrickTask(self, animation, task):
         airTime = self.tricker.actor.getNumFrames(animation) / 30
