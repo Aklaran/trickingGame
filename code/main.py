@@ -74,9 +74,18 @@ class TrickingGame(ShowBase):
 
 
     def followPlayerTask(self, task):
+        # if self.camera.getPos() != (self.tricker.actor.getPos() - (0, 20, 10)):
+        x = self.camera.getPos()[0]
+        y = self.camera.getPos()[1]
+        z = self.camera.getPos()[2]
 
+        dx = (self.tricker.actor.getPos()[0] - x) * .75
+        dy = (self.tricker.actor.getPos()[1] - y) * .75
+        dz = (self.tricker.actor.getPos()[2] - z)  * .75
 
+        print(dx, dy, dz)
 
+        self.camera.setPos((x+dx, y+dy, z+dz))
 
         self.camera.lookAt(self.trickerDummyNode)
         return Task.cont

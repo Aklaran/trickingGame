@@ -1,7 +1,5 @@
 # this defines all the tricks
 
-
-
 class Trick():
     def __init__(self, tricker):
 
