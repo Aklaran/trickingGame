@@ -52,7 +52,12 @@ class TrickingGame(ShowBase):
         # self.accept('alt-o', self.tryTrick, [self.tricker.cartFull])
 
         # Add SetCameraTask to task manager
-        self.camera.reparentTo(self.tricker.actor)
+        # IMPORTANT: camera is parented to the dummyNode in tricker's chest
+        self.trickerDummyNode = self.render.attach_new_node("trickerDummyNode")
+        self.trickerDummyNode.reparentTo(self.tricker.actor)
+        self.trickerDummyNode.setPos(0, 0, 3)
+
+        self.camera.reparentTo(self.render)
         self.taskMgr.add(self.followPlayerTask, "cameraFollowPlayerTask")
 
         # Lights
@@ -72,8 +77,9 @@ class TrickingGame(ShowBase):
         self.prevTrick = None
 
     def followPlayerTask(self, task):
-        self.camera.setPos(0, -20, 10)
-        self.camera.lookAt(self.tricker.actor)
+        print(self.camera.getPos(self.tricker.actor))
+
+        self.camera.lookAt(self.trickerDummyNode)
         return Task.cont
 
     def debug(self):
