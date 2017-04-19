@@ -23,6 +23,7 @@ class Tricker(object):
         self.gainer = Gainer(self.actor)
         self.gswitch = Gswitch(self.actor)
 
+        self.prevTrick = None
 
     def tryTrick(self, animation, trick, taskMgr):
         currAnim = self.actor.getCurrentAnim()
