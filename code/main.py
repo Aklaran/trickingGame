@@ -2,6 +2,7 @@ from direct.showbase.ShowBase import ShowBase
 from direct.task import Task
 from direct.actor.Actor import Actor
 from direct.interval.IntervalGlobal import *
+from direct.gui.DirectGui import *
 
 from tricker import Tricker
 
@@ -82,6 +83,27 @@ class TrickingGame(ShowBase):
         plnp = self.render.attachNewNode(plight)
         plnp.setPos(20, 0, 20)
         self.render.setLight(plnp)
+
+        #2D Render
+
+        dr = self.win.makeDisplayRegion()
+        dr.setSort(20)
+
+        camera2d = NodePath(Camera('cam2d'))
+        lens = OrthographicLens()
+        lens.setFilmSize(2, 2)
+        lens.setNearFar(-1000, 1000)
+        camera2d.node().setLens(lens)
+
+        render2d = NodePath('render2d')
+        render2d.setDepthTest(False)
+        render2d.setDepthWrite(False)
+        camera2d.reparentTo(render2d)
+        dr.setCamera(camera2d)
+
+        textObject = OnscreenText(text='my text string', pos=(-0.5, 0.02), scale=0.07)
+
+
 
     def FollowCamTask(self, task):
 
