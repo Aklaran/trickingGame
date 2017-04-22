@@ -14,6 +14,13 @@ class Trick():
         self.entryTransition = "WHY IS THIS NOT REWRITTEN"
         self.exitTransition = "WHY IS THIS NOT REWRITTEN"
         self.duration = "WHY IS THIS NOT REWRITTEN"
+        self.baseStamCost = "WHY IS THIS NOT REWRITTEN"
+        self.skillModifier = "WHY IS THIS NOT REWRITTEN"
+
+    def getExitTransition(self):
+        return self.exitTransition
+    def getEntryTransition(self):
+        return self.entryTransition
 
     def getGrade(self, inputFrame):
         sweetSpot = int(self.duration * .80)
@@ -41,25 +48,32 @@ class Trick():
         elif distFromSS > eMargin:
             return 'E'
 
-    def getExitTransition(self):
-        return self.exitTransition
-    def getEntryTransition(self):
-        return self.entryTransition
+    def getStamCost(self):
+        halfCost = self.baseStamCost // 2
+        modPercentage = self.skillModifier / 100
+        reduction = halfCost * modPercentage
+
+        return self.baseStamCost - reduction
+
 
 
 
 class Gainer(Trick):
     def __init__(self, tricker):
         super().__init__(tricker)
-        self.duration = self.tricker.getNumFrames('gainer')
+        self.duration = self.tricker.actor.getNumFrames('gainer')
         self.difficulty = 1
         self.entryTransition = 'swing'
         self.exitTransition = 'reversal'
+        self.baseStamCost = 10
+        self.skillModifier = self.tricker.trickList['gainer']
 
 class Gswitch(Trick):
     def __init__(self, tricker):
         super().__init__(tricker)
-        self.duration = self.tricker.getNumFrames('gswitch')
-        self.difficulty = 1
+        self.duration = self.tricker.actor.getNumFrames('gswitch')
+        self.difficulty = 2
         self.entryTransition = 'swing'
         self.exitTransition = 'swing'
+        self.baseStamCost = 10
+        self.skillModifier = self.tricker.trickList['gswitch']

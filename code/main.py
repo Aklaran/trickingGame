@@ -2,12 +2,22 @@ from direct.showbase.ShowBase import ShowBase
 from direct.task import Task
 from direct.actor.Actor import Actor
 from direct.interval.IntervalGlobal import *
+
 from tricker import Tricker
-from tricks import *
 
 
 from panda3d.core import *
 
+
+class FollowCam():
+    def __init__(self, camera, target):
+        self.turnRate = 2.2
+        self.camera = camera
+        self.target = target
+
+    def updateCameraTask(self, task):
+        self.camera.reparentTo(self.target)
+        self.camera.setPos(0,-20,10)
 
 class TrickingGame(ShowBase):
     def __init__(self):
@@ -22,7 +32,6 @@ class TrickingGame(ShowBase):
         # Load and transform the actor
         self.tricker = Tricker()
         self.tricker.actor.reparent_to(self.render)
-
 
 
         # define controls
@@ -58,7 +67,9 @@ class TrickingGame(ShowBase):
         self.trickerDummyNode.setPos(0, 0, 3)
 
         self.camera.reparentTo(self.render)
-        self.taskMgr.add(self.followPlayerTask, "cameraFollowPlayerTask")
+
+        self.taskMgr.add(self.FollowCamTask, "follow")
+
 
         # Lights
         alight = AmbientLight('alight')
@@ -72,22 +83,34 @@ class TrickingGame(ShowBase):
         plnp.setPos(20, 0, 20)
         self.render.setLight(plnp)
 
+    def FollowCamTask(self, task):
 
-    def followPlayerTask(self, task):
-        # if self.camera.getPos() != (self.tricker.actor.getPos() - (0, 20, 10)):
-        x = self.camera.getPos()[0]
-        y = self.camera.getPos()[1]
-        z = self.camera.getPos()[2]
+        #self.camera.setPos(self.camera.getPos())
 
-        dx = (self.tricker.actor.getPos()[0] - x) * .75
-        dy = (self.tricker.actor.getPos()[1] - y) * .75
-        dz = (self.tricker.actor.getPos()[2] - z)  * .75
+       #  frame = globalClock.getFrameCount()
+       #
+       #  (x, y, z) = self.tricker.actor.getPos()
+       #  #oy = str(list(self.camera.getPos())).split(' ,')[1]
+       #  oy = self.camera.getPos()[1]
+       #  #oy = camPos[1]
+       #  ox = self.camera.getPos()[0]
+       #  dy = oy - y
+       #  error = 20 - dy
+       #  print(error)
+       # # print('error:',error)
+       #  ny = error/2
+       #  self.camera.setPos(self.camera, frame, 1, 20)
+       # # print(list(self.camera.getPos()))
+       # # print("oy = %d, ny = %d, error = %d" %(oy, ny, error))
+       #  #print(list(self.camera.getPos())[1])
+       #
+       #  # IMPORTANT: THIS MUST GO AT THE END
+       #  self.camera.lookAt(self.trickerDummyNode)
 
-        print(dx, dy, dz)
-
-        self.camera.setPos((x+dx, y+dy, z+dz))
-
+        self.camera.reparentTo(self.trickerDummyNode)
+        self.camera.setPos(0, -20, 10)
         self.camera.lookAt(self.trickerDummyNode)
+
         return Task.cont
 
     def debug(self):
@@ -103,9 +126,6 @@ class TrickingGame(ShowBase):
             self.i = 0
         else:
             self.i = self.i+ 0.5
-
-
-
 
 app = TrickingGame()
 app.run()

@@ -20,12 +20,17 @@ class Tricker(object):
                           "gswitch": 0}
 
         # Load tricks
-        self.gainer = Gainer(self.actor)
-        self.gswitch = Gswitch(self.actor)
+        self.gainer = Gainer(self)
+        self.gswitch = Gswitch(self)
 
         self.prevTrick = None
 
+        self.stamina = 100
+
     def tryTrick(self, animation, trick, taskMgr):
+        if self.stamina <= 0:
+            print("no stamina!")
+            return
         currAnim = self.actor.getCurrentAnim()
         if currAnim:
             if self.prevTrick.getExitTransition() != trick.getEntryTransition():
@@ -39,7 +44,6 @@ class Tricker(object):
             self.drawGrade(grade)
             # TODO: organize the grading system
             if grade == 'E': return
-            self.drawGrade(grade)
 
             # 0.06 is the time it takes for 2 frames - smooth blending
             delayTime = framesLeft / 30 - 0.06
@@ -48,7 +52,12 @@ class Tricker(object):
         else:
              taskMgr.add(self.doTrickTask, 'doTrick',
                              extraArgs=[animation], appendTask=True)
+
+        stamCost = trick.getStamCost()
+        self.stamina -= stamCost
+
         self.prevTrick = trick
+
 
     def doTrickTask(self, animation, task):
         airTime = self.actor.getNumFrames(animation) / 30
