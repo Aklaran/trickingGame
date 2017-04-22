@@ -31,6 +31,8 @@ class Tricker(object):
         if self.stamina <= 0:
             print("no stamina!")
             return
+
+        grade = 'A'
         currAnim = self.actor.getCurrentAnim()
         if currAnim:
             if self.prevTrick.getExitTransition() != trick.getEntryTransition():
@@ -50,10 +52,11 @@ class Tricker(object):
             taskMgr.doMethodLater(delayTime, self.doTrickTask, 'doTrick',
                              extraArgs=[animation], appendTask=True)
         else:
-             taskMgr.add(self.doTrickTask, 'doTrick',
+            taskMgr.add(self.doTrickTask, 'doTrick',
                              extraArgs=[animation], appendTask=True)
 
-        stamCost = trick.getStamCost()
+
+        stamCost = trick.getStamCost(grade)
         self.stamina -= stamCost
 
         self.prevTrick = trick

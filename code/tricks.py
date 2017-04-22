@@ -48,12 +48,24 @@ class Trick():
         elif distFromSS > eMargin:
             return 'E'
 
-    def getStamCost(self):
+    def getStamCost(self, grade):
         halfCost = self.baseStamCost // 2
         modPercentage = self.skillModifier / 100
         reduction = halfCost * modPercentage
 
-        return self.baseStamCost - reduction
+        if grade == 'A':
+            addition = 0
+        elif grade == 'B':
+            addition = halfCost * (1/3)
+        elif grade == 'C':
+            addition = halfCost * (2/3)
+        elif grade == 'D':
+            addition = halfCost
+
+        stamCost = self.baseStamCost - reduction + addition
+        print("stamCost:", stamCost, "total stam:", self.tricker.stamina)
+        return stamCost
+
 
 
 
