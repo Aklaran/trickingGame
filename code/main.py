@@ -120,7 +120,6 @@ class TrickingGame(ShowBase):
         self.stamBar.begin()
 
         sp = self.tricker.stamPercentage()
-
         self.stamBar.rectangleRaw(0.1,0.1,1,0.1,0,0,0,0, (1,0,0,1)) #red
         self.stamBar.rectangleRaw(0.1,0.1,1*sp,0.1,0,0,0,0, (0,1,0,1)) #green
 

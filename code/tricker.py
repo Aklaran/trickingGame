@@ -16,7 +16,8 @@ class Tricker(object):
                             "gainer_bad": "tp/anims/tricker-gainer-bad",
                             "gswitch": "tp/anims/tricker-gswitch"})
 
-        self.trickList = {"gainer": 0,
+        #trickDict contains vals 1-100, percentage of skill in that trick
+        self.trickDict = {"gainer": 0,
                           "gswitch": 0}
 
         # Load tricks
@@ -44,6 +45,8 @@ class Tricker(object):
 
         grade = 'A'
         currAnim = self.actor.getCurrentAnim()
+        badPercentage = trick.getBadPercentage(grade)
+
         if currAnim:
             if self.prevTrick.getExitTransition() != trick.getEntryTransition():
                 print("invalid transition")
@@ -53,16 +56,17 @@ class Tricker(object):
             framesLeft = numFrames - currFrame
 
             self.grade = self.prevTrick.getGrade(currFrame)
-            # TODO: organize the grading system
             if self.grade == 'E': return
+
+            badPercentage = trick.getBadPercentage(grade)
 
             # 0.06 is the time it takes for 2 frames - smooth blending
             delayTime = framesLeft / 30 - 0.06
             taskMgr.doMethodLater(delayTime, self.doTrickTask, 'doTrick',
-                             extraArgs=[animation], appendTask=True)
+                             extraArgs=[animation, badPercentage], appendTask=True)
         else:
             taskMgr.add(self.doTrickTask, 'doTrick',
-                             extraArgs=[animation], appendTask=True)
+                             extraArgs=[animation, badPercentage], appendTask=True)
 
 
         stamCost = trick.getStamCost(grade)
@@ -71,12 +75,20 @@ class Tricker(object):
         self.prevTrick = trick
 
 
-    def doTrickTask(self, animation, task):
+    def doTrickTask(self, animation, badPercentage, task):
         airTime = self.actor.getNumFrames(animation) / 30
         moveInterval = self.actor.posInterval(airTime,
                                                 Point3(0, .1, 0),
                                                 other=self.actor)
+
+        badAnim = str(animation + "_bad")
+
+        self.actor.enableBlend()
+        self.actor.setControlEffect(badAnim, 1- badPercentage)
+        self.actor.setControlEffect(animation, badPercentage)
+        self.actor.play(badAnim)
         self.actor.play(animation)
+        self.actor.disableBlend()
 
         moveInterval.start()
         return Task.done

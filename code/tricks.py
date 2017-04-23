@@ -66,6 +66,16 @@ class Trick():
         print("stamCost:", stamCost, "total stam:", self.tricker.stamina)
         return stamCost
 
+    def getBadPercentage(self, grade):
+        inverseSkillPercentage = 1- (self.skillModifier / 100)
+        if grade == 'A': base = 1
+        elif grade == 'B': base = .7
+        elif grade == 'C': base = .4
+        elif grade == 'D': base = .1
+
+        badPercentage = base - (inverseSkillPercentage * base)
+        print("badPercentage:", badPercentage)
+        return badPercentage
 
 
 
@@ -78,7 +88,7 @@ class Gainer(Trick):
         self.entryTransition = 'swing'
         self.exitTransition = 'reversal'
         self.baseStamCost = 10
-        self.skillModifier = self.tricker.trickList['gainer']
+        self.skillModifier = self.tricker.trickDict['gainer']
 
 class Gswitch(Trick):
     def __init__(self, tricker):
@@ -88,4 +98,4 @@ class Gswitch(Trick):
         self.entryTransition = 'swing'
         self.exitTransition = 'swing'
         self.baseStamCost = 10
-        self.skillModifier = self.tricker.trickList['gswitch']
+        self.skillModifier = self.tricker.trickDict['gswitch']
