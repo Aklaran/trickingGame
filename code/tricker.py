@@ -27,6 +27,8 @@ class Tricker(object):
 
         self.stamina = 100
 
+        self.grade = ' '
+
     def tryTrick(self, animation, trick, taskMgr):
         if self.stamina <= 0:
             print("no stamina!")
@@ -43,6 +45,7 @@ class Tricker(object):
             framesLeft = numFrames - currFrame
 
             grade = self.prevTrick.getGrade(currFrame)
+            self.grade = grade
             self.drawGrade(grade)
             # TODO: organize the grading system
             if grade == 'E': return

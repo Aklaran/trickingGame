@@ -101,9 +101,16 @@ class TrickingGame(ShowBase):
         camera2d.reparentTo(render2d)
         dr.setCamera(camera2d)
 
-        textObject = OnscreenText(text='my text string', pos=(-0.5, 0.02), scale=0.07)
+        self.gradeText = OnscreenText(pos=(-0.5, 0.02), scale=0.07,
+                                 mayChange=True)
+        self.taskMgr.add(self.drawUITask, 'drawUI')
 
 
+    def drawUITask(self, task):
+        gradeStr = self.tricker.grade
+        self.gradeText.setText(gradeStr)
+
+        return Task.cont
 
     def FollowCamTask(self, task):
 
