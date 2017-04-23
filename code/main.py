@@ -110,8 +110,10 @@ class TrickingGame(ShowBase):
 
         self.gradeText = OnscreenText(pos=(-0.2, 0.1), scale=0.3,
                                       parent=self.a2dBottomRight)
-        self.scoreText = OnscreenText(pos=(-0.2, -0.2), scale=0.3,
-                                      parent=self.a2dTopRight)
+        self.scoreText = OnscreenText(pos=(-0.3, -0.2), scale=0.3,
+                                      parent=self.a2dTopRight, fg=(1,1,1,1))
+        self.comboText = OnscreenText(pos=(0.2, -0.2), scale=0.3,
+                                      parent=self.a2dTopLeft, fg=(1, 1, 1, 1))
 
         self.taskMgr.add(self.drawUITask, 'drawUI')
 
@@ -127,6 +129,9 @@ class TrickingGame(ShowBase):
 
         scoreStr = self.tricker.getScore()
         self.scoreText.setText(scoreStr)
+
+        comboStr = self.tricker.getComboLength()
+        self.comboText.setText(comboStr)
 
         self.uiDrawer.begin()
 

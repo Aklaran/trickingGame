@@ -21,6 +21,7 @@ class Tricker(object):
         #skillDict contains vals 1-100, percentage of skill in that trick
         self.skillDict = {"gainer": 0,
                           "gswitch": 0}
+        self.totalStam = 100
 
 
         # Load tricks
@@ -32,20 +33,27 @@ class Tricker(object):
         self.trickMap = {'gainer': self.gainer,
                          'gswitch': self.gswitch}
 
+
+        # runtime traits, to be reset with reset function
         self.prevTrick = None
-
-        self.totalStam = self.stamina = 100
-
+        self.stamina = 100
         self.grade = ' '
-
         self.score = 0
+        self.comboLength = 0
 
+
+    def getComboLength(self):
+        return str(int(self.comboLength))
     def getScore(self):
-        return str(self.score)
+        return str(int(self.score))
 
-    def setScore(self, trick, goodPercentage):
+    def updateStamina(self, stamCost):
+        self.stamina -= stamCost
+    def updateComboLength(self):
+        self.comboLength += 1
+    def updateScore(self, trick, goodPercentage, comboLength):
         base = trick.getDifficulty() * 100
-        score = base + (base*goodPercentage)
+        score = base + (base*goodPercentage) + (base*(comboLength/5))
         self.score += score
 
 
@@ -106,9 +114,11 @@ class Tricker(object):
 
 
         stamCost = trick.getStamCost(self.grade)
-        self.stamina -= stamCost
+        self.updateStamina(stamCost)
 
-        self.setScore(trick, goodPercentage)
+        self.updateScore(trick, goodPercentage, self.comboLength)
+
+        self.updateComboLength()
 
         self.prevTrick = trick
 
