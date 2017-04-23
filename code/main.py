@@ -101,6 +101,12 @@ class TrickingGame(ShowBase):
         camera2d.reparentTo(render2d)
         dr.setCamera(camera2d)
 
+        self.stamBar = MeshDrawer2D()
+        self.stamBar.setBudget(10)
+        self.stamBarNode = self.stamBar.getRoot()
+        self.stamBarNode.reparentTo(render2d)
+        self.stamBarNode.setTwoSided(True)
+
         self.gradeText = OnscreenText(pos=(-0.1, 0.02), scale=0.07,
                                       mayChange=True, parent=self.a2dBottomRight)
         self.taskMgr.add(self.drawUITask, 'drawUI')
@@ -109,6 +115,12 @@ class TrickingGame(ShowBase):
     def drawUITask(self, task):
         gradeStr = self.tricker.grade
         self.gradeText.setText(gradeStr)
+
+        self.stamBar.begin()
+
+        self.stamBar.rectangleRaw(0,0,10,10,0,0,0,0, (0,1,0,1))
+
+        self.stamBar.end()
 
         return Task.cont
 
