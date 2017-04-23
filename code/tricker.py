@@ -47,14 +47,12 @@ class Tricker(object):
             dist = abs(sweetspot - currFrame)
             eMargin = trick.getDuration() * .2 / trick.getDifficulty()
 
-
-
             if dist > eMargin: gp = 0
-            else: gp = dist/eMargin
+            else: gp = 1- (dist/eMargin)
 
             return gp
         else:
-            return 1
+            return 0
 
     def stamPercentage(self):
         sp = self.stamina/self.totalStam

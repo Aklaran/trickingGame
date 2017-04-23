@@ -135,8 +135,6 @@ class TrickingGame(ShowBase):
         self.uiDrawer.rectangleRaw(0.1,0.3,1,0.1, 0,0,0,0, (0,0,0,1))
         self.uiDrawer.rectangleRaw(0.1,0.3,gp, 0.1, 0, 0, 0, 0, (1, 1, 1, 1))
 
-        
-
         self.uiDrawer.end()
 
         return Task.cont
