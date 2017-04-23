@@ -37,7 +37,7 @@ class TrickingGame(ShowBase):
 
         # define controls
         self.accept('d', self.debug)
-        self.i = 0
+        self.accept('r', self.reset)
 
         self.accept('shift-y', self.tricker.tryTrick,
                     [self.tricker.gainer, self.taskMgr])
@@ -193,6 +193,10 @@ class TrickingGame(ShowBase):
             self.i = 0
         else:
             self.i = self.i+ 0.5
+
+    def reset(self):
+        self.tricker.actor.setPos(0,0,0)
+        self.tricker.reset()
 
 app = TrickingGame()
 app.run()

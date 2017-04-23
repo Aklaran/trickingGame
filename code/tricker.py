@@ -162,12 +162,10 @@ class Tricker(object):
         return Task.done
 
     def checkTrickStateTask(self, animation, task):
-        print("CHECKING TRICK STATE")
+        # has to be -1 otherwise the currFrame never gets to the last frame. IDK why
         totalFrames = self.actor.getNumFrames(animation)-1
         currFrame = self.actor.getCurrentFrame(animation)
 
-        print("currframe:", currFrame)
-        print("totalFrames:", totalFrames)
 
         if self.comboContinuing or self.falling:
             print("comboContinuing or falling")
@@ -178,3 +176,13 @@ class Tricker(object):
             print("no input received - combo ended")
             return Task.done
         return Task.cont
+
+    def reset(self):
+        self.prevTrick = None
+        self.stamina = 100
+        self.grade = ' '
+        self.score = 0
+        self.comboLength = 0
+        self.comboEnded = False
+        self.comboContinuing = False
+        self.falling = False
