@@ -105,17 +105,21 @@ class TrickingGame(ShowBase):
         self.stamBar.setBudget(10)
         self.stamBarNode = self.stamBar.getRoot()
         self.stamBarNode.reparentTo(render2d)
-        self.stamBarNode.setTwoSided(True)
         self.stamBarNode.reparentTo(self.a2dBottomLeftNs)
 
-        self.gradeText = OnscreenText(pos=(-0.1, 0.1), scale=0.07,
-                                      mayChange=True, parent=self.a2dBottomRight)
+        self.gradeText = OnscreenText(pos=(-0.2, 0.1), scale=0.3,
+                                      parent=self.a2dBottomRight)
         self.taskMgr.add(self.drawUITask, 'drawUI')
 
 
     def drawUITask(self, task):
         gradeStr = self.tricker.getGrade()
         self.gradeText.setText(gradeStr)
+        if gradeStr == 'A': self.gradeText.setFg((0,1,0,1))
+        elif gradeStr == 'B': self.gradeText.setFg((0.5,1,0,1))
+        elif gradeStr == 'C': self.gradeText.setFg((1,1,0,1))
+        elif gradeStr == 'D': self.gradeText.setFg((1,0.5,0,1))
+        elif gradeStr == 'E': self.gradeText.setFg((1,0,0,1))
 
         self.stamBar.begin()
 

@@ -11,10 +11,12 @@ from panda3d.core import *
 
 class Tricker(object):
     def __init__(self):
+        # TODO: make a bad gswitch animation
         self.actor = Actor("tp/models/tricker-model",
                            {"gainer": "tp/anims/tricker-gainer",
                             "gainer_bad": "tp/anims/tricker-gainer-bad",
-                            "gswitch": "tp/anims/tricker-gswitch"})
+                            "gswitch": "tp/anims/tricker-gswitch",
+                            "gswitch_bad": "tp/anims/tricker-gswitch"})
 
         #trickDict contains vals 1-100, percentage of skill in that trick
         self.trickDict = {"gainer": 0,
