@@ -101,8 +101,8 @@ class TrickingGame(ShowBase):
         camera2d.reparentTo(render2d)
         dr.setCamera(camera2d)
 
-        self.gradeText = OnscreenText(pos=(-0.5, 0.02), scale=0.07,
-                                 mayChange=True)
+        self.gradeText = OnscreenText(pos=(-0.1, 0.02), scale=0.07,
+                                      mayChange=True, parent=self.a2dBottomRight)
         self.taskMgr.add(self.drawUITask, 'drawUI')
 
 
