@@ -45,7 +45,7 @@ class Tricker(object):
 
         grade = 'A'
         currAnim = self.actor.getCurrentAnim()
-        badPercentage = trick.getBadPercentage(grade)
+        goodPercentage = trick.getGoodPercentage(grade)
 
         if currAnim:
             if self.prevTrick.getExitTransition() != trick.getEntryTransition():
@@ -58,15 +58,15 @@ class Tricker(object):
             self.grade = self.prevTrick.getGrade(currFrame)
             if self.grade == 'E': return
 
-            badPercentage = trick.getBadPercentage(grade)
+            goodPercentage = trick.getGoodPercentage(grade)
 
             # 0.06 is the time it takes for 2 frames - smooth blending
             delayTime = framesLeft / 30 - 0.06
             taskMgr.doMethodLater(delayTime, self.doTrickTask, 'doTrick',
-                             extraArgs=[animation, badPercentage], appendTask=True)
+                             extraArgs=[animation, goodPercentage], appendTask=True)
         else:
             taskMgr.add(self.doTrickTask, 'doTrick',
-                             extraArgs=[animation, badPercentage], appendTask=True)
+                             extraArgs=[animation, goodPercentage], appendTask=True)
 
 
         stamCost = trick.getStamCost(grade)
@@ -75,7 +75,7 @@ class Tricker(object):
         self.prevTrick = trick
 
 
-    def doTrickTask(self, animation, badPercentage, task):
+    def doTrickTask(self, animation, goodPercentage, task):
         airTime = self.actor.getNumFrames(animation) / 30
         moveInterval = self.actor.posInterval(airTime,
                                                 Point3(0, .1, 0),
@@ -84,8 +84,8 @@ class Tricker(object):
         badAnim = str(animation + "_bad")
 
         self.actor.enableBlend()
-        self.actor.setControlEffect(badAnim, 1- badPercentage)
-        self.actor.setControlEffect(animation, badPercentage)
+        self.actor.setControlEffect(badAnim, 1- goodPercentage)
+        self.actor.setControlEffect(animation, goodPercentage)
         self.actor.play(badAnim)
         self.actor.play(animation)
         self.actor.disableBlend()

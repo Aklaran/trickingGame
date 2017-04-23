@@ -66,16 +66,16 @@ class Trick():
         print("stamCost:", stamCost, "total stam:", self.tricker.stamina)
         return stamCost
 
-    def getBadPercentage(self, grade):
+    def getGoodPercentage(self, grade):
         inverseSkillPercentage = 1- (self.skillModifier / 100)
         if grade == 'A': base = 1
         elif grade == 'B': base = .7
         elif grade == 'C': base = .4
         elif grade == 'D': base = .1
 
-        badPercentage = base - (inverseSkillPercentage * base)
-        print("badPercentage:", badPercentage)
-        return badPercentage
+        goodPercentage = base - (inverseSkillPercentage * base)
+        print("goodPercentage:", goodPercentage)
+        return goodPercentage
 
 
 
