@@ -25,9 +25,17 @@ class Tricker(object):
 
         self.prevTrick = None
 
-        self.stamina = 100
+        self.totalStam = self.stamina = 100
 
         self.grade = ' '
+
+    def stamPercentage(self):
+        sp = self.stamina/self.totalStam
+        if sp < 0 : sp = 0
+        return sp
+
+    def getGrade(self):
+        return self.grade
 
     def tryTrick(self, animation, trick, taskMgr):
         if self.stamina <= 0:

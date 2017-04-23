@@ -114,13 +114,15 @@ class TrickingGame(ShowBase):
 
 
     def drawUITask(self, task):
-        gradeStr = self.tricker.grade
+        gradeStr = self.tricker.getGrade()
         self.gradeText.setText(gradeStr)
 
         self.stamBar.begin()
 
-        self.stamBar.rectangleRaw(0.1,0.1,1,0.1,0,0,0,0, (1,0,0,1))
-        self.stamBar.rectangleRaw(0.1,0.1,0.5,0.1,0,0,0,0, (0,1,0,1))
+        sp = self.tricker.stamPercentage()
+
+        self.stamBar.rectangleRaw(0.1,0.1,1,0.1,0,0,0,0, (1,0,0,1)) #red
+        self.stamBar.rectangleRaw(0.1,0.1,1*sp,0.1,0,0,0,0, (0,1,0,1)) #green
 
         self.stamBar.end()
 
