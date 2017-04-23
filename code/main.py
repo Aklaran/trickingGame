@@ -106,8 +106,9 @@ class TrickingGame(ShowBase):
         self.stamBarNode = self.stamBar.getRoot()
         self.stamBarNode.reparentTo(render2d)
         self.stamBarNode.setTwoSided(True)
+        self.stamBarNode.reparentTo(self.a2dBottomLeftNs)
 
-        self.gradeText = OnscreenText(pos=(-0.1, 0.02), scale=0.07,
+        self.gradeText = OnscreenText(pos=(-0.1, 0.1), scale=0.07,
                                       mayChange=True, parent=self.a2dBottomRight)
         self.taskMgr.add(self.drawUITask, 'drawUI')
 
@@ -118,7 +119,8 @@ class TrickingGame(ShowBase):
 
         self.stamBar.begin()
 
-        self.stamBar.rectangleRaw(0,0,10,10,0,0,0,0, (0,1,0,1))
+        self.stamBar.rectangleRaw(0.1,0.1,1,0.1,0,0,0,0, (1,0,0,1))
+        self.stamBar.rectangleRaw(0.1,0.1,0.5,0.1,0,0,0,0, (0,1,0,1))
 
         self.stamBar.end()
 
