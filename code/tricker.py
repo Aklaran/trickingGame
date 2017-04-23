@@ -40,6 +40,9 @@ class Tricker(object):
         self.grade = ' '
         self.score = 0
         self.comboLength = 0
+        self.comboEnded = False
+        self.comboContinuing = False
+        self.falling = False
 
 
     def getComboLength(self):
@@ -83,9 +86,16 @@ class Tricker(object):
         return self.grade
 
     def tryTrick(self, trick, taskMgr):
-        if self.stamina <= 0:
-            print("no stamina!")
+        if self.comboEnded:
+            print("combo ended - no more tricking 4 u")
             return
+
+        if self.stamina <= 0:
+            self.falling = True
+            print("no stamina! - falling!")
+            return
+
+        self.comboContinuing = True
 
         self.grade = 'A'
         currAnim = self.actor.getCurrentAnim()
@@ -93,24 +103,29 @@ class Tricker(object):
 
         if currAnim:
             if self.prevTrick.getExitTransition() != trick.getEntryTransition():
-                print("invalid transition")
+                self.falling = True
+                print("invalid transition - falling")
                 return
             currFrame = self.actor.getCurrentFrame(currAnim)
             numFrames = self.actor.getNumFrames(currAnim)
             framesLeft = numFrames - currFrame
 
             self.grade = self.prevTrick.getGrade(currFrame)
-            if self.grade == 'E': return
+            if self.grade == 'E':
+                self.falling = True
+                print("Combo failed - falling")
+                return
+
 
             goodPercentage = trick.getGoodPercentage(self.grade)
 
             # 0.06 is the time it takes for 2 frames - smooth blending
             delayTime = framesLeft / 30 - 0.06
             taskMgr.doMethodLater(delayTime, self.doTrickTask, 'doTrick',
-                             extraArgs=[str(trick), goodPercentage], appendTask=True)
+                             extraArgs=[str(trick), goodPercentage, taskMgr], appendTask=True)
         else:
             taskMgr.add(self.doTrickTask, 'doTrick',
-                             extraArgs=[str(trick), goodPercentage], appendTask=True)
+                             extraArgs=[str(trick), goodPercentage, taskMgr], appendTask=True)
 
 
         stamCost = trick.getStamCost(self.grade)
@@ -122,8 +137,7 @@ class Tricker(object):
 
         self.prevTrick = trick
 
-
-    def doTrickTask(self, animation, goodPercentage, task):
+    def doTrickTask(self, animation, goodPercentage, taskMgr, task):
         airTime = self.actor.getNumFrames(animation) / 30
         moveInterval = self.actor.posInterval(airTime,
                                                 Point3(0, .1, 0),
@@ -140,5 +154,27 @@ class Tricker(object):
 
         moveInterval.start()
 
+        self.comboContinuing = False
+        taskMgr.add(self.checkTrickStateTask, 'checkTrickState',
+                    extraArgs=[animation], appendTask=True)
+
         print("moved with goodPercentage:", goodPercentage)
         return Task.done
+
+    def checkTrickStateTask(self, animation, task):
+        print("CHECKING TRICK STATE")
+        totalFrames = self.actor.getNumFrames(animation)-1
+        currFrame = self.actor.getCurrentFrame(animation)
+
+        print("currframe:", currFrame)
+        print("totalFrames:", totalFrames)
+
+        if self.comboContinuing or self.falling:
+            print("comboContinuing or falling")
+            return Task.done
+        self.comboContinuing = False
+        if currFrame == totalFrames:
+            self.comboEnded = True
+            print("no input received - combo ended")
+            return Task.done
+        return Task.cont
