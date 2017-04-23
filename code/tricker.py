@@ -52,11 +52,9 @@ class Tricker(object):
             numFrames = self.actor.getNumFrames(currAnim)
             framesLeft = numFrames - currFrame
 
-            grade = self.prevTrick.getGrade(currFrame)
-            self.grade = grade
-            self.drawGrade(grade)
+            self.grade = self.prevTrick.getGrade(currFrame)
             # TODO: organize the grading system
-            if grade == 'E': return
+            if self.grade == 'E': return
 
             # 0.06 is the time it takes for 2 frames - smooth blending
             delayTime = framesLeft / 30 - 0.06
@@ -82,15 +80,3 @@ class Tricker(object):
 
         moveInterval.start()
         return Task.done
-
-    def drawGrade(self, grade):
-        if grade == 'D':
-            print('Grade: D. pretty shit.')
-        elif grade == 'C':
-            print('Grade: C. MEDIOCRE')
-        elif grade == 'B':
-            print('Grade: B. Aight')
-        elif grade == 'A':
-            print("Grade: A. PERFFECT")
-        elif grade == 'E':
-            print("Grade: E. Trick failed")
