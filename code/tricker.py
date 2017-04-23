@@ -18,8 +18,8 @@ class Tricker(object):
                             "gswitch": "tp/anims/tricker-gswitch",
                             "gswitch_bad": "tp/anims/tricker-gswitch"})
 
-        #trickDict contains vals 1-100, percentage of skill in that trick
-        self.trickDict = {"gainer": 0,
+        #skillDict contains vals 1-100, percentage of skill in that trick
+        self.skillDict = {"gainer": 0,
                           "gswitch": 0}
 
 
@@ -28,6 +28,7 @@ class Tricker(object):
         self.gswitch = Gswitch(self)
 
         # trickMap is different - this shit maps trick names to their classes
+        # in order to get class data just given an animation name
         self.trickMap = {'gainer': self.gainer,
                          'gswitch': self.gswitch}
 

@@ -111,7 +111,7 @@ class Gainer(Trick):
         self.entryTransition = 'swing'
         self.exitTransition = 'reversal'
         self.baseStamCost = 10
-        self.skillModifier = self.tricker.trickDict['gainer']
+        self.skillModifier = self.tricker.skillDict['gainer']
         self.sweetSpot = int(self.duration * .80)
     def __repr__(self):
         return 'gainer'
@@ -124,7 +124,7 @@ class Gswitch(Trick):
         self.entryTransition = 'swing'
         self.exitTransition = 'swing'
         self.baseStamCost = 10
-        self.skillModifier = self.tricker.trickDict['gswitch']
+        self.skillModifier = self.tricker.skillDict['gswitch']
         self.sweetSpot = int(self.duration * .80)
     def __repr__(self):
         return 'gswitch'
