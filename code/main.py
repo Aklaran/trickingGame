@@ -130,8 +130,11 @@ class TrickingGame(ShowBase):
         self.uiDrawer.rectangleRaw(0.1,0.1,1*sp,0.1,0,0,0,0, (0,1,0,1)) #green
 
         #timingBar
-        (rp, gp) = self.tricker.getGreenPercentage()
-        self.uiDrawer.rectangleRaw(0.1,0.3,0.5,0.1, 0,0,0,0, (rp,gp,0,1))
+        gp = self.tricker.getGreenPercentage()
+
+        self.uiDrawer.rectangleRaw(0.1,0.3,1,0.1, 0,0,0,0, (0,0,0,1))
+        self.uiDrawer.rectangleRaw(0.1,0.3,gp, 0.1, 0, 0, 0, 0, (1, 1, 1, 1))
+
         
 
         self.uiDrawer.end()

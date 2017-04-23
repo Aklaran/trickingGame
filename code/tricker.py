@@ -39,7 +39,6 @@ class Tricker(object):
 
     def getGreenPercentage(self):
         currAnim = self.actor.getCurrentAnim()
-        print(currAnim)
 
         if currAnim:
             trick = self.trickMap[currAnim.split('_')[0]]
@@ -53,9 +52,9 @@ class Tricker(object):
             if dist > eMargin: gp = 0
             else: gp = dist/eMargin
 
-            return (gp, 1-gp)
+            return gp
         else:
-            return (0,0)
+            return 1
 
     def stamPercentage(self):
         sp = self.stamina/self.totalStam
