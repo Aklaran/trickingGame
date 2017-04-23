@@ -17,16 +17,37 @@ class Trick():
         self.baseStamCost = "WHY IS THIS NOT REWRITTEN"
         self.skillModifier = "WHY IS THIS NOT REWRITTEN"
 
+    def getDifficulty(self):
+        return self.difficulty
+    def getDuration(self):
+        return self.duration
+    def getSweetSpot(self):
+        return self.sweetSpot
     def getExitTransition(self):
         return self.exitTransition
     def getEntryTransition(self):
         return self.entryTransition
 
-    def getGrade(self, inputFrame):
-        sweetSpot = int(self.duration * .80)
-        distFromSS = abs(sweetSpot-inputFrame)
+    def getGreenPercentage(self):
+        currAnim = self.actor.getCurrentAnim()
 
-        print("sweetSpot:", sweetSpot)
+        if currAnim:
+            currFrame = self.actor.getCurrentFrame()
+            dist = abs(self.sweetSpot - currFrame)
+            eMargin = self.duration * .2 / self.difficulty
+
+            if dist > eMargin: gp = 0
+            else: gp = dist/eMargin
+
+            return (gp, 1-gp)
+        else:
+            return (0,0)
+
+    def getGrade(self, inputFrame):
+
+        distFromSS = abs(self.sweetSpot-inputFrame)
+
+        print("sweetSpot:", self.sweetSpot)
         print("inputFrame:", inputFrame)
         print("distFromSS:", distFromSS)
 
@@ -66,6 +87,8 @@ class Trick():
         print("stamCost:", stamCost, "total stam:", self.tricker.stamina)
         return stamCost
 
+    # returns the percentage of the "good" animation to be played vs the bad animation
+    # basically controls how pretty a move will look based on the timing and the player character's skill level
     def getGoodPercentage(self, grade):
         inverseSkillPercentage = 1- (self.skillModifier / 100)
         if grade == 'A': base = 1
@@ -89,13 +112,19 @@ class Gainer(Trick):
         self.exitTransition = 'reversal'
         self.baseStamCost = 10
         self.skillModifier = self.tricker.trickDict['gainer']
+        self.sweetSpot = int(self.duration * .80)
+    def __repr__(self):
+        return 'gainer'
 
 class Gswitch(Trick):
     def __init__(self, tricker):
         super().__init__(tricker)
         self.duration = self.tricker.actor.getNumFrames('gswitch')
-        self.difficulty = 2
+        self.difficulty = 1
         self.entryTransition = 'swing'
         self.exitTransition = 'swing'
         self.baseStamCost = 10
         self.skillModifier = self.tricker.trickDict['gswitch']
+        self.sweetSpot = int(self.duration * .80)
+    def __repr__(self):
+        return 'gswitch'

@@ -40,9 +40,9 @@ class TrickingGame(ShowBase):
         self.i = 0
 
         self.accept('shift-y', self.tricker.tryTrick,
-                    ['gainer', self.tricker.gainer, self.taskMgr])
+                    [self.tricker.gainer, self.taskMgr])
         self.accept('shift-u', self.tricker.tryTrick,
-                    ['gswitch', self.tricker.gswitch, self.taskMgr])
+                    [self.tricker.gswitch, self.taskMgr])
         # self.accept('shift-i', self.tryTrick, [self.tricker.cork])
         # self.accept('shift-o', self.tryTrick, [self.tricker.dubcork])
         #
@@ -101,11 +101,12 @@ class TrickingGame(ShowBase):
         camera2d.reparentTo(render2d)
         dr.setCamera(camera2d)
 
-        self.stamBar = MeshDrawer2D()
-        self.stamBar.setBudget(10)
-        self.stamBarNode = self.stamBar.getRoot()
-        self.stamBarNode.reparentTo(render2d)
-        self.stamBarNode.reparentTo(self.a2dBottomLeftNs)
+        self.uiDrawer = MeshDrawer2D()
+        self.uiDrawer.setBudget(10)
+        self.uiDrawerNode = self.uiDrawer.getRoot()
+        self.uiDrawerNode.reparentTo(render2d)
+        self.uiDrawerNode.reparentTo(self.a2dBottomLeftNs)
+        
 
         self.gradeText = OnscreenText(pos=(-0.2, 0.1), scale=0.3,
                                       parent=self.a2dBottomRight)
@@ -121,13 +122,19 @@ class TrickingGame(ShowBase):
         elif gradeStr == 'D': self.gradeText.setFg((1,0.5,0,1))
         elif gradeStr == 'E': self.gradeText.setFg((1,0,0,1))
 
-        self.stamBar.begin()
+        self.uiDrawer.begin()
 
+        # stambar
         sp = self.tricker.stamPercentage()
-        self.stamBar.rectangleRaw(0.1,0.1,1,0.1,0,0,0,0, (1,0,0,1)) #red
-        self.stamBar.rectangleRaw(0.1,0.1,1*sp,0.1,0,0,0,0, (0,1,0,1)) #green
+        self.uiDrawer.rectangleRaw(0.1,0.1,1,0.1,0,0,0,0, (1,0,0,1)) #red
+        self.uiDrawer.rectangleRaw(0.1,0.1,1*sp,0.1,0,0,0,0, (0,1,0,1)) #green
 
-        self.stamBar.end()
+        #timingBar
+        (rp, gp) = self.tricker.getGreenPercentage()
+        self.uiDrawer.rectangleRaw(0.1,0.3,0.5,0.1, 0,0,0,0, (rp,gp,0,1))
+        
+
+        self.uiDrawer.end()
 
         return Task.cont
 

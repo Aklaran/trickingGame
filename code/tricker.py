@@ -22,15 +22,40 @@ class Tricker(object):
         self.trickDict = {"gainer": 0,
                           "gswitch": 0}
 
+
         # Load tricks
         self.gainer = Gainer(self)
         self.gswitch = Gswitch(self)
+
+        # trickMap is different - this shit maps trick names to their classes
+        self.trickMap = {'gainer': self.gainer,
+                         'gswitch': self.gswitch}
 
         self.prevTrick = None
 
         self.totalStam = self.stamina = 100
 
         self.grade = ' '
+
+    def getGreenPercentage(self):
+        currAnim = self.actor.getCurrentAnim()
+        print(currAnim)
+
+        if currAnim:
+            trick = self.trickMap[currAnim.split('_')[0]]
+            sweetspot = trick.getSweetSpot()
+            currFrame = self.actor.getCurrentFrame()
+            dist = abs(sweetspot - currFrame)
+            eMargin = trick.getDuration() * .2 / trick.getDifficulty()
+
+
+
+            if dist > eMargin: gp = 0
+            else: gp = dist/eMargin
+
+            return (gp, 1-gp)
+        else:
+            return (0,0)
 
     def stamPercentage(self):
         sp = self.stamina/self.totalStam
@@ -40,7 +65,7 @@ class Tricker(object):
     def getGrade(self):
         return self.grade
 
-    def tryTrick(self, animation, trick, taskMgr):
+    def tryTrick(self, trick, taskMgr):
         if self.stamina <= 0:
             print("no stamina!")
             return
@@ -65,10 +90,10 @@ class Tricker(object):
             # 0.06 is the time it takes for 2 frames - smooth blending
             delayTime = framesLeft / 30 - 0.06
             taskMgr.doMethodLater(delayTime, self.doTrickTask, 'doTrick',
-                             extraArgs=[animation, goodPercentage], appendTask=True)
+                             extraArgs=[str(trick), goodPercentage], appendTask=True)
         else:
             taskMgr.add(self.doTrickTask, 'doTrick',
-                             extraArgs=[animation, goodPercentage], appendTask=True)
+                             extraArgs=[str(trick), goodPercentage], appendTask=True)
 
 
         stamCost = trick.getStamCost(grade)
