@@ -47,16 +47,16 @@ class Trick():
 
         distFromSS = abs(self.sweetSpot-inputFrame)
 
-        print("sweetSpot:", self.sweetSpot)
-        print("inputFrame:", inputFrame)
-        print("distFromSS:", distFromSS)
+        #print("sweetSpot:", self.sweetSpot)
+        #print("inputFrame:", inputFrame)
+        #print("distFromSS:", distFromSS)
 
         eMargin = self.duration * .2 / self.difficulty
         bMargin = eMargin * .3
         cMargin = eMargin * .6
 
-        print("eMargin = %d bMargin = %d cMargin = %d"
-                % (eMargin, bMargin, cMargin))
+        #print("eMargin = %d bMargin = %d cMargin = %d"
+               # % (eMargin, bMargin, cMargin))
 
         if distFromSS == 0:
             return 'A'
@@ -84,7 +84,6 @@ class Trick():
             addition = halfCost
 
         stamCost = self.baseStamCost - reduction + addition
-        print("stamCost:", stamCost, "total stam:", self.tricker.stamina)
         return stamCost
 
     # returns the percentage of the "good" animation to be played vs the bad animation
@@ -97,6 +96,9 @@ class Trick():
         elif grade == 'D': base = .1
 
         goodPercentage = base - (inverseSkillPercentage * base)
+
+        print("skillModifier:", self.skillModifier)
+        print("grade:", grade)
         print("goodPercentage:", goodPercentage)
         return goodPercentage
 

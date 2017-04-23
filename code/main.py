@@ -110,6 +110,9 @@ class TrickingGame(ShowBase):
 
         self.gradeText = OnscreenText(pos=(-0.2, 0.1), scale=0.3,
                                       parent=self.a2dBottomRight)
+        self.scoreText = OnscreenText(pos=(-0.2, -0.2), scale=0.3,
+                                      parent=self.a2dTopRight)
+
         self.taskMgr.add(self.drawUITask, 'drawUI')
 
 
@@ -121,6 +124,9 @@ class TrickingGame(ShowBase):
         elif gradeStr == 'C': self.gradeText.setFg((1,1,0,1))
         elif gradeStr == 'D': self.gradeText.setFg((1,0.5,0,1))
         elif gradeStr == 'E': self.gradeText.setFg((1,0,0,1))
+
+        scoreStr = self.tricker.getScore()
+        self.scoreText.setText(scoreStr)
 
         self.uiDrawer.begin()
 

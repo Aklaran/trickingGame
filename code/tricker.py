@@ -38,6 +38,17 @@ class Tricker(object):
 
         self.grade = ' '
 
+        self.score = 0
+
+    def getScore(self):
+        return str(self.score)
+
+    def setScore(self, trick, goodPercentage):
+        base = trick.getDifficulty() * 100
+        score = base + (base*goodPercentage)
+        self.score += score
+
+
     def getGreenPercentage(self):
         currAnim = self.actor.getCurrentAnim()
 
@@ -68,9 +79,9 @@ class Tricker(object):
             print("no stamina!")
             return
 
-        grade = 'A'
+        self.grade = 'A'
         currAnim = self.actor.getCurrentAnim()
-        goodPercentage = trick.getGoodPercentage(grade)
+        goodPercentage = trick.getGoodPercentage(self.grade)
 
         if currAnim:
             if self.prevTrick.getExitTransition() != trick.getEntryTransition():
@@ -83,7 +94,7 @@ class Tricker(object):
             self.grade = self.prevTrick.getGrade(currFrame)
             if self.grade == 'E': return
 
-            goodPercentage = trick.getGoodPercentage(grade)
+            goodPercentage = trick.getGoodPercentage(self.grade)
 
             # 0.06 is the time it takes for 2 frames - smooth blending
             delayTime = framesLeft / 30 - 0.06
@@ -94,8 +105,10 @@ class Tricker(object):
                              extraArgs=[str(trick), goodPercentage], appendTask=True)
 
 
-        stamCost = trick.getStamCost(grade)
+        stamCost = trick.getStamCost(self.grade)
         self.stamina -= stamCost
+
+        self.setScore(trick, goodPercentage)
 
         self.prevTrick = trick
 
@@ -116,4 +129,6 @@ class Tricker(object):
         self.actor.disableBlend()
 
         moveInterval.start()
+
+        print("moved with goodPercentage:", goodPercentage)
         return Task.done
