@@ -1,3 +1,5 @@
+from direct.gui.DirectGui import *
+
 class MainMenu(object):
     def __init__(self):
         self.parentNode = aspect2d.attachNewNode('MainMenu')
@@ -7,3 +9,12 @@ class MainMenu(object):
         #DirectButton(text=("Save/Load"))
         #DirectButton(text=("My Tricker"))
        # DirectButton(text=("Options"))
+
+
+    def switchToPlay(self):
+        print('sw')
+        base.gameFSM.demand('Play')
+
+    def destroy(self):
+        self.parentNode.removeNode()
+        self.d.destroy()
