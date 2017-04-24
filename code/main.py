@@ -86,23 +86,6 @@ class TrickingGame(ShowBase):
         plnp.setPos(20, 0, 20)
         self.render.setLight(plnp)
 
-        #2D Render
-
-        dr = self.win.makeDisplayRegion()
-        dr.setSort(20)
-
-        camera2d = NodePath(Camera('cam2d'))
-        lens = OrthographicLens()
-        lens.setFilmSize(2, 2)
-        lens.setNearFar(-1000, 1000)
-        camera2d.node().setLens(lens)
-
-        render2d = NodePath('render2d')
-        render2d.setDepthTest(False)
-        render2d.setDepthWrite(False)
-        camera2d.reparentTo(render2d)
-        dr.setCamera(camera2d)
-
         self.uiDrawer = MeshDrawer2D()
         self.uiDrawer.setBudget(10)
         self.uiDrawerNode = self.uiDrawer.getRoot()
@@ -116,6 +99,7 @@ class TrickingGame(ShowBase):
                                       parent=self.a2dTopRight, fg=(1,1,1,1))
         self.comboText = OnscreenText(pos=(0.2, -0.2), scale=0.3,
                                       parent=self.a2dTopLeft, fg=(1, 1, 1, 1))
+        #DirectButton(text=("OK", "click!", "rolling over", "disabled"))
 
         self.taskMgr.add(self.drawUITask, 'drawUI')
 
@@ -183,18 +167,7 @@ class TrickingGame(ShowBase):
         return Task.cont
 
     def debug(self):
-        print(self.i)
-        self.tricker.actor.enableBlend()
-        self.tricker.actor.setControlEffect('gainer_bad', self.i)
-        self.tricker.actor.setControlEffect('gainer', 1-self.i)
-        self.tricker.actor.play('gainer_bad')
-        self.tricker.actor.play('gainer')
-        self.tricker.actor.disableBlend()
-
-        if self.i == 1:
-            self.i = 0
-        else:
-            self.i = self.i+ 0.5
+        self.destroy()
 
     def reset(self):
         self.tricker.actor.setPos(0,0,0)
