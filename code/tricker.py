@@ -197,3 +197,11 @@ class Tricker(object):
         with open(saveFilePath, 'w+') as outfile:
             json.dump(self.skillDict, outfile,
                       sort_keys=True, indent=4, ensure_ascii=False)
+
+    def load(self):
+        projectPath = os.path.dirname(os.path.dirname((__file__)))
+        saveFilePath = os.path.join(projectPath, 'saves/save.json')
+        with open(saveFilePath, 'r') as infile:
+            self.skillDict = json.load(infile)
+            self.totalStam = self.skillDict['totalStam']
+            print(self.skillDict)

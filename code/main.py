@@ -39,6 +39,7 @@ class TrickingGame(ShowBase):
         self.accept('d', self.debug)
         self.accept('r', self.reset)
         self.accept('s', self.tricker.save)
+        self.accept('l', self.tricker.load)
 
         self.accept('shift-y', self.tricker.tryTrick,
                     [self.tricker.gainer, self.taskMgr])
