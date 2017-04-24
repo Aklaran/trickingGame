@@ -6,6 +6,9 @@ from direct.task import Task
 from tricks import *
 
 from panda3d.core import *
+
+import os
+import json
 # from direct.interval.IntervalGlobal import *
 
 
@@ -19,9 +22,11 @@ class Tricker(object):
                             "gswitch_bad": "tp/anims/tricker-gswitch"})
 
         #skillDict contains vals 1-100, percentage of skill in that trick
-        self.skillDict = {"gainer": 0,
-                          "gswitch": 0}
-        self.totalStam = 100
+        self.skillDict = {'totalStam': 100,
+                          'skills': { "gainer": 100,
+                                    "gswitch": 0}
+                          }
+        self.totalStam = self.skillDict['totalStam']
 
 
         # Load tricks
@@ -36,14 +41,13 @@ class Tricker(object):
 
         # runtime traits, to be reset with reset function
         self.prevTrick = None
-        self.stamina = 100
+        self.stamina = self.totalStam
         self.grade = ' '
         self.score = 0
         self.comboLength = 0
         self.comboEnded = False
         self.comboContinuing = False
         self.falling = False
-
 
     def getComboLength(self):
         return str(int(self.comboLength))
@@ -186,3 +190,10 @@ class Tricker(object):
         self.comboEnded = False
         self.comboContinuing = False
         self.falling = False
+
+    def save(self):
+        projectPath = os.path.dirname(os.path.dirname((__file__)))
+        saveFilePath = os.path.join(projectPath, 'saves/save.json')
+        with open(saveFilePath, 'w+') as outfile:
+            json.dump(self.skillDict, outfile,
+                      sort_keys=True, indent=4, ensure_ascii=False)
