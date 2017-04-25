@@ -108,7 +108,9 @@ class Save(object):
                 name = saveDict['name']
                 level = saveDict['level']
                 return name + "   lv" + str(level)
-        print("Save not found!")
+        else:
+            return None
+
 
     def switchToMainMenu(self):
         base.gameFSM.demand('MainMenu')
@@ -121,4 +123,5 @@ class Save(object):
         self.slot3Button.removeNode()
         self.slot4Button.removeNode()
         if self.nameEntry: self.nameEntry.remove_node()
+
 

@@ -1,4 +1,5 @@
 from direct.gui.DirectGui import *
+from direct.interval.IntervalGlobal import Sequence, Func, Wait
 
 import os
 import json
@@ -36,21 +37,28 @@ class Load(object):
                                         command=self.loadGame, extraArgs=['4'],
                                         parent=self.parentNode)
 
+        self.popupText = None
+        self.popupSeq = None
 
+    # TODO: give Tricker() functions for setting name, level, etc so its safer
     def loadGame(self, slot):
-        print("old:", base.tricker.saveDict)
         saveFilePath = 'saves/save' + slot + '.json'
         projectPath = os.path.dirname(os.path.dirname((__file__)))
         fullFilePath = os.path.join(projectPath, saveFilePath)
         fullFilePathPathwtf = Path(os.path.join(projectPath, saveFilePath))
         if fullFilePathPathwtf.is_file():
+            print("old:", base.tricker.saveDict)
             with open(fullFilePath, 'r') as infile:
                 base.tricker.saveDict = json.load(infile)
                 base.tricker.totalStam = base.tricker.saveDict['totalStam']
                 base.tricker.name = base.tricker.saveDict['name']
                 base.tricker.level = base.tricker.saveDict['level']
                 print("Loaded file...  ", base.tricker.saveDict)
-        print("Save not found!")
+                s = "Loaded file... " + base.tricker.name
+                self.drawPopupText(s)
+        else:
+            s = "Save not found!"
+            self.drawPopupText(s)
 
     def loadButtonData(self, slot):
         saveFilePath = 'saves/save' + slot + '.json'
@@ -63,7 +71,6 @@ class Load(object):
                 name = saveDict['name']
                 level = saveDict['level']
                 return name + "   lv" + str(level)
-        print("Save not found!")
 
     def switchToMainMenu(self):
         base.gameFSM.demand('MainMenu')
@@ -71,3 +78,23 @@ class Load(object):
     def destroy(self):
         self.parentNode.removeNode()
         self.backButton.removeNode()
+        self.slot1Button.removeNode()
+        self.slot2Button.removeNode()
+        self.slot3Button.removeNode()
+        self.slot4Button.removeNode()
+        self.popupText.removeNode()
+
+    def createPopupText(self,s):
+        self.popupText = OnscreenText(text=s, scale = 0.07, parent=base.a2dBottomCenter,
+                                      pos = (0,.05) )
+
+    def removePopupText(self):
+        self.popupText.detachNode()
+        self.popupSeq = None
+
+    def drawPopupText(self, s):
+        if not self.popupSeq:
+            self.popupSeq = Sequence(Func(self.createPopupText, s),
+                     Wait(1.5),
+                     Func(self.removePopupText))
+            self.popupSeq.start()
