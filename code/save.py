@@ -46,7 +46,7 @@ class Save(object):
         base.tricker.setName(textEntered)
         print(base.tricker.saveDict)
         self.name = textEntered
-        self.nameEntry.remove_node()
+        self.nameEntry.detachNode()
         with open(fullFilePath, 'w+') as outfile:
             json.dump(base.tricker.saveDict, outfile,
                       sort_keys=True, indent=4, ensure_ascii=False)
@@ -63,10 +63,10 @@ class Save(object):
         if (arg):
             output = "Button Selected is: Yes"
             self.overwrite = True
-            self.overwriteDialog.remove_node()
+            self.overwriteDialog.detachNode()
         else:
             self.overwrite = False
-            self.overwriteDialog.remove_node()
+            self.overwriteDialog.detachNode()
         if self.overwrite:
             if base.tricker.name == '':
                 self.nameEntry = DirectEntry(text="", scale=0.1, command=self.callSetNameAndSave,
@@ -84,11 +84,13 @@ class Save(object):
         fullFilePathPathwtf = Path(os.path.join(projectPath, saveFilePath))
         print(fullFilePathPathwtf.is_file())
         if fullFilePathPathwtf.is_file():
+            print("got to overwrite dialog")
             self.overwriteDialog = YesNoDialog(dialogName="OverwriteDialog", scale=1,
                                                text="Do you want to overwrite?", command=self.itemSelAndNameEntry,
                                                extraArgs=[fullFilePath])
 
         else:
+            print("got to name entry")
             self.nameEntry = DirectEntry(text="", scale=0.1, command=self.callSetNameAndSave, extraArgs=[fullFilePath],
                                          initialText="Shrek", focus=1, focusInCommand=self.clearText,
                                          frameSize=(0, 15, 0, 1))
