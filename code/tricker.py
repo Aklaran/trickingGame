@@ -114,6 +114,10 @@ class Tricker(object):
             print("no stamina! - falling!")
             return
 
+        if self.falling:
+            print("can't trick once you've fallen boi")
+            return
+
         self.comboContinuing = True
 
         self.grade = 'A'
