@@ -40,10 +40,17 @@ class Save(object):
         self.name = ''
         self.nameEntry = None
         self.overwrite = False
+        self.overwriteDialog = None
 
-    def callSetName(self, textEntered):
+    def callSetName(self, textEntered, fullFilePath):
         base.tricker.setName(textEntered)
+        print(base.tricker.saveDict)
         self.name = textEntered
+        self.nameEntry.removeNode()
+        with open(fullFilePath, 'w+') as outfile:
+            json.dump(base.tricker.saveDict, outfile,
+                      sort_keys=True, indent=4, ensure_ascii=False)
+
 
 
     def clearText(self):
@@ -54,17 +61,22 @@ class Save(object):
         if (arg):
             output = "Button Selected is: Yes"
             self.overwrite = True
+            self.overwriteDialog.remove_node()
         else:
             self.overwrite = False
+            self.overwriteDialog.remove_node()
+
 
 
     def saveGame(self, slot):
-        saveFilePath = 'saves/save' + slot + '.json'
+        # FIXME: give forward vs backslash for windows/osx
+        saveFilePath = 'saves\save' + slot + '.json'
         projectPath = os.path.dirname(os.path.dirname((__file__)))
         fullFilePath = os.path.join(projectPath, saveFilePath)
         fullFilePathPathwtf = Path(os.path.join(projectPath, saveFilePath))
+        print(fullFilePathPathwtf.is_file())
         if fullFilePathPathwtf.is_file():
-            overwriteDialog = YesNoDialog(dialogName="OverwriteDialog", scale=1,
+            self.overwriteDialog = YesNoDialog(dialogName="OverwriteDialog", scale=1,
                                                text="Do you want to overwrite?", command=self.itemSel)
             if self.overwrite:
                 if base.tricker.name == '':
@@ -72,8 +84,14 @@ class Save(object):
                                                 initialText="Shrek",focus=1,focusInCommand=self.clearText,
                                                 frameSize = (0,15,0,1))
                 with open(fullFilePath, 'w+') as outfile:
+                    print("dumping...", base.tricker.saveDict)
                     json.dump(base.tricker.saveDict, outfile,
                               sort_keys=True, indent=4, ensure_ascii=False)
+        else:
+            self.nameEntry = DirectEntry(text="", scale=0.1, command=self.callSetName, extraArgs=[fullFilePath],
+                                         initialText="Shrek", focus=1, focusInCommand=self.clearText,
+                                         frameSize=(0, 15, 0, 1))
+
 
 
     def loadButtonData(self, slot):
