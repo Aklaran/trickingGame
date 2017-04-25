@@ -21,8 +21,6 @@ class TrickingGame(DirectObject):
         # define controls
         self.accept('d', self.debug)
         self.accept('r', self.reset)
-        self.accept('s', base.tricker.save)
-        self.accept('l', base.tricker.load)
         self.accept('e', self.switchToMainMenu)
 
         self.accept('shift-y', base.tricker.tryTrick,
