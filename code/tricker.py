@@ -207,13 +207,6 @@ class Tricker(object):
         self.comboContinuing = False
         self.falling = False
 
-    def save(self):
-        projectPath = os.path.dirname(os.path.dirname((__file__)))
-        saveFilePath = os.path.join(projectPath, 'saves/save.json')
-        with open(saveFilePath, 'w+') as outfile:
-            json.dump(self.saveDict, outfile,
-                      sort_keys=True, indent=4, ensure_ascii=False)
-
     def load(self):
         projectPath = os.path.dirname(os.path.dirname((__file__)))
         saveFilePath = os.path.join(projectPath, 'saves/save.json')
