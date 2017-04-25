@@ -139,8 +139,7 @@ class Tricker(object):
             self.updateStamina(stamCost)
             if self.getTrueStam() < 0:
                 self.falling = True
-                return("Ran out of stamina - falling!")
-
+                return("Ran out of stamina mid-trick - falling!")
 
             goodPercentage = trick.getGoodPercentage(self.grade)
 
@@ -207,3 +206,6 @@ class Tricker(object):
         self.comboEnded = False
         self.comboContinuing = False
         self.falling = False
+
+    def setName(self, name):
+        self.saveDict['name'] = name

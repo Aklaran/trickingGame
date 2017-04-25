@@ -37,13 +37,44 @@ class Save(object):
                                         command=self.saveGame, extraArgs=['4'],
                                         parent=self.parentNode)
 
+        self.name = ''
+        self.nameEntry = None
+        self.overwrite = False
+
+    def callSetName(self, textEntered):
+        base.tricker.setName(textEntered)
+        self.name = textEntered
+
+
+    def clearText(self):
+        self.nameEntry.enterText('')
+
+    # callback function to set  text
+    def itemSel(self, arg):
+        if (arg):
+            output = "Button Selected is: Yes"
+            self.overwrite = True
+        else:
+            self.overwrite = False
+
+
     def saveGame(self, slot):
         saveFilePath = 'saves/save' + slot + '.json'
         projectPath = os.path.dirname(os.path.dirname((__file__)))
         fullFilePath = os.path.join(projectPath, saveFilePath)
-        with open(fullFilePath, 'w+') as outfile:
-            json.dump(base.tricker.saveDict, outfile,
-                      sort_keys=True, indent=4, ensure_ascii=False)
+        fullFilePathPathwtf = Path(os.path.join(projectPath, saveFilePath))
+        if fullFilePathPathwtf.is_file():
+            overwriteDialog = YesNoDialog(dialogName="OverwriteDialog", scale=1,
+                                               text="Do you want to overwrite?", command=self.itemSel)
+            if self.overwrite:
+                if base.tricker.name == '':
+                    self.nameEntry = DirectEntry(text="", scale=0.1, command=self.callSetName,
+                                                initialText="Shrek",focus=1,focusInCommand=self.clearText,
+                                                frameSize = (0,15,0,1))
+                with open(fullFilePath, 'w+') as outfile:
+                    json.dump(base.tricker.saveDict, outfile,
+                              sort_keys=True, indent=4, ensure_ascii=False)
+
 
     def loadButtonData(self, slot):
         saveFilePath = 'saves/save' + slot + '.json'
@@ -68,3 +99,4 @@ class Save(object):
         self.slot2Button.removeNode()
         self.slot3Button.removeNode()
         self.slot4Button.removeNode()
+        if self.nameEntry: self.nameEntry.removeNode()
