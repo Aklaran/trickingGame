@@ -3,12 +3,9 @@
 
 from direct.actor.Actor import Actor
 from direct.task import Task
-from tricks import *
-
 from panda3d.core import *
-
-import os
-import json
+from tricks import *
+import math
 
 
 class Tricker(object):
@@ -23,25 +20,10 @@ class Tricker(object):
         self.saveDict = { 'name': '',
                           'level': 0,
                           'totalStam': 100,
-                          'skills': { "gainer": 0,
-                                      "gswitch": 0}
+                          'skills': { "gainer": 1,
+                                      "gswitch": 1}
                           }
-        self.name = self.saveDict['name']
-        self.totalStam = self.saveDict['totalStam']
-        self.skillDict = self.saveDict['skills']
-
-        # set tricker's level based on proficiency in all skills
-        numTricks = totalSP = 0
-        for trick in self.skillDict:
-            numTricks += 1
-            totalSP += self.skillDict[trick]
-        self.level = int(totalSP / numTricks)
-        self.saveDict['level'] = self.level
-
-
-        # Load tricks
-        self.gainer = Gainer(self)
-        self.gswitch = Gswitch(self)
+        self.updateAttributes()
 
         # trickMap is different - this shit maps trick names to their classes
         # in order to get class data just given an animation name
@@ -75,7 +57,6 @@ class Tricker(object):
         score = base + (base*goodPercentage) + (base*(comboLength/5))
         self.score += score
 
-
     def getGreenPercentage(self):
         currAnim = self.actor.getCurrentAnim()
 
@@ -103,6 +84,21 @@ class Tricker(object):
 
     def getGrade(self):
         return self.grade
+
+    def increaseSkill(self, trick, grade):
+        if grade == 'A': base = 2
+        elif grade == 'B': base = 1.66
+        elif grade == 'C': base = 1.33
+        elif grade == 'D': base = 1
+
+        # This line makes the exp curve and prevents leveling over 100
+        exp = base - math.log(self.saveDict['skills'][str(trick)])
+
+        if exp < 0: exp = 0
+
+        self.saveDict['skills'][str(trick)] += exp
+        self.updateAttributes()
+        print("level:", self.level)
 
     def tryTrick(self, trick, taskMgr):
         if self.comboEnded:
@@ -156,6 +152,8 @@ class Tricker(object):
                              extraArgs=[str(trick), goodPercentage, taskMgr], appendTask=True)
 
         self.updateScore(trick, goodPercentage, self.comboLength)
+
+        self.increaseSkill(trick, self.grade)
 
         self.updateComboLength()
 
@@ -213,3 +211,20 @@ class Tricker(object):
 
     def setName(self, name):
         self.saveDict['name'] = name
+
+    def updateAttributes(self):
+        self.name = self.saveDict['name']
+        self.totalStam = self.saveDict['totalStam']
+        self.skillDict = self.saveDict['skills']
+
+        # set tricker's level based on proficiency in all skills
+        numTricks = totalSP = 0
+        for trick in self.skillDict:
+            numTricks += 1
+            totalSP += self.skillDict[trick]
+        self.level = int(totalSP / numTricks)
+        self.saveDict['level'] = self.level
+
+        # Load tricks
+        self.gainer = Gainer(self)
+        self.gswitch = Gswitch(self)

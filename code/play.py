@@ -125,29 +125,28 @@ class TrickingGame(DirectObject):
 
     def FollowCamTask(self, task):
 
-        base.disableMouse()
+        # base.disableMouse()
         # self.camera.setPos(self.camera.getPos())
 
         #  frame = globalClock.getFrameCount()
         #
-        (x, y, z) = base.tricker.actor.getPos()
-        oy = camera.getPos()[1]
-        ox = base.camera.getPos()[0]
-        dy = oy - y
-        error = 20 - dy
-        #print(error)
-        #  print(error)
-        # # print('error:',error)
-        ny = error/2
-        base.camera.setPos(ox, ny, 10)
+        # (x, y, z) = base.tricker.actor.getPos()
+        # oy = camera.getPos()[1]
+        # ox = base.camera.getPos()[0]
+        # dy = oy - y
+        # error = 20 - dy
+        # ny = error/2
+        # camera.setPos(ox, ny, 10)
         # # print(list(base.camera.getPos()))
         # # print("oy = %d, ny = %d, error = %d" %(oy, ny, error))
         #  #print(list(base.camera.getPos())[1])
         #
         #  # IMPORTANT: THIS MUST GO AT THE END
         #  base.camera.lookAt(base.trickerDummyNode)
-
+        camera.reparentTo(self.trickerDummyNode)
+        camera.setPos(0, -20, 10)
         camera.lookAt(self.trickerDummyNode)
+
 
         return Task.cont
 

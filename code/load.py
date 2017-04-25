@@ -50,9 +50,7 @@ class Load(object):
             print("old:", base.tricker.saveDict)
             with open(fullFilePath, 'r') as infile:
                 base.tricker.saveDict = json.load(infile)
-                base.tricker.totalStam = base.tricker.saveDict['totalStam']
-                base.tricker.name = base.tricker.saveDict['name']
-                base.tricker.level = base.tricker.saveDict['level']
+                base.tricker.updateAttributes()
                 print("Loaded file...  ", base.tricker.saveDict)
                 s = "Loaded file... " + base.tricker.name
                 self.drawPopupText(s)
