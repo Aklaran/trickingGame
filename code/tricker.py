@@ -50,6 +50,7 @@ class Tricker(object):
 
 
         # runtime traits, to be reset with reset function
+        # NOTE: You MUST add any vals here to the reset function below
         self.prevTrick = None
         self.stamina = self.totalStam
         self.grade = ' '
@@ -206,12 +207,3 @@ class Tricker(object):
         self.comboEnded = False
         self.comboContinuing = False
         self.falling = False
-
-    def load(self):
-        projectPath = os.path.dirname(os.path.dirname((__file__)))
-        saveFilePath = os.path.join(projectPath, 'saves/save.json')
-        with open(saveFilePath, 'r') as infile:
-            self.saveDict = json.load(infile)
-            self.totalStam = self.skillDict['totalStam']
-            self.name = self.saveDict['name']
-            self.level = self.saveDict['level']
