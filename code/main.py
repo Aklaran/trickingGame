@@ -22,9 +22,8 @@ class GameFSM(FSM):
 
     def enterPlay(self):
         self.play = TrickingGame()
-        print('entering play')
     def exitPlay(self):
-        print('exiting play')
+        self.play.destroy()
 
 app = Main()
 app.run()

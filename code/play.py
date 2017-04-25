@@ -1,7 +1,5 @@
-from direct.showbase.ShowBase import ShowBase
+from direct.showbase.DirectObject import DirectObject
 from direct.task import Task
-from direct.actor.Actor import Actor
-from direct.interval.IntervalGlobal import *
 from direct.gui.DirectGui import *
 
 from tricker import Tricker
@@ -9,55 +7,57 @@ from tricker import Tricker
 
 from panda3d.core import *
 
-class TrickingGame(object):
+class TrickingGame(DirectObject):
     def __init__(self):
 
         # Load the environment model
-        base.scene = base.loader.loadModel("models/environment")
-        base.scene.reparentTo(base.render)
-        base.scene.setScale(0.25, 0.25, 0.25)
-        base.scene.setPos(-8, 42, 0)
+        self.parentNode = base.render.attachNewNode('Play')
+        self.scene = base.loader.loadModel("models/environment")
+        self.scene.reparentTo(self.parentNode)
+        self.scene.setScale(0.25, 0.25, 0.25)
+        self.scene.setPos(-8, 42, 0)
 
         # Load and transform the actor
         self.tricker = Tricker()
-        self.tricker.actor.reparent_to(base.render)
+        self.tricker.actor.reparent_to(self.parentNode)
 
 
         # define controls
-        base.accept('d', self.debug)
-        base.accept('r', self.reset)
-        base.accept('s', self.tricker.save)
-        base.accept('l', self.tricker.load)
+        self.accept('d', self.debug)
+        self.accept('r', self.reset)
+        self.accept('s', self.tricker.save)
+        self.accept('l', self.tricker.load)
+        self.accept('e', self.switchToMainMenu)
 
-        base.accept('shift-y', self.tricker.tryTrick,
+        self.accept('shift-y', self.tricker.tryTrick,
                     [self.tricker.gainer, base.taskMgr])
-        base.accept('shift-u', self.tricker.tryTrick,
+        self.accept('shift-u', self.tricker.tryTrick,
                     [self.tricker.gswitch, base.taskMgr])
-        # base.accept('shift-i', self.tryTrick, [self.tricker.cork])
-        # base.accept('shift-o', self.tryTrick, [self.tricker.dubcork])
+        # self.accept('shift-i', self.tryTrick, [self.tricker.cork])
+        # self.accept('shift-o', self.tryTrick, [self.tricker.dubcork])
         #
-        # base.accept('shift-control-y', self.tryTrick, [self.tricker.flash])
-        # base.accept('shift-control-u', self.tryTrick, [self.tricker.full])
-        # base.accept('shift-control-i', self.tryTrick, [self.tricker.dubfull])
-        # base.accept('shift-control-o', self.tryTrick, [self.tricker.terada])
+        # self.accept('shift-control-y', self.tryTrick, [self.tricker.flash])
+        # self.accept('shift-control-u', self.tryTrick, [self.tricker.full])
+        # self.accept('shift-control-i', self.tryTrick, [self.tricker.dubfull])
+        # self.accept('shift-control-o', self.tryTrick, [self.tricker.terada])
         #
-        # base.accept('control-y', self.tryTrick, [self.tricker.c540])
-        # base.accept('control-u', self.tryTrick, [self.tricker.c720])
-        # base.accept('control-i', self.tryTrick, [self.tricker.c900])
-        # base.accept('control-o', self.tryTrick, [self.tricker.c1080])
+        # self.accept('control-y', self.tryTrick, [self.tricker.c540])
+        # self.accept('control-u', self.tryTrick, [self.tricker.c720])
+        # self.accept('control-i', self.tryTrick, [self.tricker.c900])
+        # self.accept('control-o', self.tryTrick, [self.tricker.c1080])
         #
-        # base.accept('alt-y', self.tryTrick, [self.tricker.tdraiz])
-        # base.accept('alt-u', self.tryTrick, [self.tricker.btwist])
-        # base.accept('alt-i', self.tryTrick, [self.tricker.snapu])
-        # base.accept('alt-o', self.tryTrick, [self.tricker.cartFull])
+        # self.accept('alt-y', self.tryTrick, [self.tricker.tdraiz])
+        # self.accept('alt-u', self.tryTrick, [self.tricker.btwist])
+        # self.accept('alt-i', self.tryTrick, [self.tricker.snapu])
+        # self.accept('alt-o', self.tryTrick, [self.tricker.cartFull])
 
         # Add SetCameraTask to task manager
         # IMPORTANT: camera is parented to the dummyNode in tricker's chest
-        self.trickerDummyNode = base.render.attach_new_node("trickerDummyNode")
+        self.trickerDummyNode = self.parentNode.attach_new_node("trickerDummyNode")
         self.trickerDummyNode.reparentTo(self.tricker.actor)
         self.trickerDummyNode.setPos(0, 0, 3)
 
-        base.camera.reparentTo(base.render)
+        base.camera.reparentTo(self.parentNode)
 
         base.taskMgr.add(self.FollowCamTask, "follow")
 
@@ -65,14 +65,14 @@ class TrickingGame(object):
         # Lights
         alight = AmbientLight('alight')
         alight.setColor(VBase4(0.5, 0.5, 0.5, 1))
-        alnp = base.render.attachNewNode(alight)
-        base.render.setLight(alnp)
+        alnp = self.parentNode.attachNewNode(alight)
+        self.parentNode.setLight(alnp)
 
         plight = PointLight('plight')
         plight.setColor(VBase4(1, 1, 1, 1))
-        plnp = base.render.attachNewNode(plight)
+        plnp = self.parentNode.attachNewNode(plight)
         plnp.setPos(20, 0, 20)
-        base.render.setLight(plnp)
+        self.parentNode.setLight(plnp)
 
         self.uiDrawer = MeshDrawer2D()
         self.uiDrawer.setBudget(10)
@@ -91,6 +91,8 @@ class TrickingGame(object):
 
         base.taskMgr.add(self.drawUITask, 'drawUI')
 
+    def switchToMainMenu(self):
+        base.gameFSM.demand('MainMenu')
 
     def drawUITask(self, task):
         gradeStr = self.tricker.getGrade()
@@ -155,7 +157,7 @@ class TrickingGame(object):
         return Task.cont
 
     def debug(self):
-        self.destroy()
+        print('debug')
 
     def reset(self):
         self.tricker.actor.setPos(0,0,0)
