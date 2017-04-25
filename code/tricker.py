@@ -56,6 +56,7 @@ class Tricker(object):
 
     def updateStamina(self, stamCost):
         self.stamina -= stamCost
+        print("stamina:", self.stamina)
     def updateComboLength(self):
         self.comboLength += 1
     def updateScore(self, trick, goodPercentage, comboLength):
@@ -80,6 +81,9 @@ class Tricker(object):
             return gp
         else:
             return 0
+
+    def getTrueStam(self):
+        return self.stamina
 
     def stamPercentage(self):
         sp = self.stamina/self.totalStam
@@ -120,6 +124,12 @@ class Tricker(object):
                 print("Combo failed - falling")
                 return
 
+            stamCost = trick.getStamCost(self.grade)
+            self.updateStamina(stamCost)
+            if self.getTrueStam() < 0:
+                self.falling = True
+                return("Ran out of stamina - falling!")
+
 
             goodPercentage = trick.getGoodPercentage(self.grade)
 
@@ -130,10 +140,6 @@ class Tricker(object):
         else:
             taskMgr.add(self.doTrickTask, 'doTrick',
                              extraArgs=[str(trick), goodPercentage, taskMgr], appendTask=True)
-
-
-        stamCost = trick.getStamCost(self.grade)
-        self.updateStamina(stamCost)
 
         self.updateScore(trick, goodPercentage, self.comboLength)
 

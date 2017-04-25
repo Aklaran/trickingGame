@@ -79,7 +79,7 @@ class TrickingGame(object):
         self.uiDrawerNode = self.uiDrawer.getRoot()
         self.uiDrawerNode.reparentTo(render2d)
         self.uiDrawerNode.reparentTo(base.a2dBottomLeftNs)
-        
+
 
         self.gradeText = OnscreenText(pos=(-0.2, 0.1), scale=0.3,
                                       parent=base.a2dBottomRight)
