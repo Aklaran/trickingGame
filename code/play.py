@@ -165,7 +165,11 @@ class TrickingGame(DirectObject):
 
     def destroy(self):
         self.ignoreAll()
+        taskMgr.remove('follow')
+        taskMgr.remove('drawUI')
         self.parentNode.removeNode()
-        self.gradeText.destroy()
-        self.scoreText.destroy()
-        self.comboText.destroy()
+        self.gradeText.removeNode()
+        self.scoreText.removeNode()
+        self.comboText.removeNode()
+        self.trickerDummyNode.remove_node()
+        self.scene.remove_node()

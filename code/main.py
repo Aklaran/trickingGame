@@ -16,14 +16,14 @@ class Main(ShowBase):
 class GameFSM(FSM):
     def enterMainMenu(self):
         self.menu = MainMenu()
-
     def exitMainMenu(self):
         self.menu.destroy()
-
+        del self.menu
     def enterPlay(self):
         self.play = TrickingGame()
     def exitPlay(self):
         self.play.destroy()
+        del self.play
 
 app = Main()
 app.run()
