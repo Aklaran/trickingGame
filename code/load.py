@@ -75,15 +75,6 @@ class Load(object):
     def switchToMainMenu(self):
         base.gameFSM.demand('MainMenu')
 
-    def destroy(self):
-        self.parentNode.removeNode()
-        self.backButton.removeNode()
-        self.slot1Button.removeNode()
-        self.slot2Button.removeNode()
-        self.slot3Button.removeNode()
-        self.slot4Button.removeNode()
-        self.popupText.removeNode()
-
     def createPopupText(self,s):
         self.popupText = OnscreenText(text=s, scale = 0.07, parent=base.a2dBottomCenter,
                                       pos = (0,.05) )
@@ -98,3 +89,12 @@ class Load(object):
                      Wait(1.5),
                      Func(self.removePopupText))
             self.popupSeq.start()
+
+    def destroy(self):
+        self.parentNode.removeNode()
+        self.backButton.removeNode()
+        self.slot1Button.removeNode()
+        self.slot2Button.removeNode()
+        self.slot3Button.removeNode()
+        self.slot4Button.removeNode()
+        if self.popupText: self.popupText.removeNode()
