@@ -14,7 +14,6 @@ import json
 
 class Tricker(object):
     def __init__(self):
-        # TODO: make a bad gswitch animation
         self.actor = Actor("tp/models/tricker-model",
                            {"gainer": "tp/anims/tricker-gainer",
                             "gainer_bad": "tp/anims/tricker-gainer-bad",
@@ -23,19 +22,21 @@ class Tricker(object):
 
         #skillDict contains vals 1-100, percentage of skill in that trick
         self.saveDict = { 'name': '',
+                          'level': 0,
                           'totalStam': 100,
-                          'skills': { "gainer": 100,
-                                      "gswitch": 50}
+                          'skills': { "gainer": 0,
+                                      "gswitch": 0}
                           }
         self.name = self.saveDict['name']
         self.totalStam = self.saveDict['totalStam']
         self.skillDict = self.saveDict['skills']
 
+        # set tricker's level based on proficiency in all skills
         numTricks = totalSP = 0
         for trick in self.skillDict:
             numTricks += 1
             totalSP += self.skillDict[trick]
-        self.level = int((totalSP / (numTricks*100)) * 100)
+        self.level = int(totalSP / numTricks)
         self.saveDict['level'] = self.level
 
 
@@ -211,13 +212,14 @@ class Tricker(object):
         projectPath = os.path.dirname(os.path.dirname((__file__)))
         saveFilePath = os.path.join(projectPath, 'saves/save.json')
         with open(saveFilePath, 'w+') as outfile:
-            json.dump(self.skillDict, outfile,
+            json.dump(self.saveDict, outfile,
                       sort_keys=True, indent=4, ensure_ascii=False)
 
     def load(self):
         projectPath = os.path.dirname(os.path.dirname((__file__)))
         saveFilePath = os.path.join(projectPath, 'saves/save.json')
         with open(saveFilePath, 'r') as infile:
-            self.skillDict = json.load(infile)
+            self.saveDict = json.load(infile)
             self.totalStam = self.skillDict['totalStam']
-            print(self.skillDict)
+            self.name = self.saveDict['name']
+            self.level = self.saveDict['level']
