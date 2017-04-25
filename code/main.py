@@ -5,7 +5,7 @@ from direct.fsm.FSM import FSM
 
 from play import TrickingGame
 from menu import MainMenu
-from SaveLoad import SaveLoad
+from save import Save
 
 class Main(ShowBase):
     def __init__(self):
@@ -25,11 +25,11 @@ class GameFSM(FSM):
     def exitPlay(self):
         self.play.destroy()
         del self.play
-    def enterSaveLoad(self):
-        self.saveLoad = SaveLoad()
-    def exitSaveLoad(self):
-        self.saveLoad.destroy()
-        del self.saveLoad
+    def enterSave(self):
+        self.save = Save()
+    def exitSave(self):
+        self.save.destroy()
+        del self.save
 
 app = Main()
 app.run()

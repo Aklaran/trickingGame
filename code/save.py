@@ -1,15 +1,15 @@
 from direct.gui.DirectGui import *
 
-class SaveLoad(object):
+class Save(object):
     def __init__(self):
         self.parentNode = aspect2d.attachNewNode('SaveLoad')
 
         self.backButton = DirectButton(text=("back"), scale = 0.25,
                      command=self.switchToMainMenu, parent=base.a2dTopLeft,
-                                       pos=(0.3,0,-0.3))
+                                       pos=(0.275,0,-0.225))
         #DirectButton(text=("Save/Load"))
         #DirectButton(text=("My Tricker"))
-       # DirectButton(text=("Options"))
+        #DirectButton(text=("Options"))
 
 
     def switchToMainMenu(self):
