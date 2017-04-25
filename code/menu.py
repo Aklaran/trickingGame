@@ -4,7 +4,7 @@ class MainMenu(object):
     def __init__(self):
         self.parentNode = aspect2d.attachNewNode('MainMenu')
 
-        self.d = DirectButton(text=("Play"), scale = 0.25,
+        self.playButton = DirectButton(text=("Play"), scale = 0.25,
                      command=self.switchToPlay, parent=self.parentNode)
         #DirectButton(text=("Save/Load"))
         #DirectButton(text=("My Tricker"))
@@ -16,4 +16,4 @@ class MainMenu(object):
 
     def destroy(self):
         self.parentNode.removeNode()
-        #self.d.destroy()
+        #self.playButton.destroy()

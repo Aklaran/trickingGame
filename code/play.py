@@ -11,8 +11,8 @@ class TrickingGame(DirectObject):
     def __init__(self):
 
         # Load the environment model
-        self.parentNode = base.render.attachNewNode('Play')
-        self.scene = base.loader.loadModel("models/environment")
+        self.parentNode = render.attachNewNode('Play')
+        self.scene = loader.loadModel("models/environment")
         self.scene.reparentTo(self.parentNode)
         self.scene.setScale(0.25, 0.25, 0.25)
         self.scene.setPos(-8, 42, 0)
@@ -30,9 +30,9 @@ class TrickingGame(DirectObject):
         self.accept('e', self.switchToMainMenu)
 
         self.accept('shift-y', self.tricker.tryTrick,
-                    [self.tricker.gainer, base.taskMgr])
+                    [self.tricker.gainer, taskMgr])
         self.accept('shift-u', self.tricker.tryTrick,
-                    [self.tricker.gswitch, base.taskMgr])
+                    [self.tricker.gswitch, taskMgr])
         # self.accept('shift-i', self.tryTrick, [self.tricker.cork])
         # self.accept('shift-o', self.tryTrick, [self.tricker.dubcork])
         #
@@ -57,9 +57,9 @@ class TrickingGame(DirectObject):
         self.trickerDummyNode.reparentTo(self.tricker.actor)
         self.trickerDummyNode.setPos(0, 0, 3)
 
-        base.camera.reparentTo(self.parentNode)
+        camera.reparentTo(self.parentNode)
 
-        base.taskMgr.add(self.FollowCamTask, "follow")
+        taskMgr.add(self.FollowCamTask, "follow")
 
 
         # Lights
@@ -89,7 +89,7 @@ class TrickingGame(DirectObject):
                                       parent=base.a2dTopLeft, fg=(1, 1, 1, 1))
         #DirectButton(text=("OK", "click!", "rolling over", "disabled"))
 
-        base.taskMgr.add(self.drawUITask, 'drawUI')
+        taskMgr.add(self.drawUITask, 'drawUI')
 
     def switchToMainMenu(self):
         base.gameFSM.demand('MainMenu')
@@ -150,9 +150,9 @@ class TrickingGame(DirectObject):
        #  # IMPORTANT: THIS MUST GO AT THE END
        #  base.camera.lookAt(base.trickerDummyNode)
 
-        base.camera.reparentTo(self.trickerDummyNode)
-        base.camera.setPos(0, -20, 10)
-        base.camera.lookAt(self.trickerDummyNode)
+        camera.reparentTo(self.trickerDummyNode)
+        camera.setPos(0, -20, 10)
+        camera.lookAt(self.trickerDummyNode)
 
         return Task.cont
 
@@ -162,3 +162,10 @@ class TrickingGame(DirectObject):
     def reset(self):
         self.tricker.actor.setPos(0,0,0)
         self.tricker.reset()
+
+    def destroy(self):
+        self.ignoreAll()
+        self.parentNode.removeNode()
+        self.gradeText.destroy()
+        self.scoreText.destroy()
+        self.comboText.destroy()
