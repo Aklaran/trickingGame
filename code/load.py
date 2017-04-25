@@ -12,7 +12,6 @@ class Load(object):
                      command=self.switchToMainMenu, parent=base.a2dTopLeft,
                                        pos=(0.275,0,-0.225))
 
-        # TODO: get ride of slot1Button data, just have loadButtonData only return that str
         # These store dicts that hold saveDict objects of Tricker class
         # for a particular save
         self.slot1ButtonData = self.loadButtonData('1')
