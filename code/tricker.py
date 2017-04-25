@@ -22,11 +22,14 @@ class Tricker(object):
                             "gswitch_bad": "tp/anims/tricker-gswitch"})
 
         #skillDict contains vals 1-100, percentage of skill in that trick
-        self.skillDict = {'totalStam': 100,
+        self.saveDict = { 'name': '',
+                          'totalStam': 100,
                           'skills': { "gainer": 100,
-                                    "gswitch": 0}
+                                      "gswitch": 0}
                           }
-        self.totalStam = self.skillDict['totalStam']
+        self.name = self.saveDict['name']
+        self.totalStam = self.saveDict['totalStam']
+        self.skillDict = self.saveDict['skills']
 
 
         # Load tricks
