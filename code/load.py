@@ -1,8 +1,8 @@
 from direct.gui.DirectGui import *
 
-class Save(object):
+class Load(object):
     def __init__(self):
-        self.parentNode = aspect2d.attachNewNode('Save')
+        self.parentNode = aspect2d.attachNewNode('Load')
 
         self.backButton = DirectButton(text=("back"), scale = 0.25,
                      command=self.switchToMainMenu, parent=base.a2dTopLeft,
