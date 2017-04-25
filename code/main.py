@@ -7,10 +7,13 @@ from play import TrickingGame
 from menu import MainMenu
 from save import Save
 from load import Load
+from tricker import Tricker
 
 class Main(ShowBase):
     def __init__(self):
         ShowBase.__init__(self)
+
+        self.tricker = Tricker()
 
         self.gameFSM = GameFSM('Core Game FSM')
         self.gameFSM.demand('MainMenu')
