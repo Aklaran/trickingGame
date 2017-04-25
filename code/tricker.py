@@ -9,7 +9,6 @@ from panda3d.core import *
 
 import os
 import json
-# from direct.interval.IntervalGlobal import *
 
 
 class Tricker(object):

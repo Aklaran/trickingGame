@@ -1,5 +1,3 @@
-from direct.gui.DirectGui import *
-from direct.gui.OnscreenImage import OnscreenImage
 from direct.showbase.ShowBase import ShowBase
 from direct.fsm.FSM import FSM
 
