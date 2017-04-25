@@ -25,11 +25,18 @@ class Tricker(object):
         self.saveDict = { 'name': '',
                           'totalStam': 100,
                           'skills': { "gainer": 100,
-                                      "gswitch": 0}
+                                      "gswitch": 50}
                           }
         self.name = self.saveDict['name']
         self.totalStam = self.saveDict['totalStam']
         self.skillDict = self.saveDict['skills']
+
+        numTricks = totalSP = 0
+        for trick in self.skillDict:
+            numTricks += 1
+            totalSP += self.skillDict[trick]
+        self.level = int((totalSP / (numTricks*100)) * 100)
+        self.saveDict['level'] = self.level
 
 
         # Load tricks
