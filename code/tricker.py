@@ -42,6 +42,9 @@ class Tricker(object):
         self.comboContinuing = False
         self.falling = False
 
+    def hasName(self):
+        return self.name != ''
+
     def getComboLength(self):
         return str(int(self.comboLength))
     def getScore(self):

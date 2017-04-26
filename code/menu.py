@@ -12,15 +12,28 @@ class MainMenu(object):
         self.loadButton = DirectButton(text=('Load'), scale=0.25,
                                        command=self.switchToLoad, parent=self.parentNode,
                                        pos=(0.0, 0, -0.6))
-        #DirectButton(text=("Save/Load"))
-        #DirectButton(text=("My Tricker"))
-       # DirectButton(text=("Options"))
+
+        self.nameEntry = None
 
     def switchToLoad(self):
         base.gameFSM.demand('Load')
 
-    def switchToPlay(self):
+    def clearText(self):
+        self.nameEntry.enterText('')
+
+    def callSetNameAndDemandPlay(self, textEntered):
+        base.tricker.setName(textEntered)
+        print(base.tricker.saveDict)
+        self.nameEntry.detachNode()
         base.gameFSM.demand('Play')
+
+    def switchToPlay(self):
+        if base.tricker.hasName():
+            base.gameFSM.demand('Play')
+        else:
+            self.nameEntry = DirectEntry(text="", scale=0.1, command=self.callSetNameAndDemandPlay,
+                                             initialText="Enter Name", focus=1, focusInCommand=self.clearText,
+                                             frameSize=(0, 15, 0, 1))
 
     def switchToSave(self):
         base.gameFSM.demand('Save')
@@ -29,3 +42,4 @@ class MainMenu(object):
         self.parentNode.removeNode()
         self.playButton.removeNode()
         self.saveButton.removeNode()
+        if self.nameEntry: self.nameEntry.removeNode()
