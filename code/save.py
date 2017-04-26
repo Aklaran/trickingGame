@@ -53,7 +53,12 @@ class Save(object):
         self.destroy()
         self.__init__()
 
-
+    def existingNameSave(self, fullFilePath):
+        with open(fullFilePath, 'w+') as outfile:
+            json.dump(base.tricker.saveDict, outfile,
+                      sort_keys=True, indent=4, ensure_ascii=False)
+        self.destroy()
+        self.__init__()
 
     def clearText(self):
         self.nameEntry.enterText('')
@@ -84,16 +89,17 @@ class Save(object):
         fullFilePathPathwtf = Path(os.path.join(projectPath, saveFilePath))
         print(fullFilePathPathwtf.is_file())
         if fullFilePathPathwtf.is_file():
-            print("got to overwrite dialog")
             self.overwriteDialog = YesNoDialog(dialogName="OverwriteDialog", scale=1,
                                                text="Do you want to overwrite?", command=self.itemSelAndNameEntry,
                                                extraArgs=[fullFilePath])
 
         else:
-            print("got to name entry")
-            self.nameEntry = DirectEntry(text="", scale=0.1, command=self.callSetNameAndSave, extraArgs=[fullFilePath],
+            if base.tricker.name == '':
+                self.nameEntry = DirectEntry(text="", scale=0.1, command=self.callSetNameAndSave, extraArgs=[fullFilePath],
                                          initialText="Shrek", focus=1, focusInCommand=self.clearText,
                                          frameSize=(0, 15, 0, 1))
+            else:
+                self.existingNameSave(fullFilePath)
 
 
 
