@@ -114,7 +114,7 @@ class TrickingGame(DirectObject):
         self.uiDrawer.rectangleRaw(0.1, 0.1, 1 * sp, 0.1, 0, 0, 0, 0, (0, 1, 0, 1))  # green
 
         # timingBar
-        gp = base.tricker.getGreenPercentage()
+        gp = base.tricker.getTimingBarPercentage()
 
         self.uiDrawer.rectangleRaw(0.1, 0.3, 1, 0.1, 0, 0, 0, 0, (0, 0, 0, 1))
         self.uiDrawer.rectangleRaw(0.1, 0.3, gp, 0.1, 0, 0, 0, 0, (1, 1, 1, 1))

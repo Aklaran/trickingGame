@@ -17,6 +17,8 @@ class Trick():
         self.baseStamCost = "WHY IS THIS NOT REWRITTEN"
         self.skillModifier = "WHY IS THIS NOT REWRITTEN"
 
+    def getExitTransition(self):
+        return self.exitTransition
     def getDifficulty(self):
         return self.difficulty
     def getDuration(self):
@@ -82,6 +84,8 @@ class Trick():
             addition = halfCost * (2/3)
         elif grade == 'D':
             addition = halfCost
+        elif grade == 'E':
+            addition = halfCost
 
         stamCost = self.baseStamCost - reduction + addition
         return stamCost
@@ -94,6 +98,7 @@ class Trick():
         elif grade == 'B': base = .7
         elif grade == 'C': base = .4
         elif grade == 'D': base = .1
+        elif grade == 'E': base = 0
 
         goodPercentage = base - (inverseSkillPercentage * base)
 

@@ -1,7 +1,12 @@
 from direct.actor.Actor import Actor
 from direct.task import Task
 from panda3d.core import *
+from direct.interval.IntervalGlobal import Sequence, Func
+from direct.interval.ActorInterval import ActorInterval
+
+
 from tricks import *
+
 import math
 
 
@@ -13,7 +18,8 @@ class Tricker(object):
                            {"gainer": "tp/anims/tricker-gainer",
                             "gainer_bad": "tp/anims/tricker-gainer-bad",
                             "gswitch": "tp/anims/tricker-gswitch",
-                            "gswitch_bad": "tp/anims/tricker-gswitch"})
+                            "gswitch_bad": "tp/anims/tricker-gswitch",
+                            "fall_swing": "tp/anims/tricker-fall-left"})
 
         #saveDict contains all info to be saved to json
         self.saveDict = { 'name': '',
@@ -43,7 +49,8 @@ class Tricker(object):
 
     def hasName(self):
         return self.name != ''
-
+    def isFalling(self):
+        return self.falling
     def getSaveDict(self):
         return self.saveDict
     def getSkillDict(self):
@@ -63,10 +70,10 @@ class Tricker(object):
         score = base + (base*goodPercentage) + (base*(comboLength/5))
         self.score += score
 
-    def getGreenPercentage(self):
+    def getTimingBarPercentage(self):
         currAnim = self.actor.getCurrentAnim()
 
-        if currAnim:
+        if currAnim and 'fall' not in currAnim:
             trick = self.trickMap[currAnim.split('_')[0]]
             sweetspot = trick.getSweetSpot()
             currFrame = self.actor.getCurrentFrame()
@@ -96,6 +103,7 @@ class Tricker(object):
         elif grade == 'B': base = 1.66
         elif grade == 'C': base = 1.33
         elif grade == 'D': base = 1
+        elif grade == 'E': base = 1
 
         # This line makes the exp curve and prevents leveling over 100
         exp = base - math.log(self.saveDict['skills'][str(trick)])
@@ -111,13 +119,13 @@ class Tricker(object):
             print("combo ended - no more tricking 4 u")
             return
 
-        if self.stamina <= 0:
-            self.falling = True
-            print("no stamina! - falling!")
-            return
-
         if self.falling:
             print("can't trick once you've fallen boi")
+            return
+
+        if self.stamina <= 0:
+            self.comboEnded = True
+            print("no stamina to throw trick!! ending combo")
             return
 
         self.comboContinuing = True
@@ -128,8 +136,8 @@ class Tricker(object):
 
         if currAnim:
             if self.prevTrick.getExitTransition() != trick.getEntryTransition():
-                self.falling = True
-                print("invalid transition - falling")
+                self.comboEnded = True
+                print("invalid transition - ended combo")
                 return
             currFrame = self.actor.getCurrentFrame(currAnim)
             numFrames = self.actor.getNumFrames(currAnim)
@@ -139,7 +147,6 @@ class Tricker(object):
             if self.grade == 'E':
                 self.falling = True
                 print("Combo failed - falling")
-                return
 
             stamCost = trick.getStamCost(self.grade)
             self.updateStamina(stamCost)
@@ -157,13 +164,13 @@ class Tricker(object):
             taskMgr.add(self.doTrickTask, 'doTrick',
                              extraArgs=[str(trick), goodPercentage, taskMgr], appendTask=True)
 
-        self.updateScore(trick, goodPercentage, self.comboLength)
+        if not self.falling:
+            self.updateScore(trick, goodPercentage, self.comboLength)
+            self.updateComboLength()
+            self.prevTrick = trick
 
+        # this is tricking - you still learn from your falls!
         self.increaseSkill(trick, self.grade)
-
-        self.updateComboLength()
-
-        self.prevTrick = trick
 
     def doTrickTask(self, animation, goodPercentage, taskMgr, task):
         airTime = self.actor.getNumFrames(animation) / 30
@@ -173,21 +180,43 @@ class Tricker(object):
 
         badAnim = str(animation + "_bad")
 
+        if not self.isFalling():
+            self.actor.enableBlend()
+            self.actor.setControlEffect(badAnim, 1- goodPercentage)
+            self.actor.setControlEffect(animation, goodPercentage)
+            self.actor.play(badAnim)
+            self.actor.play(animation)
+            self.actor.disableBlend()
+
+            moveInterval.start()
+
+            self.comboContinuing = False
+            taskMgr.add(self.checkTrickStateTask, 'checkTrickState',
+                        extraArgs=[animation], appendTask=True)
+
+            print("moved with goodPercentage:", goodPercentage)
+            return Task.done
+
+        elif self.isFalling():
+            trick = self.trickMap[animation]
+            exitTrans = trick.getExitTransition()
+            fallingAnim = "fall_" + exitTrans
+
+            fallStartFrame = 5
+            regFrames = self.actor.getNumFrames(animation) - fallStartFrame
+
+            fallSeq = Sequence(self.actor.actorInterval(badAnim, endFrame=regFrames),
+                               Func(self.playFall, badAnim, fallingAnim, regFrames))
+            fallSeq.start()
+            moveInterval.start()
+
+    def playFall(self, badAnim, fallingAnim, startFrame):
         self.actor.enableBlend()
-        self.actor.setControlEffect(badAnim, 1- goodPercentage)
-        self.actor.setControlEffect(animation, goodPercentage)
-        self.actor.play(badAnim)
-        self.actor.play(animation)
+        self.actor.setControlEffect(badAnim, .5)
+        self.actor.setControlEffect(fallingAnim, .5)
+        self.actor.play(badAnim, fromFrame=startFrame)
+        self.actor.play(fallingAnim)
         self.actor.disableBlend()
-
-        moveInterval.start()
-
-        self.comboContinuing = False
-        taskMgr.add(self.checkTrickStateTask, 'checkTrickState',
-                    extraArgs=[animation], appendTask=True)
-
-        print("moved with goodPercentage:", goodPercentage)
-        return Task.done
 
     def checkTrickStateTask(self, animation, task):
         # has to be -1 otherwise the currFrame never gets to the last frame. IDK why
