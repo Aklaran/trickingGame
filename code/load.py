@@ -49,9 +49,7 @@ class Load(object):
         if fullFilePathPathwtf.is_file():
             print("old:", base.tricker.saveDict)
             with open(fullFilePath, 'r') as infile:
-                base.tricker.saveDict = json.load(infile)
-                base.tricker.updateAttributes()
-                print("Loaded file...  ", base.tricker.saveDict)
+                base.tricker.loadToSaveDict(json.load(infile))
                 s = "Loaded file... " + base.tricker.name
                 self.drawPopupText(s)
         else:

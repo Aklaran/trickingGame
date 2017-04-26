@@ -216,6 +216,10 @@ class Tricker(object):
         self.saveDict['name'] = name
         self.updateAttributes()
 
+    def loadToSaveDict(self, indata):
+        self.saveDict = indata
+        self.updateAttributes()
+
     def updateAttributes(self):
         self.name = self.saveDict['name']
         self.totalStam = self.saveDict['totalStam']
