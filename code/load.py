@@ -40,7 +40,13 @@ class Load(object):
         self.popupText = None
         self.popupSeq = None
 
-    # TODO: give Tricker() functions for setting name, level, etc so its safer
+    @staticmethod
+    def getSaveFilePath(slot):
+        if os.name == 'nt':
+            return 'saves\save' + slot + '.json'
+        else:
+            return 'saves/save' + slot + '.json'
+
     def loadGame(self, slot):
         saveFilePath = self.getSaveFilePath(slot)
         projectPath = os.path.dirname(os.path.dirname((__file__)))
