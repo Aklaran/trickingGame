@@ -1,6 +1,3 @@
-# this is the class that defines the player character, and holds all of its animations
-# + their animation timings
-
 from direct.actor.Actor import Actor
 from direct.task import Task
 from panda3d.core import *
@@ -10,13 +7,15 @@ import math
 
 class Tricker(object):
     def __init__(self):
+        ## tricker-model taken from tutorial files from
+        # https://www.digitaltutors.com/tutorial/1478-Animating-an-Acrobatic-Fight-Scene-in-Maya
         self.actor = Actor("tp/models/tricker-model",
                            {"gainer": "tp/anims/tricker-gainer",
                             "gainer_bad": "tp/anims/tricker-gainer-bad",
                             "gswitch": "tp/anims/tricker-gswitch",
                             "gswitch_bad": "tp/anims/tricker-gswitch"})
 
-        #skillDict contains vals 1-100, percentage of skill in that trick
+        #saveDict contains all info to be saved to json
         self.saveDict = { 'name': '',
                           'level': 0,
                           'totalStam': 100,
