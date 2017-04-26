@@ -10,14 +10,10 @@ class Stats(object):
 
         ## Following code block adapted from:
         # https://moguri.github.io/panda-sphinx/programming-with-panda3d/directgui/directscrolledlist.html
-        l1 = DirectLabel(text="Test1", text_scale=0.1)
-        l2 = DirectLabel(text="Test2", text_scale=0.1)
-        l3 = DirectLabel(text="Test3", text_scale=0.1)
-
         numItemsVisible = 4
         itemHeight = 0.11
 
-        myScrolledList = DirectScrolledList(
+        self.statsList = DirectScrolledList(
             decButton_pos=(0.35, 0, 0.53),
             decButton_text="Dec",
             decButton_text_scale=0.04,
@@ -35,18 +31,16 @@ class Stats(object):
             forceHeight=itemHeight,
             itemFrame_frameSize=(-0.2, 0.2, -0.37, 0.11),
             itemFrame_pos=(0.35, 0, 0.4),
+            parent=self.parentNode
         )
 
-        myScrolledList.addItem(l1)
-        myScrolledList.addItem(l2)
-        myScrolledList.addItem(l3)
+        skillDict = base.tricker.getSkillDict()
+        for trick in skillDict:
+            s = str(trick + ": " + str(int(skillDict[trick])))
+            l = DirectLabel(text=s, text_scale=0.1)
+            self.statsList.addItem(l)
         ## End cited code block
 
-        for fruit in ['apple', 'pear', 'banana', 'orange']:
-            l = DirectLabel(text=fruit, text_scale=0.1)
-            myScrolledList.addItem(l)
-
-        run()
 
 
     def switchToMainMenu(self):
@@ -55,6 +49,7 @@ class Stats(object):
     def destroy(self):
         self.parentNode.removeNode()
         self.backButton.removeNode()
+        self.statsList.removeNode()
 
 
 

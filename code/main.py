@@ -5,7 +5,11 @@ from play import TrickingGame
 from menu import MainMenu
 from save import Save
 from load import Load
+from stats import Stats
 from tricker import Tricker
+
+
+# TODO: Make a screen/menu class that has functions like popuptext, transitions, etc
 
 class Main(ShowBase):
     def __init__(self):
@@ -37,6 +41,11 @@ class GameFSM(FSM):
     def exitLoad(self):
         self.load.destroy()
         del self.load
+    def enterStats(self):
+        self.stats = Stats()
+    def exitStats(self):
+        self.stats.destroy()
+        del self.stats
 
 app = Main()
 app.run()

@@ -44,6 +44,10 @@ class Tricker(object):
     def hasName(self):
         return self.name != ''
 
+    def getSaveDict(self):
+        return self.saveDict
+    def getSkillDict(self):
+        return self.skillDict
     def getComboLength(self):
         return str(int(self.comboLength))
     def getScore(self):

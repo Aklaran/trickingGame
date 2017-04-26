@@ -77,6 +77,7 @@ class Load(object):
 
     def removePopupText(self):
         self.popupText.detachNode()
+        self.popupText = None
         self.popupSeq = None
 
     def drawPopupText(self, s):
