@@ -75,9 +75,9 @@ class TrickingGame(DirectObject):
 
         self.gradeText = OnscreenText(pos=(-0.2, 0.1), scale=0.3,
                                       parent=base.a2dBottomRight)
-        self.scoreText = OnscreenText(pos=(-0.3, -0.2), scale=0.3,
+        self.scoreText = OnscreenText(pos=(-0.3, -0.2), scale=0.1,
                                       parent=base.a2dTopRight, fg=(1, 1, 1, 1))
-        self.comboText = OnscreenText(pos=(0.2, -0.2), scale=0.3,
+        self.comboText = OnscreenText(pos=(0.3, -0.2), scale=0.1,
                                       parent=base.a2dTopLeft, fg=(1, 1, 1, 1))
         # DirectButton(text=("OK", "click!", "rolling over", "disabled"))
 
@@ -100,10 +100,10 @@ class TrickingGame(DirectObject):
         elif gradeStr == 'E':
             self.gradeText.setFg((1, 0, 0, 1))
 
-        scoreStr = base.tricker.getScore()
+        scoreStr = "score: " + base.tricker.getScore()
         self.scoreText.setText(scoreStr)
 
-        comboStr = base.tricker.getComboLength()
+        comboStr = "combo: " + base.tricker.getComboLength()
         self.comboText.setText(comboStr)
 
         self.uiDrawer.begin()
