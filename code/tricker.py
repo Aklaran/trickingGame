@@ -214,6 +214,7 @@ class Tricker(object):
 
     def setName(self, name):
         self.saveDict['name'] = name
+        self.updateAttributes()
 
     def updateAttributes(self):
         self.name = self.saveDict['name']

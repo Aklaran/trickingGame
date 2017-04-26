@@ -73,11 +73,12 @@ class Save(object):
             self.overwrite = False
             self.overwriteDialog.detachNode()
         if self.overwrite:
-            if base.tricker.name == '':
+            if not base.tricker.hasName():
                 self.nameEntry = DirectEntry(text="", scale=0.1, command=self.callSetNameAndSave,
                                              extraArgs=[fullFilePath],
                                              initialText="Shrek", focus=1, focusInCommand=self.clearText,
                                              frameSize=(0, 15, 0, 1))
+            else: self.existingNameSave(fullFilePath)
 
 
 
@@ -94,7 +95,7 @@ class Save(object):
                                                extraArgs=[fullFilePath])
 
         else:
-            if base.tricker.name == '':
+            if not base.tricker.hasName():
                 self.nameEntry = DirectEntry(text="", scale=0.1, command=self.callSetNameAndSave, extraArgs=[fullFilePath],
                                          initialText="Shrek", focus=1, focusInCommand=self.clearText,
                                          frameSize=(0, 15, 0, 1))
