@@ -42,7 +42,7 @@ class Load(object):
 
     # TODO: give Tricker() functions for setting name, level, etc so its safer
     def loadGame(self, slot):
-        saveFilePath = 'saves/save' + slot + '.json'
+        saveFilePath = self.getSaveFilePath(slot)
         projectPath = os.path.dirname(os.path.dirname((__file__)))
         fullFilePath = os.path.join(projectPath, saveFilePath)
         fullFilePathPathwtf = Path(os.path.join(projectPath, saveFilePath))
@@ -57,7 +57,7 @@ class Load(object):
             self.drawPopupText(s)
 
     def loadButtonData(self, slot):
-        saveFilePath = 'saves/save' + slot + '.json'
+        saveFilePath = self.getSaveFilePath(slot)
         projectPath = os.path.dirname(os.path.dirname((__file__)))
         fullFilePath = os.path.join(projectPath, saveFilePath)
         fullFilePathPathwtf = Path(os.path.join(projectPath, saveFilePath))

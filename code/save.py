@@ -80,11 +80,15 @@ class Save(object):
                                              frameSize=(0, 15, 0, 1))
             else: self.existingNameSave(fullFilePath)
 
-
+    @staticmethod
+    def getSaveFilePath(slot):
+        if os.name == 'nt':
+            return 'saves\save' + slot + '.json'
+        else:
+            return 'saves/save' + slot + '.json'
 
     def saveGame(self, slot):
-        # FIXME: give forward vs backslash for windows/osx
-        saveFilePath = 'saves\save' + slot + '.json'
+        saveFilePath = self.getSaveFilePath(slot)
         projectPath = os.path.dirname(os.path.dirname((__file__)))
         fullFilePath = os.path.join(projectPath, saveFilePath)
         fullFilePathPathwtf = Path(os.path.join(projectPath, saveFilePath))
@@ -105,7 +109,7 @@ class Save(object):
 
 
     def loadButtonData(self, slot):
-        saveFilePath = 'saves/save' + slot + '.json'
+        saveFilePath = self.getSaveFilePath(slot)
         projectPath = os.path.dirname(os.path.dirname((__file__)))
         fullFilePath = os.path.join(projectPath, saveFilePath)
         fullFilePathPathwtf = Path(os.path.join(projectPath, saveFilePath))
