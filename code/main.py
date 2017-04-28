@@ -10,12 +10,6 @@ from tricker import Tricker
 
 
 # TODO: Make a screen/menu class that has functions like popuptext, transitions, etc
-# NOTE: In order to run this properly, put these 2 lines in your config.prc file of your panda installation:
-'''
-clode-mode limited
-clock-frame-rate 20
-'''
-# This will ensure all the shit moves in the right time :P
 
 class Main(ShowBase):
     def __init__(self):

@@ -10,6 +10,7 @@ Initialize with other tricks in tricker.updateAttributes()
 Add event handler (self.accept) to play.py
 """
 
+
 class Trick():
     def __init__(self, tricker):
 
@@ -33,16 +34,22 @@ class Trick():
 
     def getDistance(self):
         return self.distance
+
     def getExitTransition(self):
         return self.exitTransition
+
     def getDifficulty(self):
         return self.difficulty
+
     def getDuration(self):
         return self.duration
+
     def getSweetSpot(self):
         return self.sweetSpot
+
     def getExitTransition(self):
         return self.exitTransition
+
     def getEntryTransition(self):
         return self.entryTransition
 
@@ -54,27 +61,29 @@ class Trick():
             dist = abs(self.sweetSpot - currFrame)
             eMargin = self.duration * .2 / self.difficulty
 
-            if dist > eMargin: gp = 0
-            else: gp = dist/eMargin
+            if dist > eMargin:
+                gp = 0
+            else:
+                gp = dist / eMargin
 
-            return (gp, 1-gp)
+            return (gp, 1 - gp)
         else:
-            return (0,0)
+            return (0, 0)
 
     def getGrade(self, inputFrame):
 
-        distFromSS = abs(self.sweetSpot-inputFrame)
+        distFromSS = abs(self.sweetSpot - inputFrame)
 
-        #print("sweetSpot:", self.sweetSpot)
-        #print("inputFrame:", inputFrame)
-        #print("distFromSS:", distFromSS)
+        # print("sweetSpot:", self.sweetSpot)
+        # print("inputFrame:", inputFrame)
+        # print("distFromSS:", distFromSS)
 
         eMargin = self.duration * .2 / self.difficulty
         bMargin = eMargin * .3
         cMargin = eMargin * .6
 
-        #print("eMargin = %d bMargin = %d cMargin = %d"
-               # % (eMargin, bMargin, cMargin))
+        # print("eMargin = %d bMargin = %d cMargin = %d"
+        # % (eMargin, bMargin, cMargin))
 
         if distFromSS == 0:
             return 'A'
@@ -95,9 +104,9 @@ class Trick():
         if grade == 'A':
             addition = 0
         elif grade == 'B':
-            addition = halfCost * (1/3)
+            addition = halfCost * (1 / 3)
         elif grade == 'C':
-            addition = halfCost * (2/3)
+            addition = halfCost * (2 / 3)
         elif grade == 'D':
             addition = halfCost
         elif grade == 'E':
@@ -109,12 +118,17 @@ class Trick():
     # returns the percentage of the "good" animation to be played vs the bad animation
     # basically controls how pretty a move will look based on the timing and the player character's skill level
     def getGoodPercentage(self, grade):
-        inverseSkillPercentage = 1- (self.skillModifier / 100)
-        if grade == 'A': base = 1
-        elif grade == 'B': base = .7
-        elif grade == 'C': base = .4
-        elif grade == 'D': base = .1
-        elif grade == 'E': base = 0
+        inverseSkillPercentage = 1 - (self.skillModifier / 100)
+        if grade == 'A':
+            base = 1
+        elif grade == 'B':
+            base = .7
+        elif grade == 'C':
+            base = .4
+        elif grade == 'D':
+            base = .1
+        elif grade == 'E':
+            base = 0
 
         goodPercentage = base - (inverseSkillPercentage * base)
 
@@ -122,8 +136,6 @@ class Trick():
         print("grade:", grade)
         print("goodPercentage:", goodPercentage)
         return goodPercentage
-
-
 
 
 class Gainer(Trick):
@@ -135,10 +147,12 @@ class Gainer(Trick):
         self.exitTransition = 'reversal'
         self.baseStamCost = 10
         self.skillModifier = self.tricker.skillDict['gainer']
-        self.sweetSpot = int(self.duration * .80)
-        self.distance = (0,0,0)
+        self.sweetSpot = 23
+        self.distance = (0, 0, 0)
+
     def __repr__(self):
         return 'gainer'
+
 
 class Gswitch(Trick):
     def __init__(self, tricker):
@@ -149,13 +163,15 @@ class Gswitch(Trick):
         self.exitTransition = 'swing'
         self.baseStamCost = 10
         self.skillModifier = self.tricker.skillDict['gswitch']
-        self.sweetSpot = int(self.duration * .80)
-        self.distance = (0,2,0)
+        self.sweetSpot = 15
+        self.distance = (0, 2, 0)
+
     def __repr__(self):
         return 'gswitch'
 
+
 class Btwist(Trick):
-    def __init__(self,tricker):
+    def __init__(self, tricker):
         super().__init__(tricker)
         self.duration = self.tricker.actor.getNumFrames('btwist')
         self.difficulty = 1
@@ -163,7 +179,8 @@ class Btwist(Trick):
         self.exitTransition = 'swing'
         self.baseStamCost = 10
         self.skillModifier = self.tricker.skillDict['btwist']
-        self.sweetSpot = int(self.duration * .80)
-        self.distance = (0,5,0)
+        self.sweetSpot = 19
+        self.distance = (0, 5, 0)
+
     def __repr__(self):
         return 'btwist'
