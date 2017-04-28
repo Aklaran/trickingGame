@@ -188,7 +188,7 @@ class Btwist(Trick):
         self.baseStamCost = 10
         self.skillModifier = self.tricker.skillDict['btwist']
         self.sweetSpot = 19
-        self.distance = (0, 5, 0)
+        self.distance = (-1, 5, 0)
 
     def __repr__(self):
         return 'btwist'
