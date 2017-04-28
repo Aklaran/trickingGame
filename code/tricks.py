@@ -136,6 +136,7 @@ class Gainer(Trick):
         self.baseStamCost = 10
         self.skillModifier = self.tricker.skillDict['gainer']
         self.sweetSpot = int(self.duration * .80)
+        self.distance = (0,0,0)
     def __repr__(self):
         return 'gainer'
 
