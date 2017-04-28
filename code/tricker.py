@@ -103,11 +103,11 @@ class Tricker(object):
         return self.grade
 
     def increaseSkill(self, trick, grade):
-        if grade == 'A': b = 2
-        elif grade == 'B': b = 1.66
-        elif grade == 'C': b = 1.33
-        elif grade == 'D': b = 1
-        elif grade == 'E': b = 1
+        if grade == 0: b = 2
+        elif grade == 1: b = 1.66
+        elif grade == 2: b = 1.33
+        elif grade == 3: b = 1
+        elif grade == 4: b = 1
 
         # This line makes the exp curve and prevents leveling over 100
         exp = b - math.log(self.saveDict['skills'][str(trick)])
@@ -143,7 +143,7 @@ class Tricker(object):
 
         self.comboContinuing = True
 
-        self.grade = 'A'
+        self.grade = 0
         currAnim = self.actor.getCurrentAnim()
         goodPercentage = trick.getGoodPercentage(self.grade)
 
@@ -162,7 +162,7 @@ class Tricker(object):
             framesLeft = numFrames - currFrame
 
             self.grade = self.prevTrick.getGrade(currFrame)
-            if self.grade == 'E':
+            if self.grade == 4:
                 self.falling = True
                 print("Combo failed - falling")
 

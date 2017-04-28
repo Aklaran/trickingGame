@@ -89,17 +89,21 @@ class TrickingGame(DirectObject):
         base.gameFSM.demand('MainMenu')
 
     def drawUITask(self, task):
-        gradeStr = base.tricker.getGrade()
-        self.gradeText.setText(gradeStr)
-        if gradeStr == 'A':
+        grade = base.tricker.getGrade()
+        if grade == 0:
+            self.gradeText.setText('A')
             self.gradeText.setFg((0, 1, 0, 1))
-        elif gradeStr == 'B':
+        elif grade == 1:
+            self.gradeText.setText('B')
             self.gradeText.setFg((0.5, 1, 0, 1))
-        elif gradeStr == 'C':
+        elif grade == 2:
+            self.gradeText.setText('C')
             self.gradeText.setFg((1, 1, 0, 1))
-        elif gradeStr == 'D':
+        elif grade == 3:
+            self.gradeText.setText('D')
             self.gradeText.setFg((1, 0.5, 0, 1))
-        elif gradeStr == 'E':
+        elif grade == 4:
+            self.gradeText.setText('F')
             self.gradeText.setFg((1, 0, 0, 1))
 
         scoreStr = "score: " + base.tricker.getScore()
@@ -151,13 +155,12 @@ class TrickingGame(DirectObject):
         dy = oy - ty
         error = 0
         nx = (dx-error) / 100
-        print(dy)
         if dy-error == 0: ny = 0
         else:
             try:
-                ny = log(-dy) / 40
+                ny = log(-dy) / 35
                 self.trickerDummyNode.setPos(self.trickerDummyNode, nx, ny, 0)
-            except: self.trickerDummyNode.setPos(base.tricker.actor.getPos())
+            except: self.trickerDummyNode.setPos(base.tricker.actor.getPos() + (0,0,3))
 
         camera.reparentTo(self.trickerDummyNode)
         camera.setPos(0, -20, 10)

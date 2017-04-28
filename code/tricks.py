@@ -70,6 +70,13 @@ class Trick():
         else:
             return (0, 0)
 
+
+    # This method returns the grade of the trick, based on how well timed the player input is.
+    # 0 - A
+    # 1 - B
+    # 2 - C
+    # 3 - D
+    # 4 - F
     def getGrade(self, inputFrame):
 
         distFromSS = abs(self.sweetSpot - inputFrame)
@@ -86,30 +93,30 @@ class Trick():
         # % (eMargin, bMargin, cMargin))
 
         if distFromSS == 0:
-            return 'A'
+            return 0
         elif distFromSS <= bMargin:
-            return 'B'
+            return 1
         elif distFromSS <= cMargin:
-            return 'C'
+            return 2
         elif distFromSS <= eMargin:
-            return 'D'
+            return 3
         elif distFromSS > eMargin:
-            return 'E'
+            return 4
 
     def getStamCost(self, grade):
         halfCost = self.baseStamCost // 2
         modPercentage = self.skillModifier / 100
         reduction = halfCost * modPercentage
 
-        if grade == 'A':
+        if grade == 0:
             addition = 0
-        elif grade == 'B':
+        elif grade == 1:
             addition = halfCost * (1 / 3)
-        elif grade == 'C':
+        elif grade == 2:
             addition = halfCost * (2 / 3)
-        elif grade == 'D':
+        elif grade == 3:
             addition = halfCost
-        elif grade == 'E':
+        elif grade == 4:
             addition = halfCost
 
         stamCost = self.baseStamCost - reduction + addition
@@ -119,15 +126,15 @@ class Trick():
     # basically controls how pretty a move will look based on the timing and the player character's skill level
     def getGoodPercentage(self, grade):
         inverseSkillPercentage = 1 - (self.skillModifier / 100)
-        if grade == 'A':
+        if grade == 0:
             b = 1
-        elif grade == 'B':
+        elif grade == 1:
             b = .7
-        elif grade == 'C':
+        elif grade == 2:
             b = .4
-        elif grade == 'D':
+        elif grade == 3:
             b = .1
-        elif grade == 'E':
+        elif grade == 4:
             b = 0
 
         goodPercentage = b - (inverseSkillPercentage * b)
