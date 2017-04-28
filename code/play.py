@@ -4,6 +4,8 @@ from direct.gui.DirectGui import *
 
 from panda3d.core import *
 
+from math import *
+
 
 class TrickingGame(DirectObject):
     def __init__(self):
@@ -149,16 +151,17 @@ class TrickingGame(DirectObject):
         dy = oy - ty
         error = 0
         nx = (dx-error) / 100
-        ny = (dy-error) / 100
-        self.trickerDummyNode.setPos(self.trickerDummyNode, nx, -ny, 0)
+        print(dy)
+        if dy-error == 0: ny = 0
+        else:
+            try:
+                ny = log(-dy) / 40
+                self.trickerDummyNode.setPos(self.trickerDummyNode, nx, ny, 0)
+            except: self.trickerDummyNode.setPos(base.tricker.actor.getPos())
+
         camera.reparentTo(self.trickerDummyNode)
         camera.setPos(0, -20, 10)
         camera.lookAt(self.trickerDummyNode)
-
-        print(oy, ty, dy)
-
-        print(self.trickerDummyNode.getPos())
-
 
         return Task.cont
 
@@ -166,9 +169,12 @@ class TrickingGame(DirectObject):
         print('debug')
 
     def reset(self):
+        taskMgr.remove("follow")
         base.tricker.actor.setPos(0, 0, 0)
         base.tricker.reset()
         self.prevTrick = None
+
+        taskMgr.add(self.FollowCamTask, 'follow')
 
     def destroy(self):
         self.ignoreAll()
