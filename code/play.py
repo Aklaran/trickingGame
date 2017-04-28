@@ -167,5 +167,6 @@ class TrickingGame(DirectObject):
         self.scoreText.removeNode()
         self.comboText.removeNode()
         self.uiDrawerNode.removeNode()
+        base.tricker.actor.detach_node()
         self.trickerDummyNode.remove_node()
         self.scene.remove_node()

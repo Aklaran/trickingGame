@@ -20,7 +20,7 @@ class Tricker(object):
                             "gswitch"     : "tp/anims/tricker-gswitch",
                             "gswitch_bad" : "tp/anims/tricker-gswitch",
                             "btwist"      : "tp/anims/tricker-btwist",
-                            "btwist_bad"  : "tp/anims/tricker-btwist-bad",
+                            "btwist_bad"  : "tp/anims/tricker-btwist",
                             "fall_swing"  : "tp/anims/tricker-fall-left"})
 
         #saveDict contains all info to be saved to json
@@ -130,7 +130,7 @@ class Tricker(object):
     def tryTrick(self, trick, taskMgr):
         if self.comboEnded:
             print("combo ended - no more tricking 4 u")
-            # return
+            return
 
         if self.falling:
             print("can't trick once you've fallen boi")
@@ -147,11 +147,16 @@ class Tricker(object):
         currAnim = self.actor.getCurrentAnim()
         goodPercentage = trick.getGoodPercentage(self.grade)
 
+        distance = None
+
         if currAnim:
             if self.prevTrick.getExitTransition() != trick.getEntryTransition():
                 self.comboEnded = True
                 print("invalid transition - ended combo")
                 return
+
+            if self.prevTrick and self.prevTrick.hasDistance(): distance = self.prevTrick.getDistance()
+
             currFrame = self.actor.getCurrentFrame(currAnim)
             numFrames = self.actor.getNumFrames(currAnim)
             framesLeft = numFrames - currFrame
@@ -170,14 +175,14 @@ class Tricker(object):
             goodPercentage = trick.getGoodPercentage(self.grade)
 
             # 0.06 is the time it takes for 2 frames - smooth blending
-            delayTime = framesLeft / 30 - 0.06
+            delayTime = framesLeft / 30 - 0.09
             taskMgr.doMethodLater(delayTime, self.doTrickTask, 'doTrick',
-                             extraArgs=[str(trick), goodPercentage, taskMgr], appendTask=True)
+                             extraArgs=[str(trick), goodPercentage, distance, taskMgr], appendTask=True)
         else:
             stamCost = trick.getStamCost(self.grade)
             self.updateStamina(stamCost)
             taskMgr.add(self.doTrickTask, 'doTrick',
-                             extraArgs=[str(trick), goodPercentage, taskMgr], appendTask=True)
+                             extraArgs=[str(trick), goodPercentage, distance, taskMgr], appendTask=True)
 
         if not self.falling:
             self.updateScore(trick, goodPercentage, self.comboLength)
@@ -187,16 +192,15 @@ class Tricker(object):
         # this is tricking - you still learn from your falls!
         self.increaseSkill(trick, self.grade)
 
-    def doTrickTask(self, animation, goodPercentage, taskMgr, task):
+    def doTrickTask(self, animation, goodPercentage, distance, taskMgr, task):
         airTime = self.actor.getNumFrames(animation) / 30
-        moveInterval = self.actor.posInterval(airTime,
+
+        moveInterval = None
+
+        if distance != None: self.actor.setPos(self.actor, distance)
+        else: moveInterval = self.actor.posInterval(airTime,
                                                 Point3(0, .1, 0),
                                                 other=self.actor)
-        if animation == 'gainer':
-            print(self.actor.getPos())
-            self.actor.setPos(self.actor, (0, 5, 0))
-            print(self.actor.getPos())
-
         badAnim = str(animation + "_bad")
 
         if not self.isFalling():
@@ -207,14 +211,12 @@ class Tricker(object):
             self.actor.play(animation)
             self.actor.disableBlend()
 
-            # moveInterval.start()
-
             self.comboContinuing = False
             taskMgr.add(self.checkTrickStateTask, 'checkTrickState',
                         extraArgs=[animation], appendTask=True)
 
             print("moved with goodPercentage:", goodPercentage)
-            return Task.done
+
 
         elif self.isFalling():
             trick = self.trickMap[animation]
@@ -227,7 +229,8 @@ class Tricker(object):
             fallSeq = Sequence(self.actor.actorInterval(badAnim, endFrame=regFrames),
                                Func(self.playFall, badAnim, fallingAnim, regFrames))
             fallSeq.start()
-            # moveInterval.start()
+        if moveInterval: moveInterval.start()
+        return Task.done
 
     def playFall(self, badAnim, fallingAnim, startFrame):
         self.actor.enableBlend()

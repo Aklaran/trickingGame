@@ -26,7 +26,13 @@ class Trick():
         self.duration = "WHY IS THIS NOT REWRITTEN"
         self.baseStamCost = "WHY IS THIS NOT REWRITTEN"
         self.skillModifier = "WHY IS THIS NOT REWRITTEN"
+        self.distance = "WHY IS THIS NOT REWRITTEN"
 
+    def hasDistance(self):
+        return self.distance != "WHY IS THIS NOT REWRITTEN"
+
+    def getDistance(self):
+        return self.distance
     def getExitTransition(self):
         return self.exitTransition
     def getDifficulty(self):
@@ -156,5 +162,6 @@ class Btwist(Trick):
         self.baseStamCost = 10
         self.skillModifier = self.tricker.skillDict['btwist']
         self.sweetSpot = int(self.duration * .80)
+        self.distance = (0,5,0)
     def __repr__(self):
         return 'btwist'
