@@ -53,7 +53,7 @@ class TrickingGame(DirectObject):
 
         camera.reparentTo(self.parentNode)
 
-        taskMgr.add(self.FollowCamTask, "follow")
+        # taskMgr.add(self.FollowCamTask, "follow")
 
         # Lights
         alight = AmbientLight('alight')

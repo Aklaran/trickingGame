@@ -118,10 +118,19 @@ class Tricker(object):
         self.updateAttributes()
         print("level:", self.level)
 
+    """
+    debug animation procedure:
+    comment out:
+    return under if self.comboEnded in self.tryTrick
+    both moveInterval.start() in self.doTrickTask
+    
+    
+    """
+
     def tryTrick(self, trick, taskMgr):
         if self.comboEnded:
             print("combo ended - no more tricking 4 u")
-            return
+            # return
 
         if self.falling:
             print("can't trick once you've fallen boi")
@@ -165,6 +174,8 @@ class Tricker(object):
             taskMgr.doMethodLater(delayTime, self.doTrickTask, 'doTrick',
                              extraArgs=[str(trick), goodPercentage, taskMgr], appendTask=True)
         else:
+            stamCost = trick.getStamCost(self.grade)
+            self.updateStamina(stamCost)
             taskMgr.add(self.doTrickTask, 'doTrick',
                              extraArgs=[str(trick), goodPercentage, taskMgr], appendTask=True)
 
@@ -181,6 +192,10 @@ class Tricker(object):
         moveInterval = self.actor.posInterval(airTime,
                                                 Point3(0, .1, 0),
                                                 other=self.actor)
+        if animation == 'gainer':
+            print(self.actor.getPos())
+            self.actor.setPos(self.actor, (0, 5, 0))
+            print(self.actor.getPos())
 
         badAnim = str(animation + "_bad")
 
@@ -192,7 +207,7 @@ class Tricker(object):
             self.actor.play(animation)
             self.actor.disableBlend()
 
-            moveInterval.start()
+            # moveInterval.start()
 
             self.comboContinuing = False
             taskMgr.add(self.checkTrickStateTask, 'checkTrickState',
@@ -212,7 +227,7 @@ class Tricker(object):
             fallSeq = Sequence(self.actor.actorInterval(badAnim, endFrame=regFrames),
                                Func(self.playFall, badAnim, fallingAnim, regFrames))
             fallSeq.start()
-            moveInterval.start()
+            # moveInterval.start()
 
     def playFall(self, badAnim, fallingAnim, startFrame):
         self.actor.enableBlend()
