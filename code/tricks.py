@@ -104,6 +104,7 @@ class Trick():
             return 4
 
     def getStamCost(self, grade):
+        fullCost = self.baseStamCost
         halfCost = self.baseStamCost // 2
         modPercentage = self.skillModifier / 100
         reduction = halfCost * modPercentage
@@ -111,13 +112,13 @@ class Trick():
         if grade == 0:
             addition = 0
         elif grade == 1:
-            addition = halfCost * (1 / 3)
+            addition = fullCost * (1 / 3)
         elif grade == 2:
-            addition = halfCost * (2 / 3)
+            addition = fullCost * (2 / 3)
         elif grade == 3:
-            addition = halfCost
+            addition = fullCost
         elif grade == 4:
-            addition = halfCost
+            addition = fullCost
 
         stamCost = self.baseStamCost - reduction + addition
         return stamCost
