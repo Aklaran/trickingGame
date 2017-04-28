@@ -48,12 +48,12 @@ class TrickingGame(DirectObject):
         # Add SetCameraTask to task manager
         # IMPORTANT: camera is parented to the dummyNode in tricker's chest
         self.trickerDummyNode = self.parentNode.attach_new_node("trickerDummyNode")
-        self.trickerDummyNode.reparentTo(base.tricker.actor)
+        self.trickerDummyNode.reparentTo(self.parentNode)
         self.trickerDummyNode.setPos(0, 0, 3)
 
         camera.reparentTo(self.parentNode)
 
-        # taskMgr.add(self.FollowCamTask, "follow")
+        taskMgr.add(self.FollowCamTask, "follow")
 
         # Lights
         alight = AmbientLight('alight')
@@ -143,9 +143,21 @@ class TrickingGame(DirectObject):
         #
         #  # IMPORTANT: THIS MUST GO AT THE END
         #  base.camera.lookAt(base.trickerDummyNode)
+        (ox, oy, oz) = self.trickerDummyNode.getPos()
+        (tx, ty, tz) = base.tricker.actor.getPos()
+        dx = ox - tx
+        dy = oy - ty
+        error = 0
+        nx = (dx-error) / 100
+        ny = (dy-error) / 100
+        self.trickerDummyNode.setPos(self.trickerDummyNode, nx, -ny, 0)
         camera.reparentTo(self.trickerDummyNode)
         camera.setPos(0, -20, 10)
         camera.lookAt(self.trickerDummyNode)
+
+        print(oy, ty, dy)
+
+        print(self.trickerDummyNode.getPos())
 
 
         return Task.cont
@@ -156,6 +168,7 @@ class TrickingGame(DirectObject):
     def reset(self):
         base.tricker.actor.setPos(0, 0, 0)
         base.tricker.reset()
+        self.prevTrick = None
 
     def destroy(self):
         self.ignoreAll()

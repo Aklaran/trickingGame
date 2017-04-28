@@ -120,17 +120,17 @@ class Trick():
     def getGoodPercentage(self, grade):
         inverseSkillPercentage = 1 - (self.skillModifier / 100)
         if grade == 'A':
-            base = 1
+            b = 1
         elif grade == 'B':
-            base = .7
+            b = .7
         elif grade == 'C':
-            base = .4
+            b = .4
         elif grade == 'D':
-            base = .1
+            b = .1
         elif grade == 'E':
-            base = 0
+            b = 0
 
-        goodPercentage = base - (inverseSkillPercentage * base)
+        goodPercentage = b - (inverseSkillPercentage * b)
 
         print("skillModifier:", self.skillModifier)
         print("grade:", grade)
