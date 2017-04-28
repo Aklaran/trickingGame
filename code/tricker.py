@@ -130,7 +130,7 @@ class Tricker(object):
     def tryTrick(self, trick, taskMgr):
         if self.comboEnded:
             print("combo ended - no more tricking 4 u")
-            return
+            #Ureturn
 
         if self.falling:
             print("can't trick once you've fallen boi")
@@ -198,9 +198,6 @@ class Tricker(object):
         moveInterval = None
 
         if distance != None: self.actor.setPos(self.actor, distance)
-        else: moveInterval = self.actor.posInterval(airTime,
-                                                Point3(0, .1, 0),
-                                                other=self.actor)
         badAnim = str(animation + "_bad")
 
         if not self.isFalling():
@@ -229,7 +226,7 @@ class Tricker(object):
             fallSeq = Sequence(self.actor.actorInterval(badAnim, endFrame=regFrames),
                                Func(self.playFall, badAnim, fallingAnim, regFrames))
             fallSeq.start()
-        if moveInterval: moveInterval.start()
+       # if moveInterval: moveInterval.start()
         return Task.done
 
     def playFall(self, badAnim, fallingAnim, startFrame):
