@@ -27,23 +27,23 @@ class TrickingGame(DirectObject):
                     [base.tricker.gainer, taskMgr])
         self.accept('shift-u', base.tricker.tryTrick,
                     [base.tricker.gswitch, taskMgr])
-        # self.accept('shift-i', self.tryTrick, [base.tricker.cork])
-        # self.accept('shift-o', self.tryTrick, [base.tricker.dubcork])
+        # self.accept('shift-i', base.tricker.tryTrick, [base.tricker.cork])
+        # self.accept('shift-o', base.tricker.tryTrick, [base.tricker.dubcork])
         #
-        # self.accept('shift-control-y', self.tryTrick, [base.tricker.flash])
-        # self.accept('shift-control-u', self.tryTrick, [base.tricker.full])
-        # self.accept('shift-control-i', self.tryTrick, [base.tricker.dubfull])
-        # self.accept('shift-control-o', self.tryTrick, [base.tricker.terada])
+        # self.accept('shift-control-y', base.tricker.tryTrick, [base.tricker.flash])
+        # self.accept('shift-control-u', base.tricker.tryTrick, [base.tricker.full])
+        # self.accept('shift-control-i', base.tricker.tryTrick, [base.tricker.dubfull])
+        # self.accept('shift-control-o', base.tricker.tryTrick, [base.tricker.terada])
         #
-        # self.accept('control-y', self.tryTrick, [base.tricker.c540])
-        # self.accept('control-u', self.tryTrick, [base.tricker.c720])
-        # self.accept('control-i', self.tryTrick, [base.tricker.c900])
-        # self.accept('control-o', self.tryTrick, [base.tricker.c1080])
+        # self.accept('control-y', base.tricker.tryTrick, [base.tricker.c540])
+        # self.accept('control-u', base.tricker.tryTrick, [base.tricker.c720])
+        # self.accept('control-i', base.tricker.tryTrick, [base.tricker.c900])
+        # self.accept('control-o', base.tricker.tryTrick, [base.tricker.c1080])
         #
-        # self.accept('alt-y', self.tryTrick, [base.tricker.tdraiz])
-        # self.accept('alt-u', self.tryTrick, [base.tricker.btwist])
-        # self.accept('alt-i', self.tryTrick, [base.tricker.snapu])
-        # self.accept('alt-o', self.tryTrick, [base.tricker.cartFull])
+        # self.accept('alt-y', base.tricker.tryTrick, [base.tricker.tdraiz])
+        self.accept('alt-u', base.tricker.tryTrick, [base.tricker.btwist, taskMgr])
+        # self.accept('alt-i', base.tricker.tryTrick, [base.tricker.snapu])
+        # self.accept('alt-o', base.tricker.tryTrick, [base.tricker.cartFull])
 
         # Add SetCameraTask to task manager
         # IMPORTANT: camera is parented to the dummyNode in tricker's chest

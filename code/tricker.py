@@ -15,25 +15,29 @@ class Tricker(object):
         ## tricker-model taken from tutorial files from
         # https://www.digitaltutors.com/tutorial/1478-Animating-an-Acrobatic-Fight-Scene-in-Maya
         self.actor = Actor("tp/models/tricker-model",
-                           {"gainer": "tp/anims/tricker-gainer",
-                            "gainer_bad": "tp/anims/tricker-gainer-bad",
-                            "gswitch": "tp/anims/tricker-gswitch",
-                            "gswitch_bad": "tp/anims/tricker-gswitch",
-                            "fall_swing": "tp/anims/tricker-fall-left"})
+                           {"gainer"      : "tp/anims/tricker-gainer",
+                            "gainer_bad"  : "tp/anims/tricker-gainer-bad",
+                            "gswitch"     : "tp/anims/tricker-gswitch",
+                            "gswitch_bad" : "tp/anims/tricker-gswitch",
+                            "btwist"      : "tp/anims/tricker-btwist",
+                            "btwist_bad"  : "tp/anims/tricker-btwist-bad",
+                            "fall_swing"  : "tp/anims/tricker-fall-left"})
 
         #saveDict contains all info to be saved to json
         self.saveDict = { 'name': '',
                           'level': 0,
                           'totalStam': 100,
-                          'skills': { "gainer": 1,
-                                      "gswitch": 1}
+                          'skills': { "gainer"  : 1,
+                                      "gswitch" : 1,
+                                      "btwist"  : 1}
                           }
         self.updateAttributes()
 
         # trickMap is different - this shit maps trick names to their classes
         # in order to get class data just given an animation name
-        self.trickMap = {'gainer': self.gainer,
-                         'gswitch': self.gswitch}
+        self.trickMap = {'gainer' : self.gainer,
+                         'gswitch': self.gswitch,
+                         'btwist' : self.btwist}
 
 
         # runtime traits, to be reset with reset function
@@ -66,8 +70,8 @@ class Tricker(object):
     def updateComboLength(self):
         self.comboLength += 1
     def updateScore(self, trick, goodPercentage, comboLength):
-        base = trick.getDifficulty() * 100
-        score = base + (base*goodPercentage) + (base*(comboLength/5))
+        b = trick.getDifficulty() * 100
+        score = b + (b*goodPercentage) + (b*(comboLength/5))
         self.score += score
 
     def getTimingBarPercentage(self):
@@ -99,14 +103,14 @@ class Tricker(object):
         return self.grade
 
     def increaseSkill(self, trick, grade):
-        if grade == 'A': base = 2
-        elif grade == 'B': base = 1.66
-        elif grade == 'C': base = 1.33
-        elif grade == 'D': base = 1
-        elif grade == 'E': base = 1
+        if grade == 'A': b = 2
+        elif grade == 'B': b = 1.66
+        elif grade == 'C': b = 1.33
+        elif grade == 'D': b = 1
+        elif grade == 'E': b = 1
 
         # This line makes the exp curve and prevents leveling over 100
-        exp = base - math.log(self.saveDict['skills'][str(trick)])
+        exp = b - math.log(self.saveDict['skills'][str(trick)])
 
         if exp < 0: exp = 0
 
@@ -268,3 +272,4 @@ class Tricker(object):
         # Load tricks
         self.gainer = Gainer(self)
         self.gswitch = Gswitch(self)
+        self.btwist = Btwist(self)

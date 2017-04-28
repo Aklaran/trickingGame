@@ -1,4 +1,14 @@
 # this defines all the tricks
+"""
+PROCEDURE FOR ADDING A NEW TRICK:
+Define the class here
+Add to list of animations
+Add bad animation to list of animations
+Add to tricker.trickMap
+Add to skills dict in tricker.saveDict
+Initialize with other tricks in tricker.updateAttributes()
+Add event handler (self.accept) to play.py
+"""
 
 class Trick():
     def __init__(self, tricker):
@@ -135,3 +145,16 @@ class Gswitch(Trick):
         self.sweetSpot = int(self.duration * .80)
     def __repr__(self):
         return 'gswitch'
+
+class Btwist(Trick):
+    def __init__(self,tricker):
+        super().__init__(tricker)
+        self.duration = self.tricker.actor.getNumFrames('btwist')
+        self.difficulty = 1
+        self.entryTransition = 'reversal'
+        self.exitTransition = 'swing'
+        self.baseStamCost = 10
+        self.skillModifier = self.tricker.skillDict['btwist']
+        self.sweetSpot = int(self.duration * .80)
+    def __repr__(self):
+        return 'btwist'
