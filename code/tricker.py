@@ -21,6 +21,8 @@ class Tricker(object):
                             "gswitch_bad" : "tp/anims/tricker-gswitch",
                             "btwist"      : "tp/anims/tricker-btwist",
                             "btwist_bad"  : "tp/anims/tricker-btwist",
+                            "cork"        : "tp/anims/tricker-cork",
+                            "cork_bad"    : "tp/anims/tricker-cork",
                             "fall_swing"  : "tp/anims/tricker-fall-left"})
 
         #saveDict contains all info to be saved to json
@@ -29,7 +31,8 @@ class Tricker(object):
                           'totalStam': 100,
                           'skills': { "gainer"  : 1,
                                       "gswitch" : 1,
-                                      "btwist"  : 1}
+                                      "btwist"  : 1,
+                                      "cork"    : 1}
                           }
         self.updateAttributes()
 
@@ -37,7 +40,8 @@ class Tricker(object):
         # in order to get class data just given an animation name
         self.trickMap = {'gainer' : self.gainer,
                          'gswitch': self.gswitch,
-                         'btwist' : self.btwist}
+                         'btwist' : self.btwist,
+                         'cork'   : self.cork}
 
 
         # runtime traits, to be reset with reset function
@@ -130,7 +134,7 @@ class Tricker(object):
     def tryTrick(self, trick, taskMgr):
         if self.comboEnded:
             print("combo ended - no more tricking 4 u")
-            #Ureturn
+            #return
 
         if self.falling:
             print("can't trick once you've fallen boi")
@@ -142,12 +146,13 @@ class Tricker(object):
             return
 
         self.comboContinuing = True
+        distance = (0,0,0)
 
         self.grade = 0
         currAnim = self.actor.getCurrentAnim()
         goodPercentage = trick.getGoodPercentage(self.grade)
 
-        distance = None
+        if self.prevTrick: distance = self.prevTrick.getDistance()
 
         if currAnim:
             if self.prevTrick.getExitTransition() != trick.getEntryTransition():
@@ -155,7 +160,7 @@ class Tricker(object):
                 print("invalid transition - ended combo")
                 return
 
-            if self.prevTrick and self.prevTrick.hasDistance(): distance = self.prevTrick.getDistance()
+            distance = self.prevTrick.getDistance()
 
             currFrame = self.actor.getCurrentFrame(currAnim)
             numFrames = self.actor.getNumFrames(currAnim)
@@ -193,11 +198,10 @@ class Tricker(object):
         self.increaseSkill(trick, self.grade)
 
     def doTrickTask(self, animation, goodPercentage, distance, taskMgr, task):
+        print(self.actor.getNumFrames('cork'))
         airTime = self.actor.getNumFrames(animation) / 30
 
-        moveInterval = None
-
-        if distance != None: self.actor.setPos(self.actor, distance)
+        self.actor.setPos(self.actor, distance)
         badAnim = str(animation + "_bad")
 
         if not self.isFalling():
@@ -288,3 +292,4 @@ class Tricker(object):
         self.gainer = Gainer(self)
         self.gswitch = Gswitch(self)
         self.btwist = Btwist(self)
+        self.cork = Cork(self)

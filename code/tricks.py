@@ -192,3 +192,17 @@ class Btwist(Trick):
 
     def __repr__(self):
         return 'btwist'
+
+class Cork(Trick):
+    def __init__(self, tricker):
+        super().__init__(tricker)
+        self.duration = self.tricker.actor.getNumFrames('btwist')
+        self.difficulty = 1
+        self.entryTransition = 'swing'
+        self.exitTransition = 'swing'
+        self.baseStamCost = 20
+        self.skillModifier = self.tricker.skillDict['cork']
+        self.sweetSpot = 17
+        self.distance = (-1, 3, 0)
+    def __repr__(self):
+        return 'cork'
