@@ -134,7 +134,7 @@ class Tricker(object):
     def tryTrick(self, trick, taskMgr):
         if self.comboEnded:
             print("combo ended - no more tricking 4 u")
-            #return
+            return
 
         if self.falling:
             print("can't trick once you've fallen boi")
@@ -199,7 +199,6 @@ class Tricker(object):
 
     def doTrickTask(self, animation, goodPercentage, distance, taskMgr, task):
         print(self.actor.getNumFrames('cork'))
-        airTime = self.actor.getNumFrames(animation) / 30
 
         self.actor.setPos(self.actor, distance)
         badAnim = str(animation + "_bad")

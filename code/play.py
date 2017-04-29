@@ -153,12 +153,14 @@ class TrickingGame(DirectObject):
         dy = oy - ty
         error = 0
         nx = 0 # (dx-error) / 100
+        ny = 0
         if dy-error == 0: ny = 0
         else:
             try: ny = log(-dy) / 35
-            except: self.trickerDummyNode.setPos(base.tricker.actor.getPos() + (0,0,3))
+            except: self.trickerDummyNode.setPos((base.tricker.actor), (0,0,3))
+        self.trickerDummyNode.setPos(self.trickerDummyNode, (0,ny,0))
         camera.reparentTo(self.trickerDummyNode)
-        camera.setPos(0, -20, 10)
+        camera.setPos(-15, -15, 7)
         camera.lookAt(self.trickerDummyNode)
 
         return Task.cont
