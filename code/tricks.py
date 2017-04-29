@@ -206,3 +206,17 @@ class Cork(Trick):
         self.distance = (0, 1.1, 0)
     def __repr__(self):
         return 'cork'
+
+class DoubleCork(Trick):
+    def __init__(self, tricker):
+        super().__init__(tricker)
+        self.duration = self.tricker.actor.getNumFrames('doublecork')
+        self.difficulty = 2
+        self.entryTransition = 'swing'
+        self.exitTransition = 'swing'
+        self.baseStamCost = 30
+        self.skillModifier = self.tricker.skillDict['doublecork']
+        self.sweetSpot = 19
+        self.distance = (0,2,0)
+    def __repr__(self):
+        return 'doublecork'

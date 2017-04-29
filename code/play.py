@@ -26,7 +26,7 @@ class TrickingGame(DirectObject):
         self.accept('shift-y', base.tricker.tryTrick, [base.tricker.gainer, taskMgr])
         self.accept('shift-u', base.tricker.tryTrick, [base.tricker.gswitch, taskMgr])
         self.accept('shift-i', base.tricker.tryTrick, [base.tricker.cork, taskMgr])
-        # self.accept('shift-o', base.tricker.tryTrick, [base.tricker.dubcork])
+        self.accept('shift-o', base.tricker.tryTrick, [base.tricker.doublecork, taskMgr])
         #
         # self.accept('shift-control-y', base.tricker.tryTrick, [base.tricker.flash])
         # self.accept('shift-control-u', base.tricker.tryTrick, [base.tricker.full])

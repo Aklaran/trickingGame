@@ -15,33 +15,37 @@ class Tricker(object):
         ## tricker-model taken from tutorial files from
         # https://www.digitaltutors.com/tutorial/1478-Animating-an-Acrobatic-Fight-Scene-in-Maya
         self.actor = Actor("tp/models/tricker-model",
-                           {"gainer"      : "tp/anims/tricker-gainer",
-                            "gainer_bad"  : "tp/anims/tricker-gainer-bad",
-                            "gswitch"     : "tp/anims/tricker-gswitch",
-                            "gswitch_bad" : "tp/anims/tricker-gswitch",
-                            "btwist"      : "tp/anims/tricker-btwist",
-                            "btwist_bad"  : "tp/anims/tricker-btwist",
-                            "cork"        : "tp/anims/tricker-cork",
-                            "cork_bad"    : "tp/anims/tricker-cork",
-                            "fall_swing"  : "tp/anims/tricker-fall-left"})
+                           {"gainer"         : "tp/anims/tricker-gainer",
+                            "gainer_bad"     : "tp/anims/tricker-gainer-bad",
+                            "gswitch"        : "tp/anims/tricker-gswitch",
+                            "gswitch_bad"    : "tp/anims/tricker-gswitch",
+                            "btwist"         : "tp/anims/tricker-btwist",
+                            "btwist_bad"     : "tp/anims/tricker-btwist",
+                            "cork"           : "tp/anims/tricker-cork",
+                            "cork_bad"       : "tp/anims/tricker-cork",
+                            "doublecork"     : "tp/anims/tricker-dubcork",
+                            "doublecork_bad" : "tp/anims/tricker-dubcork",
+                            "fall_swing"     : "tp/anims/tricker-fall-left"})
 
         #saveDict contains all info to be saved to json
         self.saveDict = { 'name': '',
                           'level': 0,
                           'totalStam': 100,
-                          'skills': { "gainer"  : 1,
-                                      "gswitch" : 1,
-                                      "btwist"  : 1,
-                                      "cork"    : 1}
+                          'skills': { "gainer"     : 1,
+                                      "gswitch"    : 1,
+                                      "btwist"     : 1,
+                                      "cork"       : 1,
+                                      "doublecork" : 1}
                           }
         self.updateAttributes()
 
         # trickMap is different - this shit maps trick names to their classes
         # in order to get class data just given an animation name
-        self.trickMap = {'gainer' : self.gainer,
-                         'gswitch': self.gswitch,
-                         'btwist' : self.btwist,
-                         'cork'   : self.cork}
+        self.trickMap = {'gainer'     : self.gainer,
+                         'gswitch'    : self.gswitch,
+                         'btwist'     : self.btwist,
+                         'cork'       : self.cork,
+                         'doublecork' : self.doublecork}
 
 
         # runtime traits, to be reset with reset function
@@ -134,7 +138,7 @@ class Tricker(object):
     def tryTrick(self, trick, taskMgr):
         if self.comboEnded:
             print("combo ended - no more tricking 4 u")
-            #return
+            return
 
         if self.falling:
             print("can't trick once you've fallen boi")
@@ -293,3 +297,4 @@ class Tricker(object):
         self.gswitch = Gswitch(self)
         self.btwist = Btwist(self)
         self.cork = Cork(self)
+        self.doublecork = DoubleCork(self)
