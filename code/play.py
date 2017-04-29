@@ -160,7 +160,7 @@ class TrickingGame(DirectObject):
             except: self.trickerDummyNode.setPos((base.tricker.actor), (0,0,3))
         self.trickerDummyNode.setPos(self.trickerDummyNode, (0,ny,0))
         camera.reparentTo(self.trickerDummyNode)
-        camera.setPos(-15, -15, 7)
+        camera.setPos(-10, -15, 8.5)
         camera.lookAt(self.trickerDummyNode)
 
         return Task.cont
@@ -171,6 +171,7 @@ class TrickingGame(DirectObject):
     def reset(self):
         taskMgr.remove("follow")
         base.tricker.actor.setPos(0, 0, 0)
+        self.trickerDummyNode.setPos(base.tricker.actor, (0,0,3))
         base.tricker.reset()
         self.prevTrick = None
 

@@ -200,9 +200,9 @@ class Cork(Trick):
         self.difficulty = 1
         self.entryTransition = 'swing'
         self.exitTransition = 'swing'
-        self.baseStamCost = 20
+        self.baseStamCost = 10
         self.skillModifier = self.tricker.skillDict['cork']
-        self.sweetSpot = 17
-        self.distance = (-1, 3, 0)
+        self.sweetSpot = 22
+        self.distance = (0, 1.1, 0)
     def __repr__(self):
         return 'cork'

@@ -134,7 +134,7 @@ class Tricker(object):
     def tryTrick(self, trick, taskMgr):
         if self.comboEnded:
             print("combo ended - no more tricking 4 u")
-            return
+            #return
 
         if self.falling:
             print("can't trick once you've fallen boi")
