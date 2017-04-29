@@ -154,8 +154,8 @@ class Tricker(object):
 
         if self.prevTrick: distance = self.prevTrick.getDistance()
 
-        if currAnim:
-            if self.prevTrick.getExitTransition() != trick.getEntryTransition():
+        if currAnim and self.prevTrick:
+            if (self.prevTrick.getExitTransition() != trick.getEntryTransition()):
                 self.comboEnded = True
                 print("invalid transition - ended combo")
                 return
@@ -170,6 +170,7 @@ class Tricker(object):
             if self.grade == 4:
                 self.falling = True
                 print("Combo failed - falling")
+                self.prevTrick = None
 
             stamCost = trick.getStamCost(self.grade)
             self.updateStamina(stamCost)

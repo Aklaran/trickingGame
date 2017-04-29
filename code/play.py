@@ -12,10 +12,8 @@ class TrickingGame(DirectObject):
 
         # Load the environment model
         self.parentNode = render.attachNewNode('Play')
-        self.scene = loader.loadModel("models/environment")
+        self.scene = loader.loadModel("tp/models/environment")
         self.scene.reparentTo(self.parentNode)
-        self.scene.setScale(0.25, 0.25, 0.25)
-        self.scene.setPos(-8, 42, 0)
 
         # Load and transform the actor
         base.tricker.actor.reparent_to(self.parentNode)
@@ -52,6 +50,9 @@ class TrickingGame(DirectObject):
         self.trickerDummyNode.setPos(0, 0, 3)
 
         camera.reparentTo(self.parentNode)
+
+        camera.setPos(0, -20, 10)
+        camera.lookAt(self.trickerDummyNode)
 
         taskMgr.add(self.FollowCamTask, "follow")
 
@@ -160,7 +161,7 @@ class TrickingGame(DirectObject):
             except: self.trickerDummyNode.setPos((base.tricker.actor), (0,0,3))
         self.trickerDummyNode.setPos(self.trickerDummyNode, (0,ny,0))
         camera.reparentTo(self.trickerDummyNode)
-        camera.setPos(-10, -15, 8.5)
+        camera.setPos(-10, -15, 1)
         camera.lookAt(self.trickerDummyNode)
 
         return Task.cont
