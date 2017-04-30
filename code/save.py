@@ -43,19 +43,19 @@ class Save(object):
         self.overwriteDialog = None
 
     def callSetNameAndSave(self, textEntered, fullFilePath):
-        base.tricker.setName(textEntered)
-        print(base.tricker.saveDict)
+        base.currPlayer.setName(textEntered)
+        print(base.currPlayer.saveDict)
         self.name = textEntered
         self.nameEntry.detachNode()
         with open(fullFilePath, 'w+') as outfile:
-            json.dump(base.tricker.saveDict, outfile,
+            json.dump(base.currPlayer.saveDict, outfile,
                       sort_keys=True, indent=4, ensure_ascii=False)
         self.destroy()
         self.__init__()
 
     def existingNameSave(self, fullFilePath):
         with open(fullFilePath, 'w+') as outfile:
-            json.dump(base.tricker.saveDict, outfile,
+            json.dump(base.currPlayer.saveDict, outfile,
                       sort_keys=True, indent=4, ensure_ascii=False)
         self.destroy()
         self.__init__()
@@ -73,7 +73,7 @@ class Save(object):
             self.overwrite = False
             self.overwriteDialog.detachNode()
         if self.overwrite:
-            if not base.tricker.hasName():
+            if not base.currPlayer.hasName():
                 self.nameEntry = DirectEntry(text="", scale=0.1, command=self.callSetNameAndSave,
                                              extraArgs=[fullFilePath],
                                              initialText="Shrek", focus=1, focusInCommand=self.clearText,
@@ -99,7 +99,7 @@ class Save(object):
                                                extraArgs=[fullFilePath])
 
         else:
-            if not base.tricker.hasName():
+            if not base.currPlayer.hasName():
                 self.nameEntry = DirectEntry(text="", scale=0.1, command=self.callSetNameAndSave, extraArgs=[fullFilePath],
                                          initialText="Shrek", focus=1, focusInCommand=self.clearText,
                                          frameSize=(0, 15, 0, 1))
@@ -133,6 +133,7 @@ class Save(object):
         self.slot2Button.removeNode()
         self.slot3Button.removeNode()
         self.slot4Button.removeNode()
-        if self.nameEntry: self.nameEntry.remove_node()
+        if self.nameEntry: self.nameEntry.removeNode()
+        if self.overwriteDialog: self.overwriteDialog.removeNode()
 
 

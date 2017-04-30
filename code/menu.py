@@ -22,7 +22,7 @@ class MainMenu(object):
         self.popupSeq = None
 
     def switchToStats(self):
-        if base.tricker.hasName():
+        if base.currPlayer.hasName():
             base.gameFSM.demand('Stats')
         else:
             s = 'No save data found. Press Play to make a character!'
@@ -51,13 +51,13 @@ class MainMenu(object):
         self.nameEntry.enterText('')
 
     def callSetNameAndDemandPlay(self, textEntered):
-        base.tricker.setName(textEntered)
-        print(base.tricker.saveDict)
+        base.currPlayer.setName(textEntered)
+        print(base.currPlayer.saveDict)
         self.nameEntry.detachNode()
         base.gameFSM.demand('Play')
 
     def switchToPlay(self):
-        if base.tricker.hasName():
+        if base.currPlayer.hasName():
             base.gameFSM.demand('Play')
         else:
             self.nameEntry = DirectEntry(text="", scale=0.1, command=self.callSetNameAndDemandPlay,

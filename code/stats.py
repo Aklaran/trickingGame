@@ -34,7 +34,7 @@ class Stats(object):
             parent=self.parentNode
         )
 
-        skillDict = base.tricker.getSkillDict()
+        skillDict = base.currPlayer.getSkillDict()
         for trick in skillDict:
             s = str(trick + ": " + str(int(skillDict[trick])))
             l = DirectLabel(text=s, text_scale=0.1)

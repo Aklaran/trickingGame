@@ -11,9 +11,12 @@ from tricker import Tricker
 # TODO: All this shit
 """
 Make a screen/menu class that has functions like popuptext, transitions, etc
-Add a late/early modifier to the timing
 dem animations
     really good raiz: guthrie slow 2:27
+turn-based multiplayer
+socket-based multiplayer
+Modify initial name entry and stats screen to work with 2 players
+Take out name entry functionality in save screen (redundant?)
 """
 
 
@@ -21,7 +24,9 @@ class Main(ShowBase):
     def __init__(self):
         ShowBase.__init__(self)
 
-        self.tricker = Tricker()
+        self.player1 = Tricker()
+        self.player2 = Tricker()
+        self.currPlayer = self.player1
 
         self.gameFSM = GameFSM('Core Game FSM')
         self.gameFSM.demand('MainMenu')
