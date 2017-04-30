@@ -7,7 +7,7 @@ class MainMenu(object):
         self.parentNode = aspect2d.attachNewNode('MainMenu')
 
         self.trainButton = DirectButton(text=("Train"), scale = 0.25,
-                                       command=self.switchToTrain, parent=self.parentNode)
+                                       command=self.openPlayerSelDialog, parent=self.parentNode)
         self.battleButton = DirectButton(text=("Battle"), scale = 0.25,
                                          command=self.switchToBattle, parent=self.parentNode,
                                          pos=(0.0, 0, 0.325))
@@ -29,8 +29,21 @@ class MainMenu(object):
         self.nameEntry = None
         self.popupText = None
         self.popupSeq = None
+        self.playerSelDialog = None
 
         taskMgr.add(self.drawMenuGraphicsTask, 'drawMenu')
+
+    def openPlayerSelDialog(self):
+        self.playerSelDialog = DirectDialog(dialogName="LoadDialog", scale=1,
+                                       text="Who is training?",
+                                       buttonTextList=[base.player1.getName(), base.player2.getName()],
+                                       buttonValueList=[base.player1,base.player2],
+                                       command=self.trainPlayerSel)
+
+    def trainPlayerSel(self, player):
+        base.setPlayer(player)
+        self.switchToTrain()
+        self.playerSelDialog.detachNode()
 
     def switchToBattle(self):
         pass

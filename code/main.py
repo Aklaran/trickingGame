@@ -31,6 +31,9 @@ class Main(ShowBase):
         self.gameFSM = GameFSM('Core Game FSM')
         self.gameFSM.demand('MainMenu')
 
+    def setPlayer(self, player):
+        self.currPlayer = player
+
 
 class GameFSM(FSM):
     def enterMainMenu(self):
