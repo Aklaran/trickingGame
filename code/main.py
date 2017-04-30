@@ -16,8 +16,9 @@ dem animations
     really good raiz: guthrie slow 2:27
 turn-based multiplayer
 socket-based multiplayer
-Modify initial name entry and stats screen to work with 2 players
+Modifynstats screen to work with 2 players
 Take out name entry functionality in save screen (redundant?)
+Make buttons not accept input when you're in a dialog/text entry
 """
 
 
@@ -27,7 +28,7 @@ class Main(ShowBase):
 
         self.player1 = Tricker()
         self.player2 = Tricker()
-        self.currPlayer = self.player1
+        self.currPlayer = self.player2
 
         self.gameFSM = GameFSM('Core Game FSM')
         self.gameFSM.demand('MainMenu')

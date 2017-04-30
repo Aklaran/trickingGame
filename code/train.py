@@ -81,6 +81,9 @@ class TrainingMode(DirectObject):
                                       parent=base.a2dTopLeft, fg=(1, 1, 1, 1))
         self.comboText  = OnscreenText(pos=(0.3, -0.2), scale=0.1,
                                       parent=base.a2dTopLeft, fg=(1, 1, 1, 1))
+        self.nameText   = OnscreenText(text=base.currPlayer.getName(),
+                                       pos=(0, -0.2), scale = 0.1,
+                                       parent = base.a2dTopCenter, fg=(1,1,1,1))
 
         taskMgr.add(self.drawUITask, 'drawUI')
 
@@ -193,6 +196,7 @@ class TrainingMode(DirectObject):
         self.scoreText.removeNode()
         self.comboText.removeNode()
         self.timingText.removeNode()
+        self.nameText.removeNode()
         self.uiDrawerNode.removeNode()
         base.currPlayer.actor.detach_node()
         self.trickerDummyNode.remove_node()

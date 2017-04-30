@@ -60,6 +60,8 @@ class Tricker(object):
         self.comboContinuing = False
         self.falling = False
 
+    def comboHasEnded(self):
+        return self.comboEnded
     def hasName(self):
         return self.name != ''
     def isFalling(self):
@@ -140,6 +142,8 @@ class Tricker(object):
     """
 
     def tryTrick(self, trick, taskMgr):
+        print("currPlayer:", base.currPlayer.getName())
+        print("me: ", self.getName())
         if self.comboEnded:
             print("combo ended - no more tricking 4 u")
             return
@@ -234,6 +238,7 @@ class Tricker(object):
             fallSeq = Sequence(self.actor.actorInterval(badAnim, endFrame=regFrames),
                                Func(self.playFall, badAnim, fallingAnim, regFrames))
             fallSeq.start()
+
        # if moveInterval: moveInterval.start()
         return Task.done
 

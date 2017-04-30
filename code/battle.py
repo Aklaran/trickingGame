@@ -15,8 +15,8 @@ class BattleMode(DirectObject):
         self.scene = loader.loadModel("tp/models/environment")
         self.scene.reparentTo(self.parentNode)
 
-        # Load and transform the actor
-        base.currPlayer.actor.reparent_to(self.parentNode)
+        # Load the actor
+        base.currPlayer.actor.reparentTo(self.parentNode)
 
         # define controls
         self.accept('d', self.debug)
@@ -47,7 +47,7 @@ class BattleMode(DirectObject):
         # IMPORTANT: camera is parented to the dummyNode in tricker's chest
         self.trickerDummyNode = self.parentNode.attach_new_node("trickerDummyNode")
         self.trickerDummyNode.reparentTo(self.parentNode)
-        self.trickerDummyNode.setPos(0, 0, 3)
+        self.trickerDummyNode.setPos(base.currPlayer.actor, (0, 0, 3))
 
         camera.reparentTo(self.parentNode)
 
@@ -81,8 +81,13 @@ class BattleMode(DirectObject):
                                       parent=base.a2dTopLeft, fg=(1, 1, 1, 1))
         self.comboText  = OnscreenText(pos=(0.3, -0.2), scale=0.1,
                                       parent=base.a2dTopLeft, fg=(1, 1, 1, 1))
+        self.nameText   = OnscreenText(text=base.currPlayer.getName(),
+                                       pos=(0, -0.2), scale = 0.1,
+                                       parent = base.a2dTopCenter, fg=(1,1,1,1))
 
         taskMgr.add(self.drawUITask, 'drawUI')
+
+        taskMgr.add(self.checkGameStateTask, 'checkGameState')
 
     def switchToMainMenu(self):
         base.gameFSM.demand('MainMenu')
@@ -133,6 +138,23 @@ class BattleMode(DirectObject):
 
         return Task.cont
 
+    def checkGameStateTask(self, task):
+        if base.currPlayer.comboHasEnded() or base.currPlayer.isFalling():
+            taskMgr.doMethodLater(2, self.changeTurnTask, 'changeTurn',
+                                  extraArgs=[base.currPlayer], appendTask=True)
+            return Task.done
+        return Task.cont
+
+    def changeTurnTask(self, currPlayer, task):
+        currPlayer.reset()
+        currPlayer.actor.setPos(0,0,-10)
+        if currPlayer == base.player1:
+            base.setPlayer(base.player2)
+        elif currPlayer == base.player2:
+            base.setPlayer(base.player1)
+        self.reset()
+        return Task.done
+
     def FollowCamTask(self, task):
 
         # base.disableMouse()
@@ -175,13 +197,14 @@ class BattleMode(DirectObject):
         print('debug')
 
     def reset(self):
-        taskMgr.remove("follow")
-        base.currPlayer.actor.setPos(0, 0, 0)
-        self.trickerDummyNode.setPos(base.currPlayer.actor, (0,0,3))
+        # taskMgr.remove("follow")
+        # base.currPlayer.actor.setPos(0, 0, 0)
+        # self.trickerDummyNode.setPos(base.currPlayer.actor, (0,0,3))
+        # self.nameText.setText(base.currPlayer.getName())
+        self.destroy()
+        self.__init__()
         base.currPlayer.reset()
-        self.prevTrick = None
-
-        taskMgr.add(self.FollowCamTask, 'follow')
+        # taskMgr.add(self.FollowCamTask, 'follow')
 
     def destroy(self):
         self.ignoreAll()
@@ -193,6 +216,7 @@ class BattleMode(DirectObject):
         self.scoreText.removeNode()
         self.comboText.removeNode()
         self.timingText.removeNode()
+        self.nameText.removeNode()
         self.uiDrawerNode.removeNode()
         base.currPlayer.actor.detach_node()
         self.trickerDummyNode.remove_node()
