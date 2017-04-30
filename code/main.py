@@ -1,7 +1,7 @@
 from direct.showbase.ShowBase import ShowBase
 from direct.fsm.FSM import FSM
 
-from play import TrickingGame
+from train import TrainingMode
 from menu import MainMenu
 from save import Save
 from load import Load
@@ -40,12 +40,12 @@ class GameFSM(FSM):
         self.menu.destroy()
         del self.menu
 
-    def enterPlay(self):
-        self.play = TrickingGame()
+    def enterTrain(self):
+        self.train = TrainingMode()
 
-    def exitPlay(self):
-        self.play.destroy()
-        del self.play
+    def exitTrain(self):
+        self.train.destroy()
+        del self.train
 
     def enterSave(self):
         self.save = Save()

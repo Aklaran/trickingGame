@@ -7,7 +7,7 @@ Add bad animation to list of animations
 Add to tricker.trickMap
 Add to skills dict in tricker.saveDict
 Initialize with other tricks in tricker.updateAttributes()
-Add event handler (self.accept) to play.py
+Add event handler (self.accept) to train.py
 """
 
 

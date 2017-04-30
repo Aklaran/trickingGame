@@ -7,7 +7,7 @@ from panda3d.core import *
 from math import *
 
 
-class TrickingGame(DirectObject):
+class TrainingMode(DirectObject):
     def __init__(self):
 
         # Load the environment model

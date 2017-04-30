@@ -6,8 +6,11 @@ class MainMenu(object):
     def __init__(self):
         self.parentNode = aspect2d.attachNewNode('MainMenu')
 
-        self.playButton = DirectButton(text=("Play"), scale = 0.25,
-                                       command=self.switchToPlay, parent=self.parentNode)
+        self.trainButton = DirectButton(text=("Train"), scale = 0.25,
+                                       command=self.switchToTrain, parent=self.parentNode)
+        self.battleButton = DirectButton(text=("Battle"), scale = 0.25,
+                                         command=self.switchToBattle, parent=self.parentNode,
+                                         pos=(0.0, 0, 0.325))
         self.saveButton = DirectButton(text=('Save'), scale=0.25,
                                        command=self.switchToSave, parent=self.parentNode,
                                        pos=(0.0, 0, -0.325))
@@ -28,6 +31,9 @@ class MainMenu(object):
         self.popupSeq = None
 
         taskMgr.add(self.drawMenuGraphicsTask, 'drawMenu')
+
+    def switchToBattle(self):
+        pass
 
     def drawMenuGraphicsTask(self, task):
         player1Str = "Player 1: " + base.player1.getName()
@@ -67,17 +73,17 @@ class MainMenu(object):
     def clearText(self):
         self.nameEntry.enterText('')
 
-    def callSetNameAndDemandPlay(self, textEntered):
+    def callSetNameAndDemandTrain(self, textEntered):
         base.currPlayer.setName(textEntered)
         print(base.currPlayer.saveDict)
         self.nameEntry.detachNode()
-        base.gameFSM.demand('Play')
+        base.gameFSM.demand('Train')
 
-    def switchToPlay(self):
+    def switchToTrain(self):
         if base.currPlayer.hasName():
-            base.gameFSM.demand('Play')
+            base.gameFSM.demand('Train')
         else:
-            self.nameEntry = DirectEntry(text="", scale=0.1, command=self.callSetNameAndDemandPlay,
+            self.nameEntry = DirectEntry(text="", scale=0.1, command=self.callSetNameAndDemandTrain,
                                              initialText="Enter Name", focus=1, focusInCommand=self.clearText,
                                              frameSize=(0, 15, 0, 1))
 
@@ -86,7 +92,7 @@ class MainMenu(object):
 
     def destroy(self):
         self.parentNode.removeNode()
-        self.playButton.removeNode()
+        self.trainButton.removeNode()
         self.saveButton.removeNode()
         self.loadButton.removeNode()
         self.statsButton.removeNode()
