@@ -73,10 +73,10 @@ class TrickingGame(DirectObject):
         self.uiDrawerNode = self.uiDrawer.getRoot()
         self.uiDrawerNode.reparentTo(base.a2dBottomCenter)
 
-        self.gradeText = OnscreenText(pos=(-0.2, 0.1), scale=0.3,
-                                      parent=base.a2dBottomRight)
-        self.scoreText = OnscreenText(pos=(-0.3, -0.2), scale=0.1,
-                                      parent=base.a2dTopRight, fg=(1, 1, 1, 1))
+        self.gradeText = OnscreenText(pos=(-0.2, -0.3), scale=0.3,
+                                      parent=base.a2dTopRight)
+        self.scoreText = OnscreenText(pos=(0.3, -0.3), scale=0.1,
+                                      parent=base.a2dTopLeft, fg=(1, 1, 1, 1))
         self.comboText = OnscreenText(pos=(0.3, -0.2), scale=0.1,
                                       parent=base.a2dTopLeft, fg=(1, 1, 1, 1))
         # DirectButton(text=("OK", "click!", "rolling over", "disabled"))
