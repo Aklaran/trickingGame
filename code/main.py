@@ -2,6 +2,7 @@ from direct.showbase.ShowBase import ShowBase
 from direct.fsm.FSM import FSM
 
 from train import TrainingMode
+from battle import BattleMode
 from menu import MainMenu
 from save import Save
 from load import Load
@@ -49,6 +50,13 @@ class GameFSM(FSM):
     def exitTrain(self):
         self.train.destroy()
         del self.train
+
+    def enterBattle(self):
+        self.battle = BattleMode()
+
+    def exitBattle(self):
+        self.battle.destroy()
+        del self.battle
 
     def enterSave(self):
         self.save = Save()

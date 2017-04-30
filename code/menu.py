@@ -9,7 +9,7 @@ class MainMenu(object):
         self.trainButton = DirectButton(text=("Train"), scale = 0.25,
                                        command=self.openPlayerSelDialog, parent=self.parentNode)
         self.battleButton = DirectButton(text=("Battle"), scale = 0.25,
-                                         command=self.switchToBattle, parent=self.parentNode,
+                                         command=self.battleNameEntry, parent=self.parentNode,
                                          pos=(0.0, 0, 0.325))
         self.saveButton = DirectButton(text=('Save'), scale=0.25,
                                        command=self.switchToSave, parent=self.parentNode,
@@ -45,8 +45,19 @@ class MainMenu(object):
         self.switchToTrain()
         self.playerSelDialog.detachNode()
 
-    def switchToBattle(self):
-        pass
+    def battleNameEntry(self):
+        if not base.player1.hasName():
+            self.nameEntry = DirectEntry(text="", scale=0.1,
+                                         command=self.callSetNameAndDemandBattle, extraArgs=[base.player1, base.player2],
+                                         initialText="Enter Name for Player 1", focus=1, focusInCommand=self.clearText,
+                                         frameSize=(0, 15, 0, 1))
+        elif not base.player2.hasName():
+            self.nameEntry = DirectEntry(text="", scale=0.1,
+                                         command=self.callSetNameAndDemandBattle, extraArgs=[base.player2,base.player1],
+                                         initialText="Enter Name for Player 2", focus=1, focusInCommand=self.clearText,
+                                         frameSize=(0, 15, 0, 1))
+        else:
+            base.gameFSM.demand('Battle')
 
     def drawMenuGraphicsTask(self, task):
         player1Str = "Player 1: " + base.player1.getName()
@@ -92,6 +103,15 @@ class MainMenu(object):
         self.nameEntry.detachNode()
         base.gameFSM.demand('Train')
 
+    def callSetNameAndDemandBattle(self, textEntered, player, otherPlayer):
+        player.setName(textEntered)
+        self.nameEntry.detachNode()
+        if not otherPlayer.hasName():
+            self.battleNameEntry()
+        else:
+            base.gameFSM.demand('Battle')
+
+
     def switchToTrain(self):
         if base.currPlayer.hasName():
             base.gameFSM.demand('Train')
@@ -99,6 +119,7 @@ class MainMenu(object):
             self.nameEntry = DirectEntry(text="", scale=0.1, command=self.callSetNameAndDemandTrain,
                                              initialText="Enter Name", focus=1, focusInCommand=self.clearText,
                                              frameSize=(0, 15, 0, 1))
+
 
     def switchToSave(self):
         base.gameFSM.demand('Save')
