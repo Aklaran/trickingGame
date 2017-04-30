@@ -79,29 +79,44 @@ class Trick():
     # 4 - F
     def getGrade(self, inputFrame):
 
-        distFromSS = abs(self.sweetSpot - inputFrame)
+        signedDSS = self.sweetSpot - inputFrame
+        distFromSS = abs(signedDSS)
 
-        # print("sweetSpot:", self.sweetSpot)
-        # print("inputFrame:", inputFrame)
-        # print("distFromSS:", distFromSS)
+
+        print("sweetSpot:", self.sweetSpot)
+        print("inputFrame:", inputFrame)
+        print("distFromSS:", distFromSS)
 
         eMargin = self.duration * .2 / self.difficulty
         bMargin = eMargin * .3
         cMargin = eMargin * .6
 
-        # print("eMargin = %d bMargin = %d cMargin = %d"
-        # % (eMargin, bMargin, cMargin))
+        print("eMargin = %d bMargin = %d cMargin = %d"
+        % (eMargin, bMargin, cMargin))
 
         if distFromSS == 0:
-            return 0
+            return (0, "perfect")
         elif distFromSS <= bMargin:
-            return 1
+            if signedDSS < 0:
+                return (1, "slightly early")
+            elif signedDSS > 0:
+                return (1, "slightly late")
         elif distFromSS <= cMargin:
-            return 2
+            if signedDSS < 0:
+                return (2, "late")
+            elif signedDSS > 0:
+                return (2, "early")
         elif distFromSS <= eMargin:
-            return 3
+            if signedDSS < 0:
+                return (3, "very late")
+            elif signedDSS > 0:
+                return (3, "very early")
         elif distFromSS > eMargin:
-            return 4
+            if signedDSS < 0:
+                return (4, "late af")
+            elif signedDSS > 0:
+                return (4, "early af")
+        return(0, "tf boi u fuked up")
 
     def getStamCost(self, grade):
         fullCost = self.baseStamCost
@@ -139,10 +154,6 @@ class Trick():
             b = 0
 
         goodPercentage = b - (inverseSkillPercentage * b)
-
-        print("skillModifier:", self.skillModifier)
-        print("grade:", grade)
-        print("goodPercentage:", goodPercentage)
         return goodPercentage
 
 

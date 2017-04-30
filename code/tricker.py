@@ -52,7 +52,8 @@ class Tricker(object):
         # NOTE: You MUST add any vals here to the reset function below
         self.prevTrick = None
         self.stamina = self.totalStam
-        self.grade = ' '
+        self.grade = ''
+        self.timing = ''
         self.score = 0
         self.comboLength = 0
         self.comboEnded = False
@@ -71,10 +72,11 @@ class Tricker(object):
         return str(int(self.comboLength))
     def getScore(self):
         return str(int(self.score))
+    def getTiming(self):
+        return self.timing
 
     def updateStamina(self, stamCost):
         self.stamina -= stamCost
-        print("stamina:", self.stamina)
     def updateComboLength(self):
         self.comboLength += 1
     def updateScore(self, trick, goodPercentage, comboLength):
@@ -124,7 +126,6 @@ class Tricker(object):
 
         self.saveDict['skills'][str(trick)] += exp
         self.updateAttributes()
-        print("level:", self.level)
 
     """
     debug animation procedure:
@@ -170,7 +171,7 @@ class Tricker(object):
             numFrames = self.actor.getNumFrames(currAnim)
             framesLeft = numFrames - currFrame
 
-            self.grade = self.prevTrick.getGrade(currFrame)
+            (self.grade, self.timing) = self.prevTrick.getGrade(currFrame)
             if self.grade == 4:
                 self.falling = True
                 print("Combo failed - falling")
@@ -204,8 +205,6 @@ class Tricker(object):
         self.increaseSkill(trick, self.grade)
 
     def doTrickTask(self, animation, goodPercentage, distance, taskMgr, task):
-        print(self.actor.getNumFrames('cork'))
-
         self.actor.setPos(self.actor, distance)
         badAnim = str(animation + "_bad")
 
@@ -220,9 +219,6 @@ class Tricker(object):
             self.comboContinuing = False
             taskMgr.add(self.checkTrickStateTask, 'checkTrickState',
                         extraArgs=[animation], appendTask=True)
-
-            print("moved with goodPercentage:", goodPercentage)
-
 
         elif self.isFalling():
             trick = self.trickMap[animation]
@@ -265,7 +261,8 @@ class Tricker(object):
     def reset(self):
         self.prevTrick = None
         self.stamina = 100
-        self.grade = ' '
+        self.grade = ''
+        self.timing = ''
         self.score = 0
         self.comboLength = 0
         self.comboEnded = False

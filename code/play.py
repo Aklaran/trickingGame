@@ -73,13 +73,14 @@ class TrickingGame(DirectObject):
         self.uiDrawerNode = self.uiDrawer.getRoot()
         self.uiDrawerNode.reparentTo(base.a2dBottomCenter)
 
-        self.gradeText = OnscreenText(pos=(-0.2, -0.3), scale=0.3,
+        self.gradeText  = OnscreenText(pos=(-0.4, -0.3), scale=0.3,
                                       parent=base.a2dTopRight)
-        self.scoreText = OnscreenText(pos=(0.3, -0.3), scale=0.1,
+        self.timingText = OnscreenText(pos=(-0.5, -0.5), scale = 0.075,
+                                       parent=base.a2dTopRight, fg=(1, 1, 1, 1))
+        self.scoreText  = OnscreenText(pos=(0.3, -0.3), scale=0.1,
                                       parent=base.a2dTopLeft, fg=(1, 1, 1, 1))
-        self.comboText = OnscreenText(pos=(0.3, -0.2), scale=0.1,
+        self.comboText  = OnscreenText(pos=(0.3, -0.2), scale=0.1,
                                       parent=base.a2dTopLeft, fg=(1, 1, 1, 1))
-        # DirectButton(text=("OK", "click!", "rolling over", "disabled"))
 
         taskMgr.add(self.drawUITask, 'drawUI')
 
@@ -109,6 +110,9 @@ class TrickingGame(DirectObject):
 
         comboStr = "combo: " + base.tricker.getComboLength()
         self.comboText.setText(comboStr)
+
+        timingStr = "timing: " + base.tricker.getTiming()
+        self.timingText.setText(timingStr)
 
         self.uiDrawer.begin()
         timingWidth = 1.5

@@ -12,7 +12,6 @@ from tricker import Tricker
 """
 Make a screen/menu class that has functions like popuptext, transitions, etc
 Add a late/early modifier to the timing
-Reformat UI
 dem animations
     really good raiz: guthrie slow 2:27
 """
