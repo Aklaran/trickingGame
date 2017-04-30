@@ -134,6 +134,5 @@ class Save(object):
         self.slot3Button.removeNode()
         self.slot4Button.removeNode()
         if self.nameEntry: self.nameEntry.removeNode()
-        if self.overwriteDialog: self.overwriteDialog.removeNode()
 
 

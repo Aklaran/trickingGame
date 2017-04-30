@@ -64,6 +64,9 @@ class Tricker(object):
         return self.name != ''
     def isFalling(self):
         return self.falling
+    def getName(self):
+        if self.hasName(): return self.name
+        else: return "NewPlayer"
     def getSaveDict(self):
         return self.saveDict
     def getSkillDict(self):

@@ -112,4 +112,3 @@ class Load(object):
         self.slot3Button.removeNode()
         self.slot4Button.removeNode()
         if self.popupText: self.popupText.removeNode()
-        if self.loadDialog: self.loadDialog.removeNode()
