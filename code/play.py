@@ -71,8 +71,7 @@ class TrickingGame(DirectObject):
         self.uiDrawer = MeshDrawer2D()
         self.uiDrawer.setBudget(10)
         self.uiDrawerNode = self.uiDrawer.getRoot()
-        self.uiDrawerNode.reparentTo(render2d)
-        self.uiDrawerNode.reparentTo(base.a2dBottomLeftNs)
+        self.uiDrawerNode.reparentTo(base.a2dBottomCenter)
 
         self.gradeText = OnscreenText(pos=(-0.2, 0.1), scale=0.3,
                                       parent=base.a2dBottomRight)
@@ -112,17 +111,19 @@ class TrickingGame(DirectObject):
         self.comboText.setText(comboStr)
 
         self.uiDrawer.begin()
+        timingWidth = 1.5
+        stamWidth = 1
 
         # stambar
         sp = base.tricker.stamPercentage()
-        self.uiDrawer.rectangleRaw(0.1, 0.1, 1, 0.1, 0, 0, 0, 0, (1, 0, 0, 1))  # red
-        self.uiDrawer.rectangleRaw(0.1, 0.1, 1 * sp, 0.1, 0, 0, 0, 0, (0, 1, 0, 1))  # green
+        self.uiDrawer.rectangleRaw(-timingWidth/2, 0.15, stamWidth, 0.1, 0, 0, 0, 0, (1, 0, 0, 1))  # red
+        self.uiDrawer.rectangleRaw(-timingWidth/2, 0.15, stamWidth * sp, 0.1, 0, 0, 0, 0, (0, 1, 0, 1))  # green
 
         # timingBar
         gp = base.tricker.getTimingBarPercentage()
 
-        self.uiDrawer.rectangleRaw(0.1, 0.3, 1, 0.1, 0, 0, 0, 0, (0, 0, 0, 1))
-        self.uiDrawer.rectangleRaw(0.1, 0.3, gp, 0.1, 0, 0, 0, 0, (1, 1, 1, 1))
+        self.uiDrawer.rectangleRaw(-timingWidth/2, 0.25, timingWidth, 0.1, 0, 0, 0, 0, (0, 0, 0, 1))
+        self.uiDrawer.rectangleRaw(-timingWidth/2, 0.25, gp*timingWidth, 0.1, 0, 0, 0, 0, (1, 1, 1, 1))
 
         self.uiDrawer.end()
 
@@ -157,7 +158,7 @@ class TrickingGame(DirectObject):
         ny = 0
         if dy-error == 0: ny = 0
         else:
-            try: ny = log(-dy) / 35
+            try: ny = log(-dy) / 15
             except: self.trickerDummyNode.setPos((base.tricker.actor), (0,0,3))
         self.trickerDummyNode.setPos(self.trickerDummyNode, (0,ny,0))
         camera.reparentTo(self.trickerDummyNode)

@@ -178,9 +178,6 @@ class Tricker(object):
 
             stamCost = trick.getStamCost(self.grade)
             self.updateStamina(stamCost)
-            if self.getTrueStam() < 0:
-                self.falling = True
-                return("Ran out of stamina mid-trick - falling!")
 
             goodPercentage = trick.getGoodPercentage(self.grade)
 
@@ -193,6 +190,10 @@ class Tricker(object):
             self.updateStamina(stamCost)
             taskMgr.add(self.doTrickTask, 'doTrick',
                              extraArgs=[str(trick), goodPercentage, distance, taskMgr], appendTask=True)
+
+        if self.getTrueStam() < 0:                             
+            self.falling = True
+            return("Ran out of stamina mid-trick - falling!")
 
         if not self.falling:
             self.updateScore(trick, goodPercentage, self.comboLength)
