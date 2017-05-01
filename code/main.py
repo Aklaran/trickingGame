@@ -28,7 +28,7 @@ class Main(ShowBase):
 
         self.player1 = Tricker()
         self.player2 = Tricker()
-        self.currPlayer = self.player2
+        self.currPlayer = self.player1
 
         self.gameFSM = GameFSM('Core Game FSM')
         self.gameFSM.demand('MainMenu')

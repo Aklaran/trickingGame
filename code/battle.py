@@ -17,6 +17,7 @@ class BattleMode(DirectObject):
 
         # Load the actor
         base.currPlayer.actor.reparentTo(self.parentNode)
+        base.currPlayer.actor.setPos(0,0,0)
 
         # define controls
         self.accept('d', self.debug)

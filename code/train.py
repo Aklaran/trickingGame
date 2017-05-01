@@ -201,3 +201,4 @@ class TrainingMode(DirectObject):
         base.currPlayer.actor.detach_node()
         self.trickerDummyNode.remove_node()
         self.scene.remove_node()
+        base.currPlayer.reset()
