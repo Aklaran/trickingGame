@@ -11,7 +11,7 @@ class TrainingMode(DirectObject):
     def __init__(self):
 
         # Load the environment model
-        self.parentNode = render.attachNewNode('Play')
+        self.parentNode = render.attachNewNode('TrainMode')
         self.scene = loader.loadModel("tp/models/environment")
         self.scene.reparentTo(self.parentNode)
 

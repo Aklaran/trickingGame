@@ -11,7 +11,7 @@ class BattleMode(DirectObject):
     def __init__(self):
 
         # Load the environment model
-        self.parentNode = render.attachNewNode('Play')
+        self.parentNode = render.attachNewNode('BattleMode')
         self.scene = loader.loadModel("tp/models/environment")
         self.scene.reparentTo(self.parentNode)
 
@@ -20,7 +20,6 @@ class BattleMode(DirectObject):
 
         # define controls
         self.accept('d', self.debug)
-        self.accept('r', self.reset)
         self.accept('e', self.switchToMainMenu)
 
         self.accept('shift-y', base.currPlayer.tryTrick, [base.currPlayer.gainer, taskMgr])
@@ -140,6 +139,7 @@ class BattleMode(DirectObject):
 
     def checkGameStateTask(self, task):
         if base.currPlayer.comboHasEnded() or base.currPlayer.isFalling():
+            self.ignoreAll()
             taskMgr.doMethodLater(2, self.changeTurnTask, 'changeTurn',
                                   extraArgs=[base.currPlayer], appendTask=True)
             return Task.done
@@ -147,7 +147,6 @@ class BattleMode(DirectObject):
 
     def changeTurnTask(self, currPlayer, task):
         currPlayer.reset()
-        currPlayer.actor.setPos(0,0,-10)
         if currPlayer == base.player1:
             base.setPlayer(base.player2)
         elif currPlayer == base.player2:
@@ -201,10 +200,12 @@ class BattleMode(DirectObject):
         # base.currPlayer.actor.setPos(0, 0, 0)
         # self.trickerDummyNode.setPos(base.currPlayer.actor, (0,0,3))
         # self.nameText.setText(base.currPlayer.getName())
+        self.ignoreAll()
+        base.currPlayer.actor.detachNode()
+        base.currPlayer.actor.reparentTo(self.parentNode)
+        base.currPlayer.reset()
         self.destroy()
         self.__init__()
-        base.currPlayer.reset()
-        # taskMgr.add(self.FollowCamTask, 'follow')
 
     def destroy(self):
         self.ignoreAll()
@@ -219,5 +220,5 @@ class BattleMode(DirectObject):
         self.nameText.removeNode()
         self.uiDrawerNode.removeNode()
         base.currPlayer.actor.detach_node()
-        self.trickerDummyNode.remove_node()
-        self.scene.remove_node()
+        self.trickerDummyNode.removeNode()
+        self.scene.detachNode()
