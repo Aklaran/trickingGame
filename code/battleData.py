@@ -5,6 +5,18 @@ class BattleData(object):
         self.p1Rounds = 0
         self.p2Rounds = 0
 
+    def getScore(self, player):
+        if player == 1:
+            return self.p1Score
+        elif player == 2:
+            return self.p2Score
+
+    def getRounds(self, player):
+        if player == 1:
+            return self.p1Rounds
+        elif player == 2:
+            return self.p2Rounds
+
     def getOppScore(self):
         if base.currPlayer == base.player1:
             score = self.p2Score
@@ -13,7 +25,7 @@ class BattleData(object):
         return score
     def updateScore(self, tricker, score, falling):
         if falling:
-            return
+            score //= 2
         if tricker == base.player1:
             self.p1Score = score
             print("updated p1score:", self.p1Score)
@@ -30,9 +42,9 @@ class BattleData(object):
             self.p1Score = self.p2Score = 0
 
     def checkEndGame(self):
-        if self.p1Rounds == 3:
+        if self.p1Rounds == 1:
             return base.player1
-        elif self.p2Rounds == 3:
+        elif self.p2Rounds == 1:
             return base.player2
         return None
 

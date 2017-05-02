@@ -84,13 +84,17 @@ class BattleMode(DirectObject):
                                        parent=base.a2dTopRight, fg=(1, 1, 1, 1))
         self.scoreText  = OnscreenText(pos=(0.3, -0.3), scale=0.1,
                                       parent=base.a2dTopLeft, fg=(1, 1, 1, 1))
-        self.oppScoreText  = OnscreenText(pos=(0.3, -0.4), scale=0.1,
+        self.oppScoreText  = OnscreenText(pos=(0.5, -0.4), scale=0.1,
                                       parent=base.a2dTopLeft, fg=(1, 1, 1, 1))
         self.comboText  = OnscreenText(pos=(0.3, -0.2), scale=0.1,
                                       parent=base.a2dTopLeft, fg=(1, 1, 1, 1))
         self.nameText   = OnscreenText(text=base.currPlayer.getName(),
                                        pos=(0, -0.2), scale = 0.1,
                                        parent = base.a2dTopCenter, fg=(1,1,1,1))
+        self.p1RoundText = OnscreenText(pos=(0.3, 0.2), scale = 0.1,
+                                        parent = base.a2dBottomLeft, fg=(1,1,1,1))
+        self.p2RoundText = OnscreenText(pos=(-0.3, 0.2), scale=0.1,
+                                        parent=base.a2dBottomRight, fg=(1, 1, 1, 1))
 
         self.endGameDialog = None
 
@@ -119,12 +123,16 @@ class BattleMode(DirectObject):
             self.gradeText.setText('F')
             self.gradeText.setFg((1, 0, 0, 1))
 
-        p1RoundStr = base.player1.getName()
+        p1RoundStr = base.player1.getName() + "\n" + str(self.battleData.getRounds(1))
+        p2RoundStr = base.player2.getName() + "\n" + str(self.battleData.getRounds(2))
+        self.p1RoundText.setText(p1RoundStr)
+        self.p2RoundText.setText(p2RoundStr)
+
 
         scoreStr = "score: " + base.currPlayer.getScore()
         self.scoreText.setText(scoreStr)
 
-        oppScoreStr = "opponent score: " + str(self.battleData.getOppScore())
+        oppScoreStr = "score to beat: " + str(self.battleData.getOppScore())
         self.oppScoreText.setText(oppScoreStr)
 
         comboStr = "combo: " + base.currPlayer.getComboLength()
@@ -171,7 +179,7 @@ class BattleMode(DirectObject):
         self.battleData.checkEndRound()
         winner = self.battleData.checkEndGame()
         if winner:
-            taskMgr.doMethodLater(2, showEndGameDialogTask, extraArgs=[winner], appendTask=True)
+            taskMgr.doMethodLater(1, self.showEndGameDialogTask, 'EndGameDialog', extraArgs=[winner], appendTask=True)
             return Task.done
         if currPlayer == base.player1:
             base.setPlayer(base.player2)
@@ -192,29 +200,10 @@ class BattleMode(DirectObject):
             self.switchToMainMenu()
         elif arg == 'rematch':
             self.battleData.__init__()
-            self.changeTurnTask()
-        self.endGameDialog.detachNode()
+            base.currPlayer = base.player1
+            self.reset()
 
     def FollowCamTask(self, task):
-
-        # base.disableMouse()
-        # self.camera.setPos(self.camera.getPos())
-
-        #  frame = globalClock.getFrameCount()
-        #
-        # (x, y, z) = base.currPlayer.actor.getPos()
-        # oy = camera.getPos()[1]
-        # ox = base.camera.getPos()[0]
-        # dy = oy - y
-        # error = 20 - dy
-        # ny = error/2
-        # camera.setPos(ox, ny, 10)
-        # # print(list(base.camera.getPos()))
-        # # print("oy = %d, ny = %d, error = %d" %(oy, ny, error))
-        #  #print(list(base.camera.getPos())[1])
-        #
-        #  # IMPORTANT: THIS MUST GO AT THE END
-        #  base.camera.lookAt(base.currPlayerDummyNode)
         (ox, oy, oz) = self.trickerDummyNode.getPos()
         (tx, ty, tz) = base.currPlayer.actor.getPos()
         dx = ox - tx
@@ -260,12 +249,16 @@ class BattleMode(DirectObject):
         self.comboText.removeNode()
         self.timingText.removeNode()
         self.nameText.removeNode()
+        self.p1RoundText.removeNode()
+        self.p2RoundText.removeNode()
         self.uiDrawerNode.removeNode()
         base.currPlayer.actor.detach_node()
         self.trickerDummyNode.removeNode()
         self.scene.detachNode()
+        if self.endGameDialog: self.endGameDialog.removeNode()
 
     def reInit(self):
+
         # Load the environment model
         self.parentNode = render.attachNewNode('BattleMode')
         self.scene = loader.loadModel("tp/models/environment")
@@ -273,7 +266,7 @@ class BattleMode(DirectObject):
 
         # Load the actor
         base.currPlayer.actor.reparentTo(self.parentNode)
-        base.currPlayer.actor.setPos(0, 0, 0)
+        base.currPlayer.actor.setPos(0,0,0)
         base.currPlayer.actor.pose('btwist', 1)
 
         # define controls
@@ -330,19 +323,23 @@ class BattleMode(DirectObject):
         self.uiDrawerNode = self.uiDrawer.getRoot()
         self.uiDrawerNode.reparentTo(base.a2dBottomCenter)
 
-        self.gradeText = OnscreenText(pos=(-0.4, -0.3), scale=0.3,
+        self.gradeText  = OnscreenText(pos=(-0.4, -0.3), scale=0.3,
                                       parent=base.a2dTopRight)
-        self.timingText = OnscreenText(pos=(-0.5, -0.5), scale=0.075,
+        self.timingText = OnscreenText(pos=(-0.5, -0.5), scale = 0.075,
                                        parent=base.a2dTopRight, fg=(1, 1, 1, 1))
-        self.scoreText = OnscreenText(pos=(0.3, -0.3), scale=0.1,
+        self.scoreText  = OnscreenText(pos=(0.3, -0.3), scale=0.1,
                                       parent=base.a2dTopLeft, fg=(1, 1, 1, 1))
-        self.oppScoreText = OnscreenText(pos=(0.3, -0.4), scale=0.1,
-                                         parent=base.a2dTopLeft, fg=(1, 1, 1, 1))
-        self.comboText = OnscreenText(pos=(0.3, -0.2), scale=0.1,
+        self.oppScoreText  = OnscreenText(pos=(0.5, -0.4), scale=0.1,
                                       parent=base.a2dTopLeft, fg=(1, 1, 1, 1))
-        self.nameText = OnscreenText(text=base.currPlayer.getName(),
-                                     pos=(0, -0.2), scale=0.1,
-                                     parent=base.a2dTopCenter, fg=(1, 1, 1, 1))
+        self.comboText  = OnscreenText(pos=(0.3, -0.2), scale=0.1,
+                                      parent=base.a2dTopLeft, fg=(1, 1, 1, 1))
+        self.nameText   = OnscreenText(text=base.currPlayer.getName(),
+                                       pos=(0, -0.2), scale = 0.1,
+                                       parent = base.a2dTopCenter, fg=(1,1,1,1))
+        self.p1RoundText = OnscreenText(pos=(0.3, 0.2), scale = 0.1,
+                                        parent = base.a2dBottomLeft, fg=(1,1,1,1))
+        self.p2RoundText = OnscreenText(pos=(-0.3, 0.2), scale=0.1,
+                                        parent=base.a2dBottomRight, fg=(1, 1, 1, 1))
 
         self.endGameDialog = None
 
