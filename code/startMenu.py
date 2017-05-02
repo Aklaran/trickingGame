@@ -28,12 +28,15 @@ class StartMenu(Menu):
         self.player2Text = OnscreenText(pos=(-0.5, -0.2), scale=0.075,
                                       parent=base.a2dTopRight)
 
+        self.guiElements = [self.trainButton, self.battleButton, self.saveButton, self.loadButton, self.statsButton]
+
         self.nameEntry = None
         self.playerSelDialog = None
 
         taskMgr.add(self.drawMenuGraphicsTask, 'drawMenu')
 
     def openPlayerSelDialog(self):
+        self.disableGUI()
         self.playerSelDialog = DirectDialog(dialogName="LoadDialog", scale=1,
                                        text="Who is training?",
                                        buttonTextList=[base.player1.getName(), base.player2.getName()],
@@ -41,11 +44,13 @@ class StartMenu(Menu):
                                        command=self.trainPlayerSel)
 
     def trainPlayerSel(self, player):
+        self.enableGUI()
         base.setPlayer(player)
         self.switchToTrain()
         self.playerSelDialog.detachNode()
 
     def battleNameEntry(self):
+        self.disableGUI()
         if not base.player1.hasName():
             self.nameEntry = DirectEntry(text="", scale=0.1,
                                          command=self.callSetNameAndDemandBattle, extraArgs=[base.player1, base.player2],
@@ -57,6 +62,7 @@ class StartMenu(Menu):
                                          initialText="Enter Name for Player 2", focus=1, focusInCommand=self.clearText,
                                          frameSize=(0, 15, 0, 1))
         else:
+            self.enableGUI()
             base.gameFSM.demand('Battle')
 
     def drawMenuGraphicsTask(self, task):
@@ -69,12 +75,14 @@ class StartMenu(Menu):
         return Task.cont
 
     def callSetNameAndDemandTrain(self, textEntered):
+        self.enableGUI()
         base.currPlayer.setName(textEntered)
         print(base.currPlayer.saveDict)
         self.nameEntry.detachNode()
         base.gameFSM.demand('Train')
 
     def callSetNameAndDemandBattle(self, textEntered, player, otherPlayer):
+        self.enableGUI()
         player.setName(textEntered)
         self.nameEntry.detachNode()
         if not otherPlayer.hasName():

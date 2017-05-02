@@ -11,13 +11,10 @@ from tricker import Tricker
 
 # TODO: All this shit
 """
-Make a screen/menu class that has functions like popuptext, transitions, etc
 dem animations
     really good raiz: guthrie slow 2:27
-turn-based multiplayer
-socket-based multiplayer
 Modifynstats screen to work with 2 players
-Take out name entry functionality in save screen (redundant?)
+
 Make buttons not accept input when you're in a dialog/text entry
 """
 

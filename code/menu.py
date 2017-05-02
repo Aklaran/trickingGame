@@ -16,6 +16,15 @@ class Menu(object):
         self.slot4Button = None
         self.backButton = None
 
+        self.guiElements = []
+
+    def disableGUI(self):
+        for element in self.guiElements:
+            element['state'] = DGG.DISABLED
+    def enableGUI(self):
+        for element in self.guiElements:
+            element["state"] = DGG.NORMAL
+
     def switchToMainMenu(self):
         base.gameFSM.demand('StartMenu')
 

@@ -43,6 +43,7 @@ class TrainingMode(Play):
         taskMgr.remove('follow')
         taskMgr.remove('drawUI')
         taskMgr.remove('checkTrickState')
+        taskMgr.remove('checkGameState')
         self.parentNode.removeNode()
         self.startMenuButton.removeNode()
         self.gradeText.removeNode()
