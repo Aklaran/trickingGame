@@ -11,7 +11,7 @@ from battleData import BattleData
 
 class BattleMode(DirectObject):
     def __init__(self):
-        
+
         self.battleData = BattleData()
 
         # Load the environment model
@@ -22,6 +22,7 @@ class BattleMode(DirectObject):
         # Load the actor
         base.currPlayer.actor.reparentTo(self.parentNode)
         base.currPlayer.actor.setPos(0,0,0)
+        base.currPlayer.actor.pose('btwist', 1)
 
         # define controls
         self.accept('d', self.debug)
@@ -118,6 +119,8 @@ class BattleMode(DirectObject):
             self.gradeText.setText('F')
             self.gradeText.setFg((1, 0, 0, 1))
 
+        p1RoundStr = base.player1.getName()
+
         scoreStr = "score: " + base.currPlayer.getScore()
         self.scoreText.setText(scoreStr)
 
@@ -150,15 +153,20 @@ class BattleMode(DirectObject):
         return Task.cont
 
     def checkGameStateTask(self, task):
-        if base.currPlayer.comboHasEnded() or base.currPlayer.isFalling():
+        if base.currPlayer.comboHasEnded():
             self.ignoreAll()
             taskMgr.doMethodLater(2, self.changeTurnTask, 'changeTurn',
-                                  extraArgs=[base.currPlayer], appendTask=True)
+                                  extraArgs=[base.currPlayer, False], appendTask=True)
+            return Task.done
+        elif base.currPlayer.isFalling():
+            self.ignoreAll()
+            taskMgr.doMethodLater(4, self.changeTurnTask, 'changeTurn',
+                                  extraArgs=[base.currPlayer, True], appendTask=True)
             return Task.done
         return Task.cont
 
-    def changeTurnTask(self, currPlayer, task):
-        self.battleData.updateScore(currPlayer, int(currPlayer.getScore()))
+    def changeTurnTask(self, currPlayer, falling, task):
+        self.battleData.updateScore(currPlayer, int(currPlayer.getScore()), falling)
         currPlayer.reset()
         self.battleData.checkEndRound()
         winner = self.battleData.checkEndGame()
@@ -266,6 +274,7 @@ class BattleMode(DirectObject):
         # Load the actor
         base.currPlayer.actor.reparentTo(self.parentNode)
         base.currPlayer.actor.setPos(0, 0, 0)
+        base.currPlayer.actor.pose('btwist', 1)
 
         # define controls
         self.accept('d', self.debug)

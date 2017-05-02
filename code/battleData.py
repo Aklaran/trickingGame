@@ -11,7 +11,9 @@ class BattleData(object):
         elif base.currPlayer == base.player2:
             score = self.p1Score
         return score
-    def updateScore(self, tricker, score):
+    def updateScore(self, tricker, score, falling):
+        if falling:
+            return
         if tricker == base.player1:
             self.p1Score = score
             print("updated p1score:", self.p1Score)
