@@ -39,6 +39,8 @@ class Load(Menu):
                                         command=self.openLoadDialog, extraArgs=['4'],
                                         parent=self.parentNode)
 
+        self.guiElements = [self.slot1Button, self.slot2Button, self.slot3Button, self.slot4Button, self.backButton]
+
         self.loadDialog = None
 
     def openLoadDialog(self, slot):
@@ -47,6 +49,7 @@ class Load(Menu):
         fullFilePath = os.path.join(projectPath, saveFilePath)
         fullFilePathPathwtf = Path(os.path.join(projectPath, saveFilePath))
         if fullFilePathPathwtf.is_file():
+            self.disableGUI()
             self.loadDialog = DirectDialog(dialogName="LoadDialog", scale=1,
                                            text="Which player do you want to load to?",
                                            buttonTextList=['Player 1', 'Player 2'],
@@ -64,4 +67,5 @@ class Load(Menu):
             self.drawPopupText(s)
             print("player1: ", base.player1.saveDict)
             print("player2: ", base.player2.saveDict)
+        self.enableGUI()
         self.loadDialog.detachNode()

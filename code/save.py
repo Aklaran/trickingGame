@@ -39,6 +39,8 @@ class Save(Menu):
                                         command=self.saveGame, extraArgs=['4'],
                                         parent=self.parentNode)
 
+        self.guiElements = [self.slot1Button, self.slot2Button, self.slot3Button, self.slot4Button, self.backButton]
+
         self.name = ''
         self.nameEntry = None
         self.overwrite = False
@@ -46,6 +48,7 @@ class Save(Menu):
         self.playerSelDialog = None
 
     def setName(self, textEntered, player, fullFilePath):
+        self.enableGUI()
         base.currPlayer.setName(textEntered)
         print(player.saveDict)
         self.nameEntry.detachNode()
@@ -65,6 +68,7 @@ class Save(Menu):
             self.overwriteDialog.detachNode()
         else:
             self.overwrite = False
+            self.enableGUI()
             self.overwriteDialog.detachNode()
         if self.overwrite:
             self.openPlayerSelDialog(fullFilePath)
@@ -77,6 +81,7 @@ class Save(Menu):
                                             command=self.playerSel, extraArgs=[fullFilePath])
     def playerSel(self, player, fullFilePath):
         if player.hasName():
+            self.enableGUI()
             self.playerSelDialog.detachNode()
             self.existingNameSave(player, fullFilePath)
         else:
@@ -99,8 +104,10 @@ class Save(Menu):
         fullFilePathPathwtf = Path(os.path.join(projectPath, saveFilePath))
         print(fullFilePathPathwtf.is_file())
         if fullFilePathPathwtf.is_file():
+            self.disableGUI()
             self.openOverwriteDialog(fullFilePath)
         else:
+            self.disableGUI()
             self.openPlayerSelDialog(fullFilePath)
 
     def switchToMainMenu(self):
