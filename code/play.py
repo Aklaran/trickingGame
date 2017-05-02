@@ -19,26 +19,14 @@ class Play(DirectObject):
         base.currPlayer.actor.pose('btwist', 1)
 
         # define controls
-        self.accept('e', self.switchToMainMenu)
-
         self.accept('shift-y', base.currPlayer.tryTrick, [base.currPlayer.gainer, taskMgr])
         self.accept('shift-u', base.currPlayer.tryTrick, [base.currPlayer.gswitch, taskMgr])
         self.accept('shift-i', base.currPlayer.tryTrick, [base.currPlayer.cork, taskMgr])
         self.accept('shift-o', base.currPlayer.tryTrick, [base.currPlayer.doublecork, taskMgr])
-        #
-        # self.accept('shift-control-y', base.currPlayer.tryTrick, [base.currPlayer.flash])
-        # self.accept('shift-control-u', base.currPlayer.tryTrick, [base.currPlayer.full])
-        # self.accept('shift-control-i', base.currPlayer.tryTrick, [base.currPlayer.dubfull])
-        # self.accept('shift-control-o', base.currPlayer.tryTrick, [base.currPlayer.terada])
-        #
-        # self.accept('control-y', base.currPlayer.tryTrick, [base.currPlayer.c540])
-        # self.accept('control-u', base.currPlayer.tryTrick, [base.currPlayer.c720])
-        # self.accept('control-i', base.currPlayer.tryTrick, [base.currPlayer.c900])
-        # self.accept('control-o', base.currPlayer.tryTrick, [base.currPlayer.c1080])
-        #
+
         # self.accept('alt-y', base.currPlayer.tryTrick, [base.currPlayer.tdraiz])
         self.accept('alt-u', base.currPlayer.tryTrick, [base.currPlayer.btwist, taskMgr])
-        # self.accept('alt-i', base.currPlayer.tryTrick, [base.currPlayer.snapu])
+        # self.accept('alt-i', base.currPlayer.tryTrick, [base.currPlayer.c540])
         # self.accept('alt-o', base.currPlayer.tryTrick, [base.currPlayer.cartFull])
 
         # Add SetCameraTask to task manager
@@ -82,6 +70,13 @@ class Play(DirectObject):
         self.nameText = OnscreenText(text=base.currPlayer.getName(),
                                      pos=(0, -0.2), scale=0.1,
                                      parent=base.a2dTopCenter, fg=(1, 1, 1, 1))
+        self.stamBarText = OnscreenText(text="stamina", scale=0.075,
+                                        parent=base.a2dBottomCenter, pos=(-0.6,0.09),
+                                        fg=(1,1,1,1))
+        self.timeBarText = OnscreenText(text="timing", scale=0.075,
+                                        parent=base.a2dBottomCenter, pos=(-0.625, 0.375),
+                                        fg=(1, 1, 1, 1))
+
         self.startMenuButton = DirectButton(text=("quit"), scale=0.05,
                                             command=self.switchToMainMenu, parent=base.a2dTopLeft,
                                             pos=(0.0525, 0, -0.045))
@@ -113,7 +108,8 @@ class Play(DirectObject):
         comboStr = "combo: " + base.currPlayer.getComboLength()
         self.comboText.setText(comboStr)
 
-        timingStr = "timing: " + base.currPlayer.getTiming()
+        if base.currPlayer.getTiming(): timingStr = "timing: " + base.currPlayer.getTiming()
+        else: timingStr = ''
         self.timingText.setText(timingStr)
 
         if mode == 'battle':
@@ -177,6 +173,8 @@ class Play(DirectObject):
         self.comboText.removeNode()
         self.timingText.removeNode()
         self.nameText.removeNode()
+        self.stamBarText.removeNode()
+        self.timeBarText.removeNode()
         self.uiDrawerNode.removeNode()
         base.currPlayer.actor.detach_node()
         self.trickerDummyNode.remove_node()
