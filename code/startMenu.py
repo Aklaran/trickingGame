@@ -1,5 +1,4 @@
 from direct.gui.DirectGui import *
-from direct.interval.IntervalGlobal import Sequence, Func, Wait
 from direct.task import Task
 
 from menu import Menu

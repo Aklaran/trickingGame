@@ -25,7 +25,7 @@ class Tricker(object):
                             "cork_bad"       : "tp/anims/tricker-cork",
                             "doublecork"     : "tp/anims/tricker-dubcork",
                             "doublecork_bad" : "tp/anims/tricker-dubcork",
-                            "fall_swing"     : "tp/anims/tricker-fall-left"})
+                            "fall_swing"     : "tp/anims/tricker-fall-left"} )
 
         #saveDict contains all info to be saved to json
         self.saveDict = { 'name': '',

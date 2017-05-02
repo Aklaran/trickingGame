@@ -48,7 +48,7 @@ class Load(Menu):
         fullFilePathPathwtf = Path(os.path.join(projectPath, saveFilePath))
         if fullFilePathPathwtf.is_file():
             self.loadDialog = DirectDialog(dialogName="LoadDialog", scale=1,
-                                           text="Which player do do you want to load to?",
+                                           text="Which player do you want to load to?",
                                            buttonTextList=['Player 1', 'Player 2'],
                                            buttonValueList=[base.player1,base.player2],
                                            command=self.loadGame, extraArgs=[fullFilePath])

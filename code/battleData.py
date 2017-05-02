@@ -4,6 +4,7 @@ class BattleData(object):
         self.p2Score = 0
         self.p1Rounds = 0
         self.p2Rounds = 0
+        self.roundsToWin = 1
 
     def getScore(self, player):
         if player == 1:
@@ -42,9 +43,9 @@ class BattleData(object):
             self.p1Score = self.p2Score = 0
 
     def checkEndGame(self):
-        if self.p1Rounds == 1:
+        if self.p1Rounds == self.roundsToWin:
             return base.player1
-        elif self.p2Rounds == 1:
+        elif self.p2Rounds == self.roundsToWin:
             return base.player2
         return None
 

@@ -43,41 +43,54 @@ class Save(Menu):
         self.nameEntry = None
         self.overwrite = False
         self.overwriteDialog = None
+        self.playerSelDialog = None
 
-    def callSetNameAndSave(self, textEntered, fullFilePath):
+    def setName(self, textEntered, player, fullFilePath):
         base.currPlayer.setName(textEntered)
-        print(base.currPlayer.saveDict)
-        self.name = textEntered
+        print(player.saveDict)
         self.nameEntry.detachNode()
-        with open(fullFilePath, 'w+') as outfile:
-            json.dump(base.currPlayer.saveDict, outfile,
-                      sort_keys=True, indent=4, ensure_ascii=False)
-        self.destroy()
-        self.__init__()
+        self.existingNameSave(player, fullFilePath)
 
-    def existingNameSave(self, fullFilePath):
+    def existingNameSave(self, player, fullFilePath):
         with open(fullFilePath, 'w+') as outfile:
-            json.dump(base.currPlayer.saveDict, outfile,
+            json.dump(player.saveDict, outfile,
                       sort_keys=True, indent=4, ensure_ascii=False)
         self.destroy()
         self.__init__()
 
     # callback function to set  text
-    def itemSelAndNameEntry(self, arg, fullFilePath):
+    def itemSel(self, arg, fullFilePath):
         if (arg):
-            output = "Button Selected is: Yes"
             self.overwrite = True
             self.overwriteDialog.detachNode()
         else:
             self.overwrite = False
             self.overwriteDialog.detachNode()
         if self.overwrite:
-            if not base.currPlayer.hasName():
-                self.nameEntry = DirectEntry(text="", scale=0.1, command=self.callSetNameAndSave,
-                                             extraArgs=[fullFilePath],
-                                             initialText="Shrek", focus=1, focusInCommand=self.clearText,
-                                             frameSize=(0, 15, 0, 1))
-            else: self.existingNameSave(fullFilePath)
+            self.openPlayerSelDialog(fullFilePath)
+
+    def openPlayerSelDialog(self, fullFilePath):
+        self.playerSelDialog = DirectDialog(dialogName="playerSelDialog", scale=1,
+                                            text="Which player do you want to save?",
+                                            buttonTextList=[base.player1.getName(), base.player2.getName()],
+                                            buttonValueList=[base.player1, base.player2],
+                                            command=self.playerSel, extraArgs=[fullFilePath])
+    def playerSel(self, player, fullFilePath):
+        if player.hasName():
+            self.playerSelDialog.detachNode()
+            self.existingNameSave(player, fullFilePath)
+        else:
+            self.playerSelDialog.detachNode()
+            self.openNameEntry(player, fullFilePath)
+
+    def openNameEntry(self, player, fullFilePath):
+        self.nameEntry = DirectEntry(text="", scale=0.1, command=self.setName, extraArgs=[player, fullFilePath],
+                                     initialText="Shrek", focus=1, focusInCommand=self.clearText,
+                                     frameSize=(0, 15, 0, 1))
+    def openOverwriteDialog(self, fullFilePath):
+        self.overwriteDialog = YesNoDialog(dialogName="OverwriteDialog", scale=1,
+                                           text="Do you want to overwrite?", command=self.itemSel,
+                                           extraArgs=[fullFilePath])
 
     def saveGame(self, slot):
         saveFilePath = self.getSaveFilePath(slot)
@@ -86,17 +99,9 @@ class Save(Menu):
         fullFilePathPathwtf = Path(os.path.join(projectPath, saveFilePath))
         print(fullFilePathPathwtf.is_file())
         if fullFilePathPathwtf.is_file():
-            self.overwriteDialog = YesNoDialog(dialogName="OverwriteDialog", scale=1,
-                                               text="Do you want to overwrite?", command=self.itemSelAndNameEntry,
-                                               extraArgs=[fullFilePath])
-
+            self.openOverwriteDialog(fullFilePath)
         else:
-            if not base.currPlayer.hasName():
-                self.nameEntry = DirectEntry(text="", scale=0.1, command=self.callSetNameAndSave, extraArgs=[fullFilePath],
-                                         initialText="Shrek", focus=1, focusInCommand=self.clearText,
-                                         frameSize=(0, 15, 0, 1))
-            else:
-                self.existingNameSave(fullFilePath)
+            self.openPlayerSelDialog(fullFilePath)
 
     def switchToMainMenu(self):
         base.gameFSM.demand('StartMenu')
