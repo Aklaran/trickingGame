@@ -6,9 +6,13 @@ from panda3d.core import *
 
 from math import *
 
+from battleData import BattleData
+
 
 class BattleMode(DirectObject):
     def __init__(self):
+        
+        self.battleData = BattleData()
 
         # Load the environment model
         self.parentNode = render.attachNewNode('BattleMode')
@@ -79,11 +83,15 @@ class BattleMode(DirectObject):
                                        parent=base.a2dTopRight, fg=(1, 1, 1, 1))
         self.scoreText  = OnscreenText(pos=(0.3, -0.3), scale=0.1,
                                       parent=base.a2dTopLeft, fg=(1, 1, 1, 1))
+        self.oppScoreText  = OnscreenText(pos=(0.3, -0.4), scale=0.1,
+                                      parent=base.a2dTopLeft, fg=(1, 1, 1, 1))
         self.comboText  = OnscreenText(pos=(0.3, -0.2), scale=0.1,
                                       parent=base.a2dTopLeft, fg=(1, 1, 1, 1))
         self.nameText   = OnscreenText(text=base.currPlayer.getName(),
                                        pos=(0, -0.2), scale = 0.1,
                                        parent = base.a2dTopCenter, fg=(1,1,1,1))
+
+        self.endGameDialog = None
 
         taskMgr.add(self.drawUITask, 'drawUI')
 
@@ -112,6 +120,9 @@ class BattleMode(DirectObject):
 
         scoreStr = "score: " + base.currPlayer.getScore()
         self.scoreText.setText(scoreStr)
+
+        oppScoreStr = "opponent score: " + str(self.battleData.getOppScore())
+        self.oppScoreText.setText(oppScoreStr)
 
         comboStr = "combo: " + base.currPlayer.getComboLength()
         self.comboText.setText(comboStr)
@@ -147,13 +158,34 @@ class BattleMode(DirectObject):
         return Task.cont
 
     def changeTurnTask(self, currPlayer, task):
+        self.battleData.updateScore(currPlayer, int(currPlayer.getScore()))
         currPlayer.reset()
+        self.battleData.checkEndRound()
+        winner = self.battleData.checkEndGame()
+        if winner:
+            taskMgr.doMethodLater(2, showEndGameDialogTask, extraArgs=[winner], appendTask=True)
+            return Task.done
         if currPlayer == base.player1:
             base.setPlayer(base.player2)
         elif currPlayer == base.player2:
             base.setPlayer(base.player1)
         self.reset()
         return Task.done
+
+    def showEndGameDialogTask(self, winner, taskMgr):
+        endGameStr = winner.getName() + " wins!"
+        self.endGameDialog = DirectDialog(dialogName="endGameDialog", scale=1,
+                                       text=endGameStr,
+                                       buttonTextList=['Quit', 'Rematch'],
+                                       buttonValueList=['quit', 'rematch'],
+                                       command=self.endGameItemSel)
+    def endGameItemSel(self, arg):
+        if arg == 'quit':
+            self.switchToMainMenu()
+        elif arg == 'rematch':
+            self.battleData.__init__()
+            self.changeTurnTask()
+        self.endGameDialog.detachNode()
 
     def FollowCamTask(self, task):
 
@@ -206,7 +238,7 @@ class BattleMode(DirectObject):
         base.currPlayer.actor.reparentTo(self.parentNode)
         base.currPlayer.reset()
         self.destroy()
-        self.__init__()
+        self.reInit()
 
     def destroy(self):
         self.ignoreAll()
@@ -216,6 +248,7 @@ class BattleMode(DirectObject):
         self.parentNode.removeNode()
         self.gradeText.removeNode()
         self.scoreText.removeNode()
+        self.oppScoreText.removeNode()
         self.comboText.removeNode()
         self.timingText.removeNode()
         self.nameText.removeNode()
@@ -223,3 +256,87 @@ class BattleMode(DirectObject):
         base.currPlayer.actor.detach_node()
         self.trickerDummyNode.removeNode()
         self.scene.detachNode()
+
+    def reInit(self):
+        # Load the environment model
+        self.parentNode = render.attachNewNode('BattleMode')
+        self.scene = loader.loadModel("tp/models/environment")
+        self.scene.reparentTo(self.parentNode)
+
+        # Load the actor
+        base.currPlayer.actor.reparentTo(self.parentNode)
+        base.currPlayer.actor.setPos(0, 0, 0)
+
+        # define controls
+        self.accept('d', self.debug)
+        self.accept('e', self.switchToMainMenu)
+
+        self.accept('shift-y', base.currPlayer.tryTrick, [base.currPlayer.gainer, taskMgr])
+        self.accept('shift-u', base.currPlayer.tryTrick, [base.currPlayer.gswitch, taskMgr])
+        self.accept('shift-i', base.currPlayer.tryTrick, [base.currPlayer.cork, taskMgr])
+        self.accept('shift-o', base.currPlayer.tryTrick, [base.currPlayer.doublecork, taskMgr])
+        #
+        # self.accept('shift-control-y', base.currPlayer.tryTrick, [base.currPlayer.flash])
+        # self.accept('shift-control-u', base.currPlayer.tryTrick, [base.currPlayer.full])
+        # self.accept('shift-control-i', base.currPlayer.tryTrick, [base.currPlayer.dubfull])
+        # self.accept('shift-control-o', base.currPlayer.tryTrick, [base.currPlayer.terada])
+        #
+        # self.accept('control-y', base.currPlayer.tryTrick, [base.currPlayer.c540])
+        # self.accept('control-u', base.currPlayer.tryTrick, [base.currPlayer.c720])
+        # self.accept('control-i', base.currPlayer.tryTrick, [base.currPlayer.c900])
+        # self.accept('control-o', base.currPlayer.tryTrick, [base.currPlayer.c1080])
+        #
+        # self.accept('alt-y', base.currPlayer.tryTrick, [base.currPlayer.tdraiz])
+        self.accept('alt-u', base.currPlayer.tryTrick, [base.currPlayer.btwist, taskMgr])
+        # self.accept('alt-i', base.currPlayer.tryTrick, [base.currPlayer.snapu])
+        # self.accept('alt-o', base.currPlayer.tryTrick, [base.currPlayer.cartFull])
+
+        # Add SetCameraTask to task manager
+        # IMPORTANT: camera is parented to the dummyNode in tricker's chest
+        self.trickerDummyNode = self.parentNode.attach_new_node("trickerDummyNode")
+        self.trickerDummyNode.reparentTo(self.parentNode)
+        self.trickerDummyNode.setPos(base.currPlayer.actor, (0, 0, 3))
+
+        camera.reparentTo(self.parentNode)
+
+        camera.setPos(0, -20, 10)
+        camera.lookAt(self.trickerDummyNode)
+
+        taskMgr.add(self.FollowCamTask, "follow")
+
+        # Lights
+        alight = AmbientLight('alight')
+        alight.setColor(VBase4(0.5, 0.5, 0.5, 1))
+        alnp = self.parentNode.attachNewNode(alight)
+        self.parentNode.setLight(alnp)
+
+        plight = PointLight('plight')
+        plight.setColor(VBase4(1, 1, 1, 1))
+        plnp = self.parentNode.attachNewNode(plight)
+        plnp.setPos(20, 0, 20)
+        self.parentNode.setLight(plnp)
+
+        self.uiDrawer = MeshDrawer2D()
+        self.uiDrawer.setBudget(10)
+        self.uiDrawerNode = self.uiDrawer.getRoot()
+        self.uiDrawerNode.reparentTo(base.a2dBottomCenter)
+
+        self.gradeText = OnscreenText(pos=(-0.4, -0.3), scale=0.3,
+                                      parent=base.a2dTopRight)
+        self.timingText = OnscreenText(pos=(-0.5, -0.5), scale=0.075,
+                                       parent=base.a2dTopRight, fg=(1, 1, 1, 1))
+        self.scoreText = OnscreenText(pos=(0.3, -0.3), scale=0.1,
+                                      parent=base.a2dTopLeft, fg=(1, 1, 1, 1))
+        self.oppScoreText = OnscreenText(pos=(0.3, -0.4), scale=0.1,
+                                         parent=base.a2dTopLeft, fg=(1, 1, 1, 1))
+        self.comboText = OnscreenText(pos=(0.3, -0.2), scale=0.1,
+                                      parent=base.a2dTopLeft, fg=(1, 1, 1, 1))
+        self.nameText = OnscreenText(text=base.currPlayer.getName(),
+                                     pos=(0, -0.2), scale=0.1,
+                                     parent=base.a2dTopCenter, fg=(1, 1, 1, 1))
+
+        self.endGameDialog = None
+
+        taskMgr.add(self.drawUITask, 'drawUI')
+
+        taskMgr.add(self.checkGameStateTask, 'checkGameState')
