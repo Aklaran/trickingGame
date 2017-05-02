@@ -39,22 +39,7 @@ class TrainingMode(Play):
         return Task.done
 
     def destroy(self):
-        self.ignoreAll()
-        taskMgr.remove('follow')
-        taskMgr.remove('drawUI')
-        taskMgr.remove('checkTrickState')
-        taskMgr.remove('checkGameState')
-        self.parentNode.removeNode()
-        self.startMenuButton.removeNode()
-        self.gradeText.removeNode()
-        self.scoreText.removeNode()
-        self.comboText.removeNode()
-        self.timingText.removeNode()
-        self.nameText.removeNode()
-        self.uiDrawerNode.removeNode()
-        base.currPlayer.actor.detach_node()
-        self.trickerDummyNode.remove_node()
-        self.scene.remove_node()
-        base.currPlayer.reset()
+        super().destroy()
+
 
 

@@ -13,9 +13,20 @@ from tricker import Tricker
 """
 dem animations
     really good raiz: guthrie slow 2:27
-Modifynstats screen to work with 2 players
+    540
+    initital for swing
+    final for swing
+    bad anims:
+        gswitch
+        cork
+        dbl cork
+        btwist
+        540
+        raiz
+Modify stats screen to work with 2 players
 
-Make buttons not accept input when you're in a dialog/text entry
+tutorial
+slow mo
 """
 
 class Main(ShowBase):
