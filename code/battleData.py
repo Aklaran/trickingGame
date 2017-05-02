@@ -25,7 +25,7 @@ class BattleData(object):
         return score
     def updateScore(self, tricker, score, falling):
         if falling:
-            score //= 2
+            score == 1
         if tricker == base.player1:
             self.p1Score = score
             print("updated p1score:", self.p1Score)

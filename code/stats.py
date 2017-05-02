@@ -1,7 +1,10 @@
 from direct.gui.DirectGui import *
 
-class Stats(object):
+from menu import Menu
+
+class Stats(Menu):
     def __init__(self):
+        super().__init__()
         self.parentNode = aspect2d.attachNewNode('Stats')
 
         self.backButton = DirectButton(text=("back"), scale = 0.25,
@@ -40,11 +43,6 @@ class Stats(object):
             l = DirectLabel(text=s, text_scale=0.1)
             self.statsList.addItem(l)
         ## End cited code block
-
-
-
-    def switchToMainMenu(self):
-        base.gameFSM.demand('MainMenu')
 
     def destroy(self):
         self.parentNode.removeNode()

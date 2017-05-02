@@ -3,7 +3,7 @@ from direct.fsm.FSM import FSM
 
 from train import TrainingMode
 from battle import BattleMode
-from menu import MainMenu
+from startMenu import StartMenu
 from save import Save
 from load import Load
 from stats import Stats
@@ -21,7 +21,6 @@ Take out name entry functionality in save screen (redundant?)
 Make buttons not accept input when you're in a dialog/text entry
 """
 
-
 class Main(ShowBase):
     def __init__(self):
         ShowBase.__init__(self)
@@ -31,17 +30,17 @@ class Main(ShowBase):
         self.currPlayer = self.player1
 
         self.gameFSM = GameFSM('Core Game FSM')
-        self.gameFSM.demand('MainMenu')
+        self.gameFSM.demand('StartMenu')
 
     def setPlayer(self, player):
         self.currPlayer = player
 
 
 class GameFSM(FSM):
-    def enterMainMenu(self):
-        self.menu = MainMenu()
+    def enterStartMenu(self):
+        self.menu = StartMenu()
 
-    def exitMainMenu(self):
+    def exitStartMenu(self):
         self.menu.destroy()
         del self.menu
 

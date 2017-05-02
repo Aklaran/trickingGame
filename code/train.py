@@ -88,7 +88,7 @@ class TrainingMode(DirectObject):
         taskMgr.add(self.drawUITask, 'drawUI')
 
     def switchToMainMenu(self):
-        base.gameFSM.demand('MainMenu')
+        base.gameFSM.demand('StartMenu')
 
     def drawUITask(self, task):
         grade = base.currPlayer.getGrade()

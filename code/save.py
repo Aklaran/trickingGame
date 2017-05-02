@@ -1,11 +1,13 @@
 from direct.gui.DirectGui import *
 
+from menu import Menu
 import os
 import json
 from pathlib import Path
 
-class Save(object):
+class Save(Menu):
     def __init__(self):
+        super().__init__()
         self.parentNode = aspect2d.attachNewNode('Save')
 
         self.backButton = DirectButton(text=("back"), scale = 0.25,
@@ -60,9 +62,6 @@ class Save(object):
         self.destroy()
         self.__init__()
 
-    def clearText(self):
-        self.nameEntry.enterText('')
-
     # callback function to set  text
     def itemSelAndNameEntry(self, arg, fullFilePath):
         if (arg):
@@ -106,33 +105,7 @@ class Save(object):
             else:
                 self.existingNameSave(fullFilePath)
 
-
-
-    def loadButtonData(self, slot):
-        saveFilePath = self.getSaveFilePath(slot)
-        projectPath = os.path.dirname(os.path.dirname((__file__)))
-        fullFilePath = os.path.join(projectPath, saveFilePath)
-        fullFilePathPathwtf = Path(os.path.join(projectPath, saveFilePath))
-        if fullFilePathPathwtf.is_file():
-            with open(fullFilePath, 'r') as infile:
-                saveDict = json.load(infile)
-                name = saveDict['name']
-                level = saveDict['level']
-                return name + "   lv" + str(level)
-        else:
-            return None
-
-
     def switchToMainMenu(self):
-        base.gameFSM.demand('MainMenu')
-
-    def destroy(self):
-        self.parentNode.removeNode()
-        self.backButton.removeNode()
-        self.slot1Button.removeNode()
-        self.slot2Button.removeNode()
-        self.slot3Button.removeNode()
-        self.slot4Button.removeNode()
-        if self.nameEntry: self.nameEntry.removeNode()
+        base.gameFSM.demand('StartMenu')
 
 

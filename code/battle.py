@@ -103,7 +103,7 @@ class BattleMode(DirectObject):
         taskMgr.add(self.checkGameStateTask, 'checkGameState')
 
     def switchToMainMenu(self):
-        base.gameFSM.demand('MainMenu')
+        base.gameFSM.demand('StartMenu')
 
     def drawUITask(self, task):
         grade = base.currPlayer.getGrade()
