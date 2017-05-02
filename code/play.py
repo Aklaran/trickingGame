@@ -84,7 +84,7 @@ class Play(DirectObject):
                                      parent=base.a2dTopCenter, fg=(1, 1, 1, 1))
         self.startMenuButton = DirectButton(text=("quit"), scale=0.05,
                                             command=self.switchToMainMenu, parent=base.a2dTopLeft,
-                                            pos=(0.275, 0, -0.225))
+                                            pos=(0.0525, 0, -0.045))
 
     def switchToMainMenu(self):
         base.gameFSM.demand('StartMenu')

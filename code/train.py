@@ -15,15 +15,28 @@ class TrainingMode(Play):
 
         taskMgr.add(self.drawUITask, 'drawUI', extraArgs=['train'],
                     appendTask=True)
+        taskMgr.add(self.checkGameStateTask, 'checkGameState')
 
-    def reset(self):
+    def checkGameStateTask(self, task):
+        if base.currPlayer.comboHasEnded():
+            taskMgr.doMethodLater(2, self.reset, 'reset')
+            return Task.done
+        if base.currPlayer.isFalling():
+            taskMgr.doMethodLater(3, self.reset, 'reset')
+            return Task.done
+        return Task.cont
+
+    def reset(self, task):
         taskMgr.remove("follow")
         base.currPlayer.actor.setPos(0, 0, 0)
+        base.currPlayer.actor.pose('btwist', 1)
         self.trickerDummyNode.setPos(base.currPlayer.actor, (0,0,3))
         base.currPlayer.reset()
-        self.prevTrick = None
 
         taskMgr.add(self.FollowCamTask, 'follow')
+        taskMgr.add(self.checkGameStateTask, 'checkGameState')
+
+        return Task.done
 
     def destroy(self):
         self.ignoreAll()
