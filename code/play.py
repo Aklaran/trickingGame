@@ -109,7 +109,7 @@ class Play(DirectObject):
         self.comboText.setText(comboStr)
 
         if base.currPlayer.getTiming(): timingStr = "timing: " + base.currPlayer.getTiming()
-        else: timingStr = ''
+        else: timingStr = ""
         self.timingText.setText(timingStr)
 
         if mode == 'battle':
@@ -127,14 +127,16 @@ class Play(DirectObject):
 
         # stambar
         sp = base.currPlayer.stamPercentage()
-        self.uiDrawer.rectangleRaw(-timingWidth / 2, 0.15, stamWidth, 0.1, 0, 0, 0, 0, (1, 0, 0, 1))  # red
-        self.uiDrawer.rectangleRaw(-timingWidth / 2, 0.15, stamWidth * sp, 0.1, 0, 0, 0, 0, (0, 1, 0, 1))  # green
+        self.uiDrawer.rectangleRaw(-timingWidth / 2, 0.15, stamWidth, 0.1, 0, 0, 0, 0,
+                                   (0.831081081, 0.33783783783, 1, 1))  # red
+        self.uiDrawer.rectangleRaw(-timingWidth / 2, 0.15, stamWidth * sp, 0.1, 0, 0, 0, 0,
+                                   (0, 1, 0.4044117647, 1))  # green
 
         # timingBar
         gp = base.currPlayer.getTimingBarPercentage()
 
         self.uiDrawer.rectangleRaw(-timingWidth / 2, 0.25, timingWidth, 0.1, 0, 0, 0, 0, (0, 0, 0, 1))
-        self.uiDrawer.rectangleRaw(-timingWidth / 2, 0.25, gp * timingWidth, 0.1, 0, 0, 0, 0, (1, 1, 1, 1))
+        self.uiDrawer.rectangleRaw(-timingWidth / 2, 0.25, timingWidth * gp, 0.1, 0, 0, 0, 0, (1, 1, 1, 1))
 
         self.uiDrawer.end()
 

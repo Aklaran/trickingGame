@@ -16,6 +16,7 @@ dem animations
     540
     initital for swing
     final for swing
+    reversal falling
     bad anims:
         gswitch
         cork
@@ -27,6 +28,8 @@ Modify stats screen to work with 2 players
 
 tutorial
 slow mo
+colorblind bar
+
 """
 
 class Main(ShowBase):
