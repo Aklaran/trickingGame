@@ -38,7 +38,7 @@ class BattleData(object):
         if self.p1Score != 0 and self.p2Score != 0:
             if self.p1Score > self.p2Score:
                 self.p1Rounds += 1
-            elif self.p2Score > self.p2Score:
+            elif self.p2Score > self.p1Score:
                 self.p2Rounds += 1
             self.p1Score = self.p2Score = 0
 

@@ -105,5 +105,3 @@ class Save(Menu):
 
     def switchToMainMenu(self):
         base.gameFSM.demand('StartMenu')
-
-

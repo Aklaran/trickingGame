@@ -255,7 +255,7 @@ class BattleMode(DirectObject):
         base.currPlayer.actor.detach_node()
         self.trickerDummyNode.removeNode()
         self.scene.detachNode()
-        if self.endGameDialog: self.endGameDialog.removeNode()
+        if self.endGameDialog: self.endGameDialog.detachNode()
 
     def reInit(self):
 
