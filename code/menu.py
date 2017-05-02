@@ -10,6 +10,11 @@ class Menu(object):
         self.popupText = None
         self.popupSeq = None
         self.nameEntry = None
+        self.slot1Button = None
+        self.slot2Button = None
+        self.slot3Button = None
+        self.slot4Button = None
+        self.backButton = None
 
     def switchToMainMenu(self):
         base.gameFSM.demand('StartMenu')
@@ -37,6 +42,13 @@ class Menu(object):
             self.nameEntry = DirectEntry(text="", scale=0.1, command=self.callSetNameAndDemandTrain,
                                              initialText="Enter Name", focus=1, focusInCommand=self.clearText,
                                              frameSize=(0, 15, 0, 1))
+
+    @staticmethod
+    def getSaveFilePath(slot):
+        if os.name == 'nt':
+            return 'saves\save' + slot + '.json'
+        else:
+            return 'saves/save' + slot + '.json'
 
     def loadButtonData(self, slot):
         saveFilePath = self.getSaveFilePath(slot)
@@ -70,9 +82,9 @@ class Menu(object):
 
     def destroy(self):
         self.parentNode.removeNode()
-        self.backButton.removeNode()
-        self.slot1Button.removeNode()
-        self.slot2Button.removeNode()
-        self.slot3Button.removeNode()
-        self.slot4Button.removeNode()
+        if self.backButton: self.backButton.removeNode()
+        if self.slot1Button: self.slot1Button.removeNode()
+        if self.slot2Button: self.slot2Button.removeNode()
+        if self.slot3Button: self.slot3Button.removeNode()
+        if self.slot4Button: self.slot4Button.removeNode()
         if self.nameEntry: self.nameEntry.removeNode()

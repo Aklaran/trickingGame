@@ -41,13 +41,6 @@ class Load(Menu):
 
         self.loadDialog = None
 
-    @staticmethod
-    def getSaveFilePath(slot):
-        if os.name == 'nt':
-            return 'saves\save' + slot + '.json'
-        else:
-            return 'saves/save' + slot + '.json'
-
     def openLoadDialog(self, slot):
         saveFilePath = self.getSaveFilePath(slot)
         projectPath = os.path.dirname(os.path.dirname((__file__)))
