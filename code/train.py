@@ -85,6 +85,10 @@ class TrainingMode(DirectObject):
                                        pos=(0, -0.2), scale = 0.1,
                                        parent = base.a2dTopCenter, fg=(1,1,1,1))
 
+        self.startMenuButton = DirectButton(text=("quit"), scale=0.25,
+                                            command=self.switchToMainMenu, parent=base.a2dTopLeft,
+                                            pos=(0.275, 0, -0.225))
+
         taskMgr.add(self.drawUITask, 'drawUI')
 
     def switchToMainMenu(self):
@@ -192,6 +196,7 @@ class TrainingMode(DirectObject):
         taskMgr.remove('drawUI')
         taskMgr.remove('checkTrickState')
         self.parentNode.removeNode()
+        self.startMenuButton.removeNode()
         self.gradeText.removeNode()
         self.scoreText.removeNode()
         self.comboText.removeNode()

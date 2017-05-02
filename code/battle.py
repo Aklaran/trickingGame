@@ -96,6 +96,10 @@ class BattleMode(DirectObject):
         self.p2RoundText = OnscreenText(pos=(-0.3, 0.2), scale=0.1,
                                         parent=base.a2dBottomRight, fg=(1, 1, 1, 1))
 
+        self.startMenuButton = DirectButton(text=("quit"), scale=0.25,
+                                       command=self.switchToMainMenu, parent=base.a2dTopLeft,
+                                       pos=(0.275, 0, -0.225))
+
         self.endGameDialog = None
 
         taskMgr.add(self.drawUITask, 'drawUI')
@@ -242,6 +246,8 @@ class BattleMode(DirectObject):
         taskMgr.remove('follow')
         taskMgr.remove('drawUI')
         taskMgr.remove('checkTrickState')
+        taskMgr.remove('checkGameState')
+        taskMgr.remove('changeTurn')
         self.parentNode.removeNode()
         self.gradeText.removeNode()
         self.scoreText.removeNode()
@@ -252,11 +258,14 @@ class BattleMode(DirectObject):
         self.p1RoundText.removeNode()
         self.p2RoundText.removeNode()
         self.uiDrawerNode.removeNode()
+        self.startMenuButton.removeNode()
         base.currPlayer.actor.detach_node()
         self.trickerDummyNode.removeNode()
         self.scene.detachNode()
         if self.endGameDialog: self.endGameDialog.detachNode()
 
+    # this is a really shitty function that initializes everything but self.battleData so it can stay consistent
+    # I should just pass in BattleData and get rid of this.
     def reInit(self):
 
         # Load the environment model
