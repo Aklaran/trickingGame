@@ -39,7 +39,7 @@ class Menu(object):
         base.gameFSM.demand('Controls')
 
     def switchToStats(self):
-        if base.currPlayer.hasName():
+        if base.player1.hasName() or base.player2.hasName():
             base.gameFSM.demand('Stats')
         else:
             s = 'No save data found. Press Train to make a character, or load a save file.'
