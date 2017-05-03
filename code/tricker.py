@@ -283,7 +283,7 @@ class Tricker(object):
     def reset(self):
         self.prevTrick = None
         self.stamina = 100
-        self.grade = ''
+        self.grade = None
         self.timing = ''
         self.score = 0
         self.comboLength = 0

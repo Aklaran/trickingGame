@@ -106,6 +106,8 @@ class Play(DirectObject):
         elif grade == 4:
             self.gradeText.setText('F')
             self.gradeText.setFg((1, 0, 0, 1))
+        elif not grade:
+            self.gradeText.setText('')
 
         scoreStr = "score: " + base.currPlayer.getScore()
         self.scoreText.setText(scoreStr)

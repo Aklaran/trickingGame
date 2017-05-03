@@ -13,7 +13,6 @@ from tricker import Tricker
 # TODO: All this shit
 """
 dem animations
-    really good raiz: guthrie slow 2:27
     540
     initital for swing
     final for swing
