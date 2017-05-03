@@ -19,15 +19,15 @@ class Play(DirectObject):
         base.currPlayer.actor.pose('btwist', 1)
 
         # define controls
-        self.accept('shift-u', base.currPlayer.tryTrick, [base.currPlayer.gainer, taskMgr])
-        self.accept('shift-i', base.currPlayer.tryTrick, [base.currPlayer.gswitch, taskMgr])
-        self.accept('shift-o', base.currPlayer.tryTrick, [base.currPlayer.cork, taskMgr])
-        self.accept('shift-p', base.currPlayer.tryTrick, [base.currPlayer.doublecork, taskMgr])
+        self.accept('!', base.currPlayer.tryTrick, [base.currPlayer.gainer, taskMgr])
+        self.accept('@', base.currPlayer.tryTrick, [base.currPlayer.gswitch, taskMgr])
+        self.accept('#', base.currPlayer.tryTrick, [base.currPlayer.cork, taskMgr])
+        self.accept('$', base.currPlayer.tryTrick, [base.currPlayer.doublecork, taskMgr])
 
-        # self.accept('control-u', base.currPlayer.tryTrick, [base.currPlayer.c540])
-        self.accept('control-i', base.currPlayer.tryTrick, [base.currPlayer.btwist, taskMgr])
-        # self.accept('control-o', base.currPlayer.tryTrick, [base.currPlayer.raiz])
-        # self.accept('control-p', base.currPlayer.tryTrick, [base.currPlayer.cartFull])
+        # self.accept('control-1', base.currPlayer.tryTrick, [base.currPlayer.c540])
+        self.accept('control-2', base.currPlayer.tryTrick, [base.currPlayer.btwist, taskMgr])
+        # self.accept('control-3', base.currPlayer.tryTrick, [base.currPlayer.raiz])
+        # self.accept('control-4', base.currPlayer.tryTrick, [base.currPlayer.cartFull])
 
         # Add SetCameraTask to task manager
         # IMPORTANT: camera is parented to the dummyNode in tricker's chest
