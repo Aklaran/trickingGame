@@ -24,10 +24,10 @@ class Play(DirectObject):
         self.accept('shift-3', base.currPlayer.tryTrick, [base.currPlayer.cork, taskMgr])
         self.accept('shift-4', base.currPlayer.tryTrick, [base.currPlayer.doublecork, taskMgr])
 
-        # self.accept('alt-1', base.currPlayer.tryTrick, [base.currPlayer.tdraiz])
-        self.accept('alt-2', base.currPlayer.tryTrick, [base.currPlayer.btwist, taskMgr])
-        # self.accept('alt-3', base.currPlayer.tryTrick, [base.currPlayer.c540])
-        # self.accept('alt-4', base.currPlayer.tryTrick, [base.currPlayer.cartFull])
+        # self.accept('control-1', base.currPlayer.tryTrick, [base.currPlayer.c540])
+        self.accept('control-2', base.currPlayer.tryTrick, [base.currPlayer.btwist, taskMgr])
+        # self.accept('control-3', base.currPlayer.tryTrick, [base.currPlayer.raiz])
+        # self.accept('control-4', base.currPlayer.tryTrick, [base.currPlayer.cartFull])
 
         # Add SetCameraTask to task manager
         # IMPORTANT: camera is parented to the dummyNode in tricker's chest

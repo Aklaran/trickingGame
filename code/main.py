@@ -30,6 +30,10 @@ tutorial
 slow mo
 colorblind bar
 
+make citations:
+    keyboard images:
+        https://www.wpclipart.com/computer/keyboard_keys/
+
 """
 
 class Main(ShowBase):
