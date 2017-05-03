@@ -59,6 +59,7 @@ class Tricker(object):
         self.comboEnded = False
         self.comboContinuing = False
         self.falling = False
+        self.midTrick = False
 
     def comboHasEnded(self):
         return self.comboEnded
@@ -66,6 +67,8 @@ class Tricker(object):
         return self.name != ''
     def isFalling(self):
         return self.falling
+    def isMidTrick(self):
+        return self.midTrick
     def getName(self):
         if self.hasName(): return self.name
         else: return "NewPlayer"
@@ -146,8 +149,10 @@ class Tricker(object):
     """
 
     def tryTrick(self, trick, taskMgr):
-        print("currPlayer:", base.currPlayer.getName())
-        print("me: ", self.getName())
+        if self.midTrick:
+            print("already received an input")
+            return
+        self.midTrick = True
         if self.comboEnded:
             print("combo ended - no more tricking 4 u")
             return
@@ -213,6 +218,7 @@ class Tricker(object):
             self.prevTrick = trick
 
         # this is tricking - you still learn from your falls!
+        self.midTrick = False
         self.increaseSkill(trick, self.grade)
 
     def doTrickTask(self, animation, goodPercentage, distance, taskMgr, task):
