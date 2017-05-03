@@ -16,6 +16,22 @@ class TrainingMode(Play):
         taskMgr.add(self.drawUITask, 'drawUI', extraArgs=['train'],
                     appendTask=True)
         taskMgr.add(self.checkGameStateTask, 'checkGameState')
+        self.showInitialDialog()
+
+    def showInitialDialog(self):
+        initialStr = "- TRAINING MODE - \n" \
+                     "Use shift/ctrl + [U, I, O, P] to execute some cool ass tricks \n" \
+                     "As the timing bar fills up, hit another key to chain tricks together \n" \
+                     "Experiment with cool combos and build your skill! \n" \
+                     "To see the whole controls, check the controls tab in the main menu."
+
+        self.initialDialog = DirectDialog(dialogName="initialDialog", scale=1,
+                                          text=initialStr,
+                                          buttonTextList=['Start training!'],
+                                          command=self.closeInitialDialog)
+
+    def closeInitialDialog(self, arg):
+        self.initialDialog.detachNode()
 
     def checkGameStateTask(self, task):
         if base.currPlayer.comboHasEnded():
