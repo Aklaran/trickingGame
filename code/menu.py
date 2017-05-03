@@ -100,3 +100,4 @@ class Menu(object):
         if self.slot3Button: self.slot3Button.removeNode()
         if self.slot4Button: self.slot4Button.removeNode()
         if self.nameEntry: self.nameEntry.removeNode()
+        if self.background: self.background.removeNode()
