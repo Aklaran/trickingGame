@@ -241,7 +241,21 @@ class Raiz(Trick):
         self.exitTransition = 'swing'
         self.baseStamCost = 10
         self.skillModifier = self.tricker.skillDict['raiz']
-        self.sweetSpot = 17
+        self.sweetSpot = 16
         self.distance = (-0.5,6,0)
     def __repr__(self):
         return 'raiz'
+
+class FiveForty(Trick):
+    def __init__(self, tricker):
+        super().__init__(tricker)
+        self.duration = self.tricker.actor.getNumFrames('fiveForty')
+        self.difficulty = 1
+        self.entryTransition = 'reversal'
+        self.exitTransition = 'reversal'
+        self.baseStamCost = 10
+        self.skillModifier = self.tricker.skillDict['fiveForty']
+        self.sweetSpot = 26 #22 end of kick pose, 26 is beginning of leg reaching to ground
+        self.distance = (0, 2.1, 0)
+    def __repr__(self):
+        return 'fiveForty'
