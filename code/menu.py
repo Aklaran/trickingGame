@@ -48,14 +48,6 @@ class Menu(object):
     def clearText(self):
         self.nameEntry.enterText('')
 
-    def switchToTrain(self):
-        if base.currPlayer.hasName():
-            base.gameFSM.demand('Train')
-        else:
-            self.nameEntry = DirectEntry(text="", scale=0.1, command=self.callSetNameAndDemandTrain,
-                                             initialText="Enter Name", focus=1, focusInCommand=self.clearText,
-                                             frameSize=(0, 15, 0, 1))
-
     @staticmethod
     def getSaveFilePath(slot):
         if os.name == 'nt':

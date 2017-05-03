@@ -218,7 +218,6 @@ class Tricker(object):
             self.prevTrick = trick
 
         # this is tricking - you still learn from your falls!
-        self.midTrick = False
         self.increaseSkill(trick, self.grade)
 
     def doTrickTask(self, animation, goodPercentage, distance, taskMgr, task):
@@ -234,6 +233,7 @@ class Tricker(object):
             self.actor.disableBlend()
 
             self.comboContinuing = False
+            self.midTrick = False
             taskMgr.add(self.checkTrickStateTask, 'checkTrickState',
                         extraArgs=[animation], appendTask=True)
 
@@ -286,6 +286,7 @@ class Tricker(object):
         self.comboEnded = False
         self.comboContinuing = False
         self.falling = False
+        self.midTrick = False
 
     def setName(self, name):
         self.saveDict['name'] = name

@@ -33,7 +33,8 @@ class StartMenu(Menu):
         self.player2Text = OnscreenText(pos=(-0.5, -0.2), scale=0.075,
                                       parent=base.a2dTopRight)
 
-        self.guiElements = [self.trainButton, self.battleButton, self.saveButton, self.loadButton, self.statsButton]
+        self.guiElements = [self.trainButton, self.battleButton, self.saveButton,
+                            self.loadButton, self.statsButton, self.controlsButton]
 
         self.nameEntry = None
         self.playerSelDialog = None
@@ -49,11 +50,17 @@ class StartMenu(Menu):
                                        command=self.trainPlayerSel)
 
     def trainPlayerSel(self, player):
-        self.enableGUI()
         base.setPlayer(player)
         self.switchToTrain()
         self.playerSelDialog.detachNode()
-
+    def switchToTrain(self):
+        if base.currPlayer.hasName():
+            self.enableGUI()
+            base.gameFSM.demand('Train')
+        else:
+            self.nameEntry = DirectEntry(text="", scale=0.1, command=self.callSetNameAndDemandTrain,
+                                             initialText="Enter Name", focus=1, focusInCommand=self.clearText,
+                                             frameSize=(0, 15, 0, 1))
     def battleNameEntry(self):
         self.disableGUI()
         if not base.player1.hasName():
