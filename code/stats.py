@@ -11,12 +11,24 @@ class Stats(Menu):
                      command=self.switchToMainMenu, parent=base.a2dTopLeft,
                                        pos=(0.275,0,-0.225))
 
+        self.p1StatsList = None
+        self.p2StatsList = None
+        
+        if base.player1.hasName():
+            self.p1StatsList = self.createStatsList(base.player1)
+        if base.player2.hasName():
+            self.p2StatsList = self.createStatsList(base.player2)
+            
+    def createStatsList(self, player):
         ## Following code block adapted from:
         # https://moguri.github.io/panda-sphinx/programming-with-panda3d/directgui/directscrolledlist.html
         numItemsVisible = 8
         itemHeight = 0.11
 
-        self.statsList = DirectScrolledList(
+        if player == base.player1: listPos = (-1,0,0)
+        elif player == base.player2: listPos = (0.25,0,0)
+        
+        statsList = DirectScrolledList(
             decButton_pos=(0.35, 0, 0.53),
             decButton_text="Dec",
             decButton_text_scale=0.04,
@@ -29,7 +41,7 @@ class Stats(Menu):
 
             frameSize=(0.0, 0.7, -0.40, 0.59),
             frameColor=(0.5, 0.5, 0.5, 0.5),
-            pos=(-1, 0, 0),
+            pos=listPos,
             numItemsVisible=numItemsVisible,
             forceHeight=itemHeight,
             itemFrame_frameSize=(-0.3, 0.3, -0.70, 0.11),
@@ -37,22 +49,25 @@ class Stats(Menu):
             parent=self.parentNode
         )
 
-        nameAndLevel = base.currPlayer.getName() + " : lv" + base.currPlayer.getLevel()
+        nameAndLevel = player.getName() + " : lv" + player.getLevel()
         nameLabel = DirectLabel(text=nameAndLevel,text_scale=0.1)
-        self.statsList.addItem(nameLabel)
-        stamLabel = DirectLabel(text=("stamina : " + base.currPlayer.getTotalStam()), text_scale=0.1)
-        self.statsList.addItem(stamLabel)
-        skillDict = base.currPlayer.getSkillDict()
+        statsList.addItem(nameLabel)
+        stamLabel = DirectLabel(text=("stamina : " + player.getTotalStam()), text_scale=0.1)
+        statsList.addItem(stamLabel)
+        skillDict = player.getSkillDict()
         for trick in skillDict:
             s = str(trick + ": " + str(int(skillDict[trick])))
             l = DirectLabel(text=s, text_scale=0.1)
-            self.statsList.addItem(l)
+            statsList.addItem(l)
         ## End cited code block
+
+        return statsList
 
     def destroy(self):
         self.parentNode.removeNode()
         self.backButton.removeNode()
-        self.statsList.removeNode()
+        if self.p1StatsList: self.p1StatsList.removeNode()
+        if self.p2StatsList: self.p2StatsList.removeNode()
 
 
 
