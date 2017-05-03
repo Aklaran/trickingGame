@@ -1,4 +1,5 @@
 from direct.showbase.DirectObject import DirectObject
+from direct.interval.IntervalGlobal import Sequence, Func, Wait
 from direct.task import Task
 from direct.gui.DirectGui import *
 
@@ -19,15 +20,15 @@ class Play(DirectObject):
         base.currPlayer.actor.pose('btwist', 1)
 
         # define controls
-        self.accept('!', base.currPlayer.tryTrick, [base.currPlayer.gainer, taskMgr])
-        self.accept('@', base.currPlayer.tryTrick, [base.currPlayer.gswitch, taskMgr])
-        self.accept('#', base.currPlayer.tryTrick, [base.currPlayer.cork, taskMgr])
-        self.accept('$', base.currPlayer.tryTrick, [base.currPlayer.doublecork, taskMgr])
+        self.accept('shift-u', base.currPlayer.tryTrick, [base.currPlayer.gainer, taskMgr])
+        self.accept('shift-i', base.currPlayer.tryTrick, [base.currPlayer.gswitch, taskMgr])
+        self.accept('shift-o', base.currPlayer.tryTrick, [base.currPlayer.cork, taskMgr])
+        self.accept('shift-p', base.currPlayer.tryTrick, [base.currPlayer.doublecork, taskMgr])
 
-        # self.accept('control-1', base.currPlayer.tryTrick, [base.currPlayer.c540])
-        self.accept('control-2', base.currPlayer.tryTrick, [base.currPlayer.btwist, taskMgr])
-        # self.accept('control-3', base.currPlayer.tryTrick, [base.currPlayer.raiz])
-        # self.accept('control-4', base.currPlayer.tryTrick, [base.currPlayer.cartFull])
+        # self.accept('control-u', base.currPlayer.tryTrick, [base.currPlayer.c540])
+        self.accept('control-i', base.currPlayer.tryTrick, [base.currPlayer.btwist, taskMgr])
+        # self.accept('control-o', base.currPlayer.tryTrick, [base.currPlayer.]][]  raiz])
+        # self.accept('control-p', base.currPlayer.tryTrick, [base.currPlayer.cartFull])
 
         # Add SetCameraTask to task manager
         # IMPORTANT: camera is parented to the dummyNode in tricker's chest
@@ -80,6 +81,10 @@ class Play(DirectObject):
         self.startMenuButton = DirectButton(text=("quit"), scale=0.05,
                                             command=self.switchToMainMenu, parent=base.a2dTopLeft,
                                             pos=(0.0525, 0, -0.045))
+
+        self.initialDialog = None
+        self.popupText = None
+        self.popupSeq = None
 
     def switchToMainMenu(self):
         base.gameFSM.demand('StartMenu')
@@ -160,6 +165,22 @@ class Play(DirectObject):
         camera.lookAt(self.trickerDummyNode)
 
         return Task.cont
+
+    def createPopupText(self,s):
+        self.popupText = OnscreenText(text=s, scale = 0.07, parent=render2d,
+                                      pos = (0,0) )
+
+    def removePopupText(self):
+        self.popupText.detachNode()
+        self.popupText = None
+        self.popupSeq = None
+
+    def drawPopupText(self, s):
+        if not self.popupSeq:
+            self.popupSeq = Sequence(Func(self.createPopupText, s),
+                     Wait(2),
+                     Func(self.removePopupText))
+            self.popupSeq.start()
 
     def destroy(self):
         self.ignoreAll()

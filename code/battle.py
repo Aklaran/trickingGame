@@ -1,13 +1,10 @@
-from direct.showbase.DirectObject import DirectObject
 from direct.task import Task
 from direct.gui.DirectGui import *
 
-from panda3d.core import *
-
-from math import *
-
 from battleData import BattleData
 from play import Play
+
+import random
 
 
 class BattleMode(Play):
@@ -30,6 +27,30 @@ class BattleMode(Play):
 
         taskMgr.add(self.checkGameStateTask, 'checkGameState')
 
+        self.showInitialDialog()
+
+    def showInitialDialog(self):
+        self.ignoreAll()
+        initialStr = "- BATTLE MODE - \n" \
+                     "Chain together tricks to outscore your opponent \n" \
+                     "Hit the button too early or run out of stamina, and you'll fall \n" \
+                     "First to three rounds wins!"
+        self.initialDialog = DirectDialog(dialogName="initialDialog", scale=1,
+                                          text=initialStr,
+                                          buttonTextList=['Roll for turn'],
+                                          command=self.rollForTurn)
+    def rollForTurn(self, arg):
+        player = random.randint(1,2)
+        if player == 1:
+            base.currPlayer = base.player1
+        elif player == 2:
+            base.currPlayer = base.player2
+        base.firstBattle = False
+        self.initialDialog.detachNode()
+        s = base.currPlayer.getName() + " won the roll. Throw your first pass!"
+        self.drawPopupText(s)
+        self.destroy()
+        self.reInit()
 
     def checkGameStateTask(self, task):
         if base.currPlayer.comboHasEnded():
@@ -96,8 +117,6 @@ class BattleMode(Play):
                                         parent = base.a2dBottomLeft, fg=(1,1,1,1))
         self.p2RoundText = OnscreenText(pos=(-0.3, 0.2), scale=0.1,
                                         parent=base.a2dBottomRight, fg=(1, 1, 1, 1))
-
-        self.endGameDialog = None
 
         taskMgr.add(self.drawUITask, 'drawUI', extraArgs=['battle'],
                     appendTask=True)
