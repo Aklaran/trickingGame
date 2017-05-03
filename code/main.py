@@ -27,9 +27,7 @@ dem animations
         raiz
 Modify stats screen to work with 2 players
 
-tutorial
 slow mo
-colorblind bar
 
 make citations:
     keyboard images:

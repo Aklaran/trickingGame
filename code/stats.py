@@ -13,7 +13,7 @@ class Stats(Menu):
 
         ## Following code block adapted from:
         # https://moguri.github.io/panda-sphinx/programming-with-panda3d/directgui/directscrolledlist.html
-        numItemsVisible = 4
+        numItemsVisible = 8
         itemHeight = 0.11
 
         self.statsList = DirectScrolledList(
@@ -27,16 +27,21 @@ class Stats(Menu):
             incButton_text_scale=0.04,
             incButton_borderWidth=(0.005, 0.005),
 
-            frameSize=(0.0, 0.7, -0.05, 0.59),
-            frameColor=(1, 0, 0, 0.5),
+            frameSize=(0.0, 0.7, -0.40, 0.59),
+            frameColor=(0.5, 0.5, 0.5, 0.5),
             pos=(-1, 0, 0),
             numItemsVisible=numItemsVisible,
             forceHeight=itemHeight,
-            itemFrame_frameSize=(-0.2, 0.2, -0.37, 0.11),
+            itemFrame_frameSize=(-0.3, 0.3, -0.70, 0.11),
             itemFrame_pos=(0.35, 0, 0.4),
             parent=self.parentNode
         )
 
+        nameAndLevel = base.currPlayer.getName() + " : lv" + base.currPlayer.getLevel()
+        nameLabel = DirectLabel(text=nameAndLevel,text_scale=0.1)
+        self.statsList.addItem(nameLabel)
+        stamLabel = DirectLabel(text=("stamina : " + base.currPlayer.getTotalStam()), text_scale=0.1)
+        self.statsList.addItem(stamLabel)
         skillDict = base.currPlayer.getSkillDict()
         for trick in skillDict:
             s = str(trick + ": " + str(int(skillDict[trick])))

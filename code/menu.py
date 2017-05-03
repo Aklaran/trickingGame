@@ -15,6 +15,7 @@ class Menu(object):
         self.slot3Button = None
         self.slot4Button = None
         self.backButton = None
+        self.background = None
 
         self.guiElements = []
 

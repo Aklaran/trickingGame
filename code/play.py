@@ -69,7 +69,7 @@ class Play(DirectObject):
         self.comboText = OnscreenText(pos=(0.3, -0.2), scale=0.1,
                                       parent=base.a2dTopLeft, fg=(1, 1, 1, 1))
         self.nameText = OnscreenText(text=base.currPlayer.getName(),
-                                     pos=(0, -0.2), scale=0.1,
+                                     pos=(0, -0.2), scale=0.2,
                                      parent=base.a2dTopCenter, fg=(1, 1, 1, 1))
         self.stamBarText = OnscreenText(text="stamina", scale=0.075,
                                         parent=base.a2dBottomCenter, pos=(-0.6,0.09),

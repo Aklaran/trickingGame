@@ -69,6 +69,10 @@ class Tricker(object):
     def getName(self):
         if self.hasName(): return self.name
         else: return "NewPlayer"
+    def getLevel(self):
+        return str(self.saveDict['level'])
+    def getTotalStam(self):
+        return str(self.totalStam)
     def getSaveDict(self):
         return self.saveDict
     def getSkillDict(self):
