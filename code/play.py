@@ -168,7 +168,7 @@ class Play(DirectObject):
 
     def createPopupText(self,s):
         self.popupText = OnscreenText(text=s, scale = 0.07, parent=render2d,
-                                      pos = (0,0) )
+                                      pos = (0,0.4) )
 
     def removePopupText(self):
         self.popupText.detachNode()
