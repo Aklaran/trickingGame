@@ -32,8 +32,8 @@ class BattleMode(Play):
     def showInitialDialog(self):
         self.ignoreAll()
         initialStr = "- BATTLE MODE - \n" \
-                     "Chain together tricks to outscore your opponent \n" \
-                     "Hit the button too early or run out of stamina, and you'll fall \n" \
+                     "Chain together tricks to make dope combos and outscore your opponent. \n" \
+                     "Hit the button too early or run out of stamina, and you'll fall. \n" \
                      "First to three rounds wins!"
         self.initialDialog = DirectDialog(dialogName="initialDialog", scale=1,
                                           text=initialStr,

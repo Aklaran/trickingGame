@@ -20,8 +20,8 @@ class TrainingMode(Play):
 
     def showInitialDialog(self):
         initialStr = "- TRAINING MODE - \n" \
-                     "Use shift/ctrl + [U, I, O, P] to execute some cool ass tricks \n" \
-                     "As the timing bar fills up, hit another key to chain tricks together \n" \
+                     "Use shift/ctrl + [U, I, O, P] to execute some cool ass tricks. \n" \
+                     "As the timing bar fills up, hit another key to chain tricks together. \n" \
                      "Experiment with cool combos and build your skill! \n" \
                      "To see the whole controls, check the controls tab in the main menu."
 

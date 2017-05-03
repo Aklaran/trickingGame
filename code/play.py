@@ -78,9 +78,9 @@ class Play(DirectObject):
                                         parent=base.a2dBottomCenter, pos=(-0.625, 0.375),
                                         fg=(1, 1, 1, 1))
 
-        self.startMenuButton = DirectButton(text=("quit"), scale=0.05,
+        self.startMenuButton = DirectButton(text=("quit"), scale=0.075,
                                             command=self.switchToMainMenu, parent=base.a2dTopLeft,
-                                            pos=(0.0525, 0, -0.045))
+                                            pos=(0.075, 0, -0.07))
 
         self.initialDialog = None
         self.popupText = None
