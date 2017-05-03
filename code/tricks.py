@@ -7,7 +7,7 @@ Add bad animation to list of animations
 Add to tricker.trickMap
 Add to skills dict in tricker.saveDict
 Initialize with other tricks in tricker.updateAttributes()
-Add event handler (self.accept) to train.py
+Add event handler (self.accept) to play.py
 """
 
 
@@ -231,3 +231,17 @@ class DoubleCork(Trick):
         self.distance = (0,2,0)
     def __repr__(self):
         return 'doublecork'
+
+class Raiz(Trick):
+    def __init__(self, tricker):
+        super().__init__(tricker)
+        self.duration = self.tricker.actor.getNumFrames('raiz')
+        self.difficulty = 1
+        self.entryTransition = 'reversal'
+        self.exitTransition = 'swing'
+        self.baseStamCost = 10
+        self.skillModifier = self.tricker.skillDict['raiz']
+        self.sweetSpot = 17
+        self.distance = (-0.5,6,0)
+    def __repr__(self):
+        return 'raiz'

@@ -25,7 +25,9 @@ class Tricker(object):
                             "cork_bad"       : "tp/anims/tricker-cork",
                             "doublecork"     : "tp/anims/tricker-dubcork",
                             "doublecork_bad" : "tp/anims/tricker-dubcork",
-                            "fall_swing"     : "tp/anims/tricker-fall-left"} )
+                            "fall_swing"     : "tp/anims/tricker-fall-left",
+                            "raiz"           : "tp/anims/tricker-raiz",
+                            "raiz_bad"       : "tp/anims/tricker-raiz"} )
 
         #saveDict contains all info to be saved to json
         self.saveDict = { 'name': '',
@@ -35,7 +37,8 @@ class Tricker(object):
                                       "gswitch"    : 1,
                                       "btwist"     : 1,
                                       "cork"       : 1,
-                                      "doublecork" : 1}
+                                      "doublecork" : 1,
+                                      "raiz"       : 1}
                           }
         self.updateAttributes()
 
@@ -45,7 +48,8 @@ class Tricker(object):
                          'gswitch'    : self.gswitch,
                          'btwist'     : self.btwist,
                          'cork'       : self.cork,
-                         'doublecork' : self.doublecork}
+                         'doublecork' : self.doublecork,
+                         'raiz'       : self.raiz}
 
 
         # runtime traits, to be reset with reset function
@@ -315,3 +319,4 @@ class Tricker(object):
         self.btwist = Btwist(self)
         self.cork = Cork(self)
         self.doublecork = DoubleCork(self)
+        self.raiz = Raiz(self)

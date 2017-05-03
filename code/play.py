@@ -27,7 +27,7 @@ class Play(DirectObject):
 
         # self.accept('control-u', base.currPlayer.tryTrick, [base.currPlayer.c540])
         self.accept('control-i', base.currPlayer.tryTrick, [base.currPlayer.btwist, taskMgr])
-        # self.accept('control-o', base.currPlayer.tryTrick, [base.currPlayer.]][]  raiz])
+        self.accept('control-o', base.currPlayer.tryTrick, [base.currPlayer.raiz, taskMgr])
         # self.accept('control-p', base.currPlayer.tryTrick, [base.currPlayer.cartFull])
 
         # Add SetCameraTask to task manager
