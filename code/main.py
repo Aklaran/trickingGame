@@ -25,8 +25,7 @@ dem animations
         btwist
         540
         raiz
-Modify stats screen to work with 2 players
-
+        
 slow mo
 
 make citations:

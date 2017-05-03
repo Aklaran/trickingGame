@@ -203,3 +203,4 @@ class Play(DirectObject):
         self.trickerDummyNode.remove_node()
         self.scene.remove_node()
         base.currPlayer.reset()
+        if self.initialDialog: self.initialDialog.detachNode()
