@@ -34,6 +34,9 @@ class Menu(object):
     def switchToLoad(self):
         base.gameFSM.demand('Load')
 
+    def switchToControls(self):
+        base.gameFSM.demand('Controls')
+
     def switchToStats(self):
         if base.currPlayer.hasName():
             base.gameFSM.demand('Stats')

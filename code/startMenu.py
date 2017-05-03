@@ -6,22 +6,26 @@ from menu import Menu
 class StartMenu(Menu):
     def __init__(self):
         super().__init__()
+
         self.parentNode = aspect2d.attachNewNode('StartMenu')
 
-        self.trainButton = DirectButton(text=("Train"), scale = 0.25,
+        self.trainButton = DirectButton(text=("Train"), scale = 0.15,
                                        command=self.openPlayerSelDialog, parent=self.parentNode)
-        self.battleButton = DirectButton(text=("Battle"), scale = 0.25,
+        self.battleButton = DirectButton(text=("Battle"), scale = 0.15,
                                          command=self.battleNameEntry, parent=self.parentNode,
                                          pos=(0.0, 0, 0.325))
-        self.saveButton = DirectButton(text=('Save'), scale=0.25,
+        self.saveButton = DirectButton(text=('Save'), scale=0.15,
                                        command=self.switchToSave, parent=self.parentNode,
                                        pos=(0.0, 0, -0.325))
-        self.loadButton = DirectButton(text=('Load'), scale=0.25,
+        self.loadButton = DirectButton(text=('Load'), scale=0.15,
                                        command=self.switchToLoad, parent=self.parentNode,
                                        pos=(0.0, 0, -0.6))
-        self.statsButton = DirectButton(text=('Stats'), scale=0.25,
+        self.statsButton = DirectButton(text=('Stats'), scale=0.15,
                                        command=self.switchToStats, parent=self.parentNode,
                                        pos=(0.0, 0, -0.875))
+        self.controlsButton = DirectButton(text='Controls', scale =0.15,
+                                           command=self.switchToControls, parent=self.parentNode,
+                                           pos=(0.0, 0, -0.915))
 
         self.player1Text = OnscreenText(pos=(0.5, -0.2), scale=0.075,
                                       parent=base.a2dTopLeft)

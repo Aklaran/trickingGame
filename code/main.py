@@ -7,6 +7,7 @@ from startMenu import StartMenu
 from save import Save
 from load import Load
 from stats import Stats
+from controls import Controls
 from tricker import Tricker
 
 # TODO: All this shit
@@ -52,44 +53,45 @@ class Main(ShowBase):
 
 
 class GameFSM(FSM):
+
     def enterStartMenu(self):
         self.menu = StartMenu()
-
     def exitStartMenu(self):
         self.menu.destroy()
         del self.menu
 
     def enterTrain(self):
         self.train = TrainingMode()
-
     def exitTrain(self):
         self.train.destroy()
         del self.train
 
     def enterBattle(self):
         self.battle = BattleMode()
-
     def exitBattle(self):
         self.battle.destroy()
         del self.battle
 
+    def enterControls(self):
+        self.controls = Controls()
+    def exitControls(self):
+        self.controls.destroy()
+        del self.controls
+
     def enterSave(self):
         self.save = Save()
-
     def exitSave(self):
         self.save.destroy()
         del self.save
 
     def enterLoad(self):
         self.load = Load()
-
     def exitLoad(self):
         self.load.destroy()
         del self.load
 
     def enterStats(self):
         self.stats = Stats()
-
     def exitStats(self):
         self.stats.destroy()
         del self.stats
