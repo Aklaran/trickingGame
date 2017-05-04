@@ -46,7 +46,7 @@ class BattleMode(Play):
         elif player == 2:
             base.currPlayer = base.player2
         base.firstBattle = False
-        self.initialDialog.detachNode()
+        if self.initialDialog: self.initialDialog.detachNode()
         s = base.currPlayer.getName() + " won the roll. Throw your first pass!"
         self.drawPopupText(s)
         self.reset()
@@ -93,7 +93,7 @@ class BattleMode(Play):
         elif arg == 'rematch':
             self.battleData.__init__()
             base.currPlayer = base.player1
-            self.rollForTurn()
+            self.rollForTurn(arg) #this arg is useless.. but necessary becuase i didnt want to write another
 
     def reset(self):
         # taskMgr.remove("follow")

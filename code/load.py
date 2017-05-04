@@ -69,3 +69,8 @@ class Load(Menu):
             print("player2: ", base.player2.saveDict)
         self.enableGUI()
         self.loadDialog.detachNode()
+
+    # this overwrites the parent method because i dont want to move the buttons
+    def createPopupText(self,s):
+        self.popupText = OnscreenText(text=s, scale = 0.1, parent=base.a2dTopCenter,
+                                      pos = (0,-.5) )
