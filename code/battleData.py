@@ -4,7 +4,7 @@ class BattleData(object):
         self.p2Score = 0
         self.p1Rounds = 0
         self.p2Rounds = 0
-        self.roundsToWin = 1
+        self.roundsToWin = 3
 
     def getScore(self, player):
         if player == 1:
