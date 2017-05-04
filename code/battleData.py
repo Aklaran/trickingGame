@@ -39,13 +39,14 @@ class BattleData(object):
         if self.p1Score != 0 and self.p2Score != 0:
             if self.p1Score > self.p2Score:
                 self.p1Rounds += 1
-                return str(base.player1.getName() + " wins the round!")
+                s =  str(base.player1.getName() + " wins the round!")
             elif self.p2Score > self.p1Score:
                 self.p2Rounds += 1
-                return str(base.player2.getName() + " wins the round!")
+                s =  str(base.player2.getName() + " wins the round!")
             elif self.p2Score == self.p1Score:
-                return str("Round tied!")
+                s =  str("Round tied!")
             self.p1Score = self.p2Score = 0
+            return s
         return None
 
     def checkEndGame(self):

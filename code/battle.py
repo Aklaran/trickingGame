@@ -49,8 +49,7 @@ class BattleMode(Play):
         self.initialDialog.detachNode()
         s = base.currPlayer.getName() + " won the roll. Throw your first pass!"
         self.drawPopupText(s)
-        self.destroy()
-        self.reInit()
+        self.reset()
 
     def checkGameStateTask(self, task):
         if base.currPlayer.comboHasEnded():
@@ -94,7 +93,7 @@ class BattleMode(Play):
         elif arg == 'rematch':
             self.battleData.__init__()
             base.currPlayer = base.player1
-            self.reset()
+            self.rollForTurn()
 
     def reset(self):
         # taskMgr.remove("follow")

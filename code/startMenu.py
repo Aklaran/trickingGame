@@ -9,29 +9,32 @@ class StartMenu(Menu):
 
         self.parentNode = aspect2d.attachNewNode('StartMenu')
 
+        self.background = OnscreenImage(parent=render2dp, image='tp/images/mainBG.png')
+        base.cam2dp.node().getDisplayRegion(0).setSort(-20)
+
         self.battleButton = DirectButton(text=("Battle"), scale = 0.15,
                                          command=self.battleNameEntry, parent=self.parentNode,
-                                         pos=(0.0, 0, 0))
+                                         pos=(0.0, 0, -.05))
         self.trainButton = DirectButton(text=("Train"), scale = 0.15,
                                        command=self.openPlayerSelDialog, parent=self.parentNode,
-                                        pos=(0,0, -.175))
+                                        pos=(0,0, -.225))
         self.controlsButton = DirectButton(text='Controls', scale =0.15,
                                            command=self.switchToControls, parent=self.parentNode,
-                                           pos=(0.0, 0, -0.350))
+                                           pos=(0.0, 0, -0.400))
         self.statsButton = DirectButton(text=('Stats'), scale=0.15,
                                        command=self.switchToStats, parent=self.parentNode,
-                                       pos=(0.0, 0, -0.525))
+                                       pos=(0.0, 0, -0.575))
         self.saveButton = DirectButton(text=('Save'), scale=0.15,
                                        command=self.switchToSave, parent=self.parentNode,
-                                       pos=(0.0, 0, -0.7))
+                                       pos=(0.0, 0, -0.750))
         self.loadButton = DirectButton(text=('Load'), scale=0.15,
                                        command=self.switchToLoad, parent=self.parentNode,
-                                       pos=(0.0, 0, -0.875))
+                                       pos=(0.0, 0, -0.925))
 
-        self.player1Text = OnscreenText(pos=(0.5, -0.2), scale=0.075,
+        self.player1Text = OnscreenText(pos=(0.5, -0.1), scale=0.075,
                                       parent=base.a2dTopLeft)
-        self.player2Text = OnscreenText(pos=(-0.5, -0.2), scale=0.075,
-                                      parent=base.a2dTopRight)
+        self.player2Text = OnscreenText(pos=(0.5, -0.2), scale=0.075,
+                                      parent=base.a2dTopLeft)
 
         self.guiElements = [self.trainButton, self.battleButton, self.saveButton,
                             self.loadButton, self.statsButton, self.controlsButton]
@@ -103,6 +106,7 @@ class StartMenu(Menu):
             base.gameFSM.demand('Battle')
 
     def destroy(self):
+        super().destroy()
         self.parentNode.removeNode()
         self.trainButton.removeNode()
         self.saveButton.removeNode()
