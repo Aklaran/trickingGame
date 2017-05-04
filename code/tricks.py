@@ -154,6 +154,7 @@ class Trick():
             b = 0
 
         goodPercentage = b - (inverseSkillPercentage * b)
+        print(goodPercentage)
         return goodPercentage
 
 

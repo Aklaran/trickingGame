@@ -18,11 +18,11 @@ class Tricker(object):
                            {"gainer"         : "tp/anims/tricker-gainer",
                             "gainer_bad"     : "tp/anims/tricker-gainer-bad",
                             "gswitch"        : "tp/anims/tricker-gswitch",
-                            "gswitch_bad"    : "tp/anims/tricker-gswitch",
+                            "gswitch_bad"    : "tp/anims/tricker-gswitch-bad",
                             "btwist"         : "tp/anims/tricker-btwist",
                             "btwist_bad"     : "tp/anims/tricker-btwist",
                             "cork"           : "tp/anims/tricker-cork",
-                            "cork_bad"       : "tp/anims/tricker-cork",
+                            "cork_bad"       : "tp/anims/tricker-cork-bad",
                             "doublecork"     : "tp/anims/tricker-dubcork",
                             "doublecork_bad" : "tp/anims/tricker-dubcork",
                             "fall_swing"     : "tp/anims/tricker-fall-left",
@@ -30,9 +30,9 @@ class Tricker(object):
                             "end_swing"      : "tp/anims/tricker-end-swing",
                             "fall_reversal"  : "tp/anims/tricker-fall-right",
                             "raiz"           : "tp/anims/tricker-raiz",
-                            "raiz_bad"       : "tp/anims/tricker-raiz",
+                            "raiz_bad"       : "tp/anims/tricker-raiz-bad",
                             "fiveForty"      : "tp/anims/tricker-540",
-                            "fiveForty_bad"  : "tp/anims/tricker-540"} )
+                            "fiveForty_bad"  : "tp/anims/tricker-540-bad"} )
 
         #saveDict contains all info to be saved to json
         self.saveDict = { 'name': '',
@@ -238,12 +238,13 @@ class Tricker(object):
         self.increaseSkill(trick, self.grade)
 
     def doTrickTask(self, animation, goodPercentage, distance, taskMgr, task):
+        print("goodp:", goodPercentage)
         self.actor.setPos(self.actor, distance)
         badAnim = str(animation + "_bad")
 
         if not self.isFalling():
             self.actor.enableBlend()
-            self.actor.setControlEffect(badAnim, 1- goodPercentage)
+            self.actor.setControlEffect(badAnim, 1-goodPercentage)
             self.actor.setControlEffect(animation, goodPercentage)
             self.actor.play(badAnim)
             self.actor.play(animation)
@@ -270,15 +271,15 @@ class Tricker(object):
         return Task.done
 
     def playFall(self, badAnim, fallingAnim, startFrame):
-        if fallingAnim == 'fall_swing':
-            self.actor.enableBlend()
-            self.actor.setControlEffect(badAnim, .5)
-            self.actor.setControlEffect(fallingAnim, .5)
-            self.actor.play(badAnim, fromFrame=startFrame)
-            self.actor.play(fallingAnim)
-            self.actor.disableBlend()
-        elif fallingAnim == 'fall_reversal':
-            self.actor.play(fallingAnim)
+        # if fallingAnim == 'fall_swing':
+        #     self.actor.enableBlend()
+        #     self.actor.setControlEffect(badAnim, .5)
+        #     self.actor.setControlEffect(fallingAnim, .5)
+        #     self.actor.play(badAnim, fromFrame=startFrame)
+        #     self.actor.play(fallingAnim)
+        #     self.actor.disableBlend()
+        # elif fallingAnim == 'fall_reversal':
+        self.actor.play(fallingAnim)
 
     def playSwingExit(self, distance):
         self.actor.setPos(self.actor, distance)
