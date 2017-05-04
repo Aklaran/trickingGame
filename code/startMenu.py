@@ -61,21 +61,27 @@ class StartMenu(Menu):
             self.enableGUI()
             base.gameFSM.demand('Train')
         else:
+            s = "Please enter a name:"
+            self.drawPopupText(s)
             self.nameEntry = DirectEntry(text="", scale=0.1, command=self.callSetNameAndDemandTrain,
                                              initialText="Enter Name", focus=1, focusInCommand=self.clearText,
-                                             frameSize=(0, 15, 0, 1))
+                                             frameSize=(0, 15, 0, 1), pos=(-0.75,0,0.1))
     def battleNameEntry(self):
         self.disableGUI()
         if not base.player1.hasName():
+            s = "Please enter a name for Player 1:"
+            self.drawPopupText(s)
             self.nameEntry = DirectEntry(text="", scale=0.1,
                                          command=self.callSetNameAndDemandBattle, extraArgs=[base.player1, base.player2],
                                          initialText="Enter Name for Player 1", focus=1, focusInCommand=self.clearText,
-                                         frameSize=(0, 15, 0, 1))
+                                         frameSize=(0, 15, 0, 1), pos=(-0.75,0,0.1))
         elif not base.player2.hasName():
+            s = "Please enter a name for Player 2:"
+            self.drawPopupText(s)
             self.nameEntry = DirectEntry(text="", scale=0.1,
                                          command=self.callSetNameAndDemandBattle, extraArgs=[base.player2,base.player1],
                                          initialText="Enter Name for Player 2", focus=1, focusInCommand=self.clearText,
-                                         frameSize=(0, 15, 0, 1))
+                                         frameSize=(0, 15, 0, 1), pos=(-0.75,0,0.1))
         else:
             self.enableGUI()
             base.gameFSM.demand('Battle')

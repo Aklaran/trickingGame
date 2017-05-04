@@ -70,8 +70,8 @@ class Menu(object):
             return None
 
     def createPopupText(self,s):
-        self.popupText = OnscreenText(text=s, scale = 0.07, parent=base.a2dTopCenter,
-                                      pos = (0,-.05) )
+        self.popupText = OnscreenText(text=s, scale = 0.1, parent=base.a2dTopCenter,
+                                      pos = (0,-.75) )
 
     def removePopupText(self):
         self.popupText.detachNode()

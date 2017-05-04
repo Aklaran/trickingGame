@@ -89,9 +89,11 @@ class Save(Menu):
             self.openNameEntry(player, fullFilePath)
 
     def openNameEntry(self, player, fullFilePath):
+        s = "Please enter a name:"
+        self.drawPopupText(s)
         self.nameEntry = DirectEntry(text="", scale=0.1, command=self.setName, extraArgs=[player, fullFilePath],
                                      initialText="Shrek", focus=1, focusInCommand=self.clearText,
-                                     frameSize=(0, 15, 0, 1))
+                                     frameSize=(0, 15, 0, 1), pos=(-0.75,0,0.1))
     def openOverwriteDialog(self, fullFilePath):
         self.overwriteDialog = YesNoDialog(dialogName="OverwriteDialog", scale=1,
                                            text="Do you want to overwrite?", command=self.itemSel,
