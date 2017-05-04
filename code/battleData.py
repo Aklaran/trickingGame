@@ -25,22 +25,26 @@ class BattleData(object):
             score = self.p1Score
         return score
     def updateScore(self, tricker, score, falling):
+        updateScore = score
         if falling:
-            score == 1
+            updateScore = score // 2
         if tricker == base.player1:
-            self.p1Score = score
+            self.p1Score = updateScore
             print("updated p1score:", self.p1Score)
         elif tricker == base.player2:
-            self.p2Score = score
+            self.p2Score = updateScore
             print("updated p2score:", self.p2Score)
 
     def checkEndRound(self):
         if self.p1Score != 0 and self.p2Score != 0:
             if self.p1Score > self.p2Score:
                 self.p1Rounds += 1
+                return str(base.player1.getName() + " wins the round!")
             elif self.p2Score > self.p1Score:
                 self.p2Rounds += 1
+                return str(base.player2.getName() + " wins the round!")
             self.p1Score = self.p2Score = 0
+        return None
 
     def checkEndGame(self):
         if self.p1Rounds == self.roundsToWin:

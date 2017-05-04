@@ -33,7 +33,7 @@ class BattleMode(Play):
         self.ignoreAll()
         initialStr = "- BATTLE MODE - \n" \
                      "Chain together tricks to make dope combos and outscore your opponent. \n" \
-                     "Hit the button too early or run out of stamina, and you'll fall. \n" \
+                     "Hit the button too early or run out of stamina, and you'll fall, halving your score. \n" \
                      "First to three rounds wins!"
         self.initialDialog = DirectDialog(dialogName="initialDialog", scale=1,
                                           text=initialStr,
@@ -68,7 +68,8 @@ class BattleMode(Play):
     def changeTurnTask(self, currPlayer, falling, task):
         self.battleData.updateScore(currPlayer, int(currPlayer.getScore()), falling)
         currPlayer.reset()
-        self.battleData.checkEndRound()
+        s = self.battleData.checkEndRound()
+        if s: self.drawPopupText(s)
         winner = self.battleData.checkEndGame()
         if winner:
             taskMgr.doMethodLater(1, self.showEndGameDialogTask, 'EndGameDialog', extraArgs=[winner], appendTask=True)

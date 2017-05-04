@@ -61,6 +61,9 @@ class GameFSM(FSM):
     def enterBattle(self):
         self.battle = BattleMode()
     def exitBattle(self):
+        if self.battle.popupText:
+            self.battle.popupText.detachNode()
+            self.battle.popupText = None
         self.battle.destroy()
         del self.battle
 

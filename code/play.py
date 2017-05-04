@@ -168,12 +168,13 @@ class Play(DirectObject):
 
         return Task.cont
 
+    #this just makes the text object. DO NOT CALL. instead call drawPopupText
     def createPopupText(self,s):
         self.popupText = OnscreenText(text=s, scale = 0.07, parent=render2d,
                                       pos = (0,0.4) )
 
     def removePopupText(self):
-        self.popupText.detachNode()
+        if self.popupText: self.popupText.detachNode()
         self.popupText = None
         self.popupSeq = None
 
