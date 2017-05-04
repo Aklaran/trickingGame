@@ -56,6 +56,7 @@ class Menu(object):
             return 'saves/save' + slot + '.json'
 
     def loadButtonData(self, slot):
+        #pulls data for each slot from the corresponding .json file
         saveFilePath = self.getSaveFilePath(slot)
         projectPath = os.path.dirname(os.path.dirname((__file__)))
         fullFilePath = os.path.join(projectPath, saveFilePath)
@@ -69,6 +70,7 @@ class Menu(object):
         else:
             return None
 
+    # this just draws the text - DO NOT CALL. instead, call drawPopupText()
     def createPopupText(self,s):
         self.popupText = OnscreenText(text=s, scale = 0.1, parent=base.a2dTopCenter,
                                       pos = (0,-.75) )

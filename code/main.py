@@ -10,25 +10,6 @@ from stats import Stats
 from controls import Controls
 from tricker import Tricker
 
-# TODO: All this shit
-"""
-dem animations
-    bad anims:
-        gswitch
-        cork
-        dbl cork
-        btwist
-        540
-        raiz
-        
-slow mo
-
-make citations:
-    keyboard images:
-        https://www.wpclipart.com/computer/keyboard_keys/
-
-"""
-
 class Main(ShowBase):
     def __init__(self):
         ShowBase.__init__(self)
