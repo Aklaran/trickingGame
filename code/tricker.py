@@ -28,6 +28,7 @@ class Tricker(object):
                             "fall_swing"     : "tp/anims/tricker-fall-left",
                             "initial_swing"  : "tp/anims/tricker-initial-swing",
                             "end_swing"      : "tp/anims/tricker-end-swing",
+                            "fall_reversal"  : "tp/anims/tricker-fall-right",
                             "raiz"           : "tp/anims/tricker-raiz",
                             "raiz_bad"       : "tp/anims/tricker-raiz",
                             "fiveForty"      : "tp/anims/tricker-540",
@@ -258,7 +259,7 @@ class Tricker(object):
             exitTrans = trick.getExitTransition()
             fallingAnim = "fall_" + exitTrans
 
-            fallStartFrame = 5
+            fallStartFrame = trick.getDuration() - trick.getSweetSpot()
             regFrames = self.actor.getNumFrames(animation) - fallStartFrame
 
             fallSeq = Sequence(self.actor.actorInterval(badAnim, endFrame=regFrames),
@@ -269,12 +270,15 @@ class Tricker(object):
         return Task.done
 
     def playFall(self, badAnim, fallingAnim, startFrame):
-        self.actor.enableBlend()
-        self.actor.setControlEffect(badAnim, .5)
-        self.actor.setControlEffect(fallingAnim, .5)
-        self.actor.play(badAnim, fromFrame=startFrame)
-        self.actor.play(fallingAnim)
-        self.actor.disableBlend()
+        if fallingAnim == 'fall_swing':
+            self.actor.enableBlend()
+            self.actor.setControlEffect(badAnim, .5)
+            self.actor.setControlEffect(fallingAnim, .5)
+            self.actor.play(badAnim, fromFrame=startFrame)
+            self.actor.play(fallingAnim)
+            self.actor.disableBlend()
+        elif fallingAnim == 'fall_reversal':
+            self.actor.play(fallingAnim)
 
     def playSwingExit(self, distance):
         self.actor.setPos(self.actor, distance)
