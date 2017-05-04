@@ -26,6 +26,7 @@ class Tricker(object):
                             "doublecork"     : "tp/anims/tricker-dubcork",
                             "doublecork_bad" : "tp/anims/tricker-dubcork",
                             "fall_swing"     : "tp/anims/tricker-fall-left",
+                            "initial_swing"  : "tp/anims/tricker-initial-swing",
                             "raiz"           : "tp/anims/tricker-raiz",
                             "raiz_bad"       : "tp/anims/tricker-raiz",
                             "fiveForty"      : "tp/anims/tricker-540",
@@ -107,7 +108,7 @@ class Tricker(object):
     def getTimingBarPercentage(self):
         currAnim = self.actor.getCurrentAnim()
 
-        if currAnim and 'fall' not in currAnim:
+        if currAnim and 'fall' not in currAnim and 'initial' not in currAnim:
             trick = self.trickMap[currAnim.split('_')[0]]
             sweetspot = trick.getSweetSpot()
             currFrame = self.actor.getCurrentFrame()
@@ -213,7 +214,13 @@ class Tricker(object):
         else:
             stamCost = trick.getStamCost(self.grade)
             self.updateStamina(stamCost)
-            taskMgr.add(self.doTrickTask, 'doTrick',
+
+            if trick.entryTransition == 'swing':
+                self.actor.play('initial_swing')
+                distance = (-2,2,0)
+                taskMgr.doMethodLater(21/30, self.doTrickTask, 'doTrick',
+                            extraArgs=[str(trick), goodPercentage, distance, taskMgr], appendTask=True)
+            else:taskMgr.add(self.doTrickTask, 'doTrick',
                              extraArgs=[str(trick), goodPercentage, distance, taskMgr], appendTask=True)
 
         if self.getTrueStam() < 0:                             
