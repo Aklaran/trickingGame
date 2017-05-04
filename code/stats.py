@@ -22,7 +22,7 @@ class Stats(Menu):
     def createStatsList(self, player):
         ## Following code block adapted from:
         # https://moguri.github.io/panda-sphinx/programming-with-panda3d/directgui/directscrolledlist.html
-        numItemsVisible = 8
+        numItemsVisible = 7
         itemHeight = 0.11
 
         if player == base.player1: listPos = (-1,0,0)
@@ -34,7 +34,7 @@ class Stats(Menu):
             decButton_text_scale=0.04,
             decButton_borderWidth=(0.005, 0.005),
 
-            incButton_pos=(0.35, 0, -0.02),
+            incButton_pos=(0.35, 0, -0.35),
             incButton_text="Inc",
             incButton_text_scale=0.04,
             incButton_borderWidth=(0.005, 0.005),

@@ -42,7 +42,7 @@ class Menu(object):
         if base.player1.hasName() or base.player2.hasName():
             base.gameFSM.demand('Stats')
         else:
-            s = 'No save data found. Press Train to make a character, or load a save file.'
+            s = 'No character selected.'
             self.drawPopupText(s)
 
     def clearText(self):
