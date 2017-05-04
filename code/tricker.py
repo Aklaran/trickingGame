@@ -27,6 +27,7 @@ class Tricker(object):
                             "doublecork_bad" : "tp/anims/tricker-dubcork",
                             "fall_swing"     : "tp/anims/tricker-fall-left",
                             "initial_swing"  : "tp/anims/tricker-initial-swing",
+                            "end_swing"      : "tp/anims/tricker-end-swing",
                             "raiz"           : "tp/anims/tricker-raiz",
                             "raiz_bad"       : "tp/anims/tricker-raiz",
                             "fiveForty"      : "tp/anims/tricker-540",
@@ -108,7 +109,7 @@ class Tricker(object):
     def getTimingBarPercentage(self):
         currAnim = self.actor.getCurrentAnim()
 
-        if currAnim and 'fall' not in currAnim and 'initial' not in currAnim:
+        if currAnim and 'fall' not in currAnim and 'initial' not in currAnim and 'end' not in currAnim:
             trick = self.trickMap[currAnim.split('_')[0]]
             sweetspot = trick.getSweetSpot()
             currFrame = self.actor.getCurrentFrame()
@@ -275,6 +276,10 @@ class Tricker(object):
         self.actor.play(fallingAnim)
         self.actor.disableBlend()
 
+    def playSwingExit(self, distance):
+        self.actor.setPos(self.actor, distance)
+        self.actor.play('end_swing')
+
     def checkTrickStateTask(self, animation, task):
         # has to be -1 otherwise the currFrame never gets to the last frame. IDK why
         totalFrames = self.actor.getNumFrames(animation)-1
@@ -288,6 +293,10 @@ class Tricker(object):
         if currFrame == totalFrames:
             self.comboEnded = True
             print("no input received - combo ended")
+            trick = self.trickMap[animation]
+            distance = trick.getDistance()
+            if trick.getExitTransition() == 'swing':
+                self.playSwingExit(distance)
             return Task.done
         return Task.cont
 

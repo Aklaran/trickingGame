@@ -142,7 +142,7 @@ class Play(DirectObject):
         # timingBar
         gp = base.currPlayer.getTimingBarPercentage()
 
-        self.uiDrawer.rectangleRaw(-timingWidth / 2, 0.25, timingWidth, 0.1, 0, 0, 0, 0, (0, 0, 0, 1))
+        self.uiDrawer.rectangleRaw(-timingWidth / 2, 0.25, timingWidth, 0.1, 0, 0, 0, 0, (0, 0, 1, 1))
         self.uiDrawer.rectangleRaw(-timingWidth / 2, 0.25, timingWidth * gp, 0.1, 0, 0, 0, 0, (1, 1, 1, 1))
 
         self.uiDrawer.end()
