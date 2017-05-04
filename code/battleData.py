@@ -43,6 +43,8 @@ class BattleData(object):
             elif self.p2Score > self.p1Score:
                 self.p2Rounds += 1
                 return str(base.player2.getName() + " wins the round!")
+            elif self.p2Score == self.p1Score:
+                return str("Round tied!")
             self.p1Score = self.p2Score = 0
         return None
 
