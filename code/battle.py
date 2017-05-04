@@ -126,6 +126,7 @@ class BattleMode(Play):
     def destroy(self):
         super().destroy()
         taskMgr.remove('changeTurn')
+        taskMgr.remove('EndGameDialog')
         self.oppScoreText.removeNode()
         self.p1RoundText.removeNode()
         self.p2RoundText.removeNode()
