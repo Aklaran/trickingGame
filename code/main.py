@@ -13,7 +13,6 @@ from tricker import Tricker
 # TODO: All this shit
 """
 dem animations
-    540
     initital for swing
     final for swing
     reversal falling
